@@ -1,0 +1,21 @@
+generateAliasAsModel: true
+
+#################
+## PHP options ##
+#################
+invokerPackage: Calcasa\Api
+packageName: calcasa/api
+# Also camelCase etc.
+variableNamingConvention: snake_case
+disallowAdditionalPropertiesIfNotPresent: false
+licenseId: Apache-2.0
+packageVersion: 0.0.1
+packageCopyright: "Copyright 2021 Calcasa B.V."
+packageDescription: "API client for the Calcasa Public API."
+packageCompany: "Calcasa"
+packageAuthors: "Calcasa"
+packageTitle: Calcasa API Client
+gitHost: github.com
+gitUserId: calcasa
+gitRepoId: api-php
+homepage: https://calcasa.nl

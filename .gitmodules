@@ -1,0 +1,9 @@
+[submodule "libraries/api-csharp"]
+	path = libraries/api-csharp
+	url = git@github.com:calcasa/api-csharp.git
+[submodule "libraries/api-php"]
+	path = libraries/api-php
+	url = git@github.com:calcasa/api-php.git
+[submodule "libraries/api-python"]
+	path = libraries/api-python
+	url = git@github.com:calcasa/api-python.git
