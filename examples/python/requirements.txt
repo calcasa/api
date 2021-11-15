@@ -1,1 +1,4 @@
+requests
+oauthlib
+requests-oauthlib
 calcasa-api==0.0.3
