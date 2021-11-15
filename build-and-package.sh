@@ -8,7 +8,7 @@ rm -rf dist
 
 dotnet pack -c Release -o dist src/Calcasa.Api/Calcasa.Api.csproj
 
-dotnet nuget push dist/*.nupkg --api-key oy2kl5nzxhs74hih36jqryrdjrwh4orepi5wucyz75akjq --source https://api.nuget.org/v3/index.json
+dotnet nuget push dist/*.nupkg --api-key ${NUGET_API_KEY} --source https://api.nuget.org/v3/index.json
 
 popd
 
