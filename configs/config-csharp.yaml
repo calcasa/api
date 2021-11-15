@@ -5,13 +5,13 @@ generateAliasAsModel: true
 ################
 packageName: Calcasa.Api
 useCollection: true
-targetFramework: "net47;netstandard2.0;net5.0"
+targetFramework: "netstandard2.0"
 netCoreProjectFile: true
 modelPropertyNaming: PascalCase
 validatable: true
 disallowAdditionalPropertiesIfNotPresent: false
 library: httpclient
-packageVersion: 0.0.1
+packageVersion: 0.0.2
 licenseId: Apache-2.0
 packageCopyright: "Copyright 2021 Calcasa B.V."
 packageDescription: "API client for the Calcasa Public API."
@@ -20,6 +20,7 @@ packageAuthors: "Calcasa"
 packageTitle: Calcasa API Client
 gitHost: github.com
 gitUserId: calcasa
-gitRepoId: api-php
+gitRepoId: api-csharp
 homepage: https://calcasa.nl
+excludeTests: true
 

@@ -1,0 +1,52 @@
+{{>partial_header}}
+
+from setuptools import setup, find_namespace_packages  # noqa: H301
+
+NAME = "{{{projectName}}}"
+VERSION = "{{packageVersion}}"
+{{#apiInfo}}
+{{#apis}}
+{{#-last}}
+# To install the library, run the following
+#
+# python setup.py install
+#
+# prerequisite: setuptools
+# http://pypi.python.org/pypi/setuptools
+
+REQUIRES = [
+  "urllib3 >= 1.25.3",
+  "python-dateutil",
+{{#asyncio}}
+  "aiohttp >= 3.0.0",
+{{/asyncio}}
+{{#tornado}}
+  "tornado>=4.2,<5",
+{{/tornado}}
+{{#hasHttpSignatureMethods}}
+  "pem>=19.3.0",
+  "pycryptodome>=3.9.0",
+{{/hasHttpSignatureMethods}}
+]
+
+setup(
+    name=NAME,
+    version=VERSION,
+    description="{{appName}}",
+    author="{{infoName}}{{^infoName}}OpenAPI Generator community{{/infoName}}",
+    author_email="{{infoEmail}}{{^infoEmail}}team@openapitools.org{{/infoEmail}}",
+    url="{{packageUrl}}",
+    keywords=["OpenAPI", "OpenAPI-Generator", "{{{appName}}}"],
+    classifiers=["Programming Language :: Python :: 3 :: Only", "License :: OSI Approved :: Apache Software License"],
+    python_requires=">=3.6",
+    install_requires=REQUIRES,
+    packages=find_namespace_packages(include=['calcasa.*'],exclude=["test", "tests"]),
+    include_package_data=True,
+    {{#licenseId}}license="{{.}}",
+    {{/licenseId}}long_description="""\
+    {{appDescriptionWithNewLines}}  
+    """
+)
+{{/-last}}
+{{/apis}}
+{{/apiInfo}}

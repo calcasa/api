@@ -4,15 +4,14 @@ generateAliasAsModel: true
 ## Python options ##
 ####################
 invokerPackage: calcasa.api
-packageName: calcasa.api
+packageName: calcasa-api
 pythonAttrNoneIfUnset: true
-packageVersion: 0.0.1
+packageVersion: 0.0.2
 licenseInfo: Apache-2.0
+licenseId: Apache-2.0
 infoName: Calcasa B.V.
 infoEmail: info@calcasa.nl
 packageUrl: https://github.com/calcasa/api-python
 packageCopyright: "Copyright 2021 Calcasa B.V."
 appDescription: "API client for the Calcasa Public API."
-gitHost: github.com
-gitUserId: calcasa
-gitRepoId: api-python
+excludeTests: true

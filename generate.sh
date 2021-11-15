@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 spec_url=https://api.calcasa.nl/api-docs/v0/openapi.yaml
 # Spec file to use
 spec_file=openapi.yaml
@@ -58,7 +60,7 @@ docker run --rm -t \
   -o /out/$i \
   -t /templates/$i
 
-rm -rf $output_dir/$i/git_push.sh $output_dir/$i/appveyor.yml $output_dir/$i/docs $output_dir/$i/appveyor.yml
+rm -rf $output_dir/$i/git_push.sh $output_dir/$i/appveyor.yml $output_dir/$i/docs $output_dir/$i/appveyor.yml $output_dir/$i/test $output_dir/$i/phpunit* $output_dir/$i/tox.ini $output_dir/$i/.gitlab-ci.yml $output_dir/$i/.travis.yml $output_dir/$i/test-requirements.txt
 
 cp LICENSE $output_dir/$i/LICENSE
 
