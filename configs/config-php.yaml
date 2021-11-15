@@ -10,7 +10,7 @@ composerPackageName: calcasa/api
 variableNamingConvention: snake_case
 disallowAdditionalPropertiesIfNotPresent: false
 licenseId: Apache-2.0
-packageVersion: 0.0.2
+packageVersion: 0.0.3
 packageCopyright: "Copyright 2021 Calcasa B.V."
 packageDescription: "API client for the Calcasa Public API."
 packageCompany: "Calcasa"
@@ -19,3 +19,4 @@ packageTitle: Calcasa API Client
 packageUrl: https://github.com/calcasa/api-php
 homepage: https://calcasa.nl
 excludeTests: true
+httpUserAgent: Calcasa PHP Api Client/0.0.3
