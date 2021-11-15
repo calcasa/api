@@ -2,13 +2,7 @@
     "description": "API Test",
     "license": "ISR",
 
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../libraries/api-php"
-        }
-    ],
     "require": {
-        "calcasa/api": "@dev"
+        "calcasa/api": "^0.0.3"
     }
 }

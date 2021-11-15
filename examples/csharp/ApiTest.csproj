@@ -6,11 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Calcasa.Api" Version="0.0.3" />
     <PackageReference Include="IdentityModel" Version="5.2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\libraties\api-csharp\src\Calcasa.Api.V0\Calcasa.Api.V0.csproj" />
   </ItemGroup>
 
 </Project>
