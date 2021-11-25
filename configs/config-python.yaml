@@ -6,7 +6,7 @@ generateAliasAsModel: true
 invokerPackage: calcasa.api
 packageName: calcasa-api
 pythonAttrNoneIfUnset: true
-packageVersion: 0.0.3
+packageVersion: 0.0.4
 licenseInfo: Apache-2.0
 licenseId: Apache-2.0
 infoName: Calcasa B.V.
