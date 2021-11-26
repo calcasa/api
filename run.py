@@ -366,8 +366,6 @@ def main():
             yaml.dump(confobject, config_file)
     if openapi_validate(SPEC_FILE):
         for language in configs:
-            if language != 'python':
-                continue
             print(f"Processing {language}...")
             gen_dir = GENERATED_DIR / language
             lib_dir = LIBRARY_DIR / f'api-{language}'
@@ -401,9 +399,9 @@ def main():
         if len(configs) > 0:
             git_add_all(MAIN_DIR) or die("Error with git_add_all for main repo")
             git_commit(MAIN_DIR, release_msg) or die("Error with git_commit for main repo")
-            #git_tag(MAIN_DIR, version_info['specVersion'], release_msg) or die("Error with git_tag for main repo")
-            #git_push(MAIN_DIR) or die("Error with git_push for main repo")
-            #github_make_main_release(version_info['specVersion'], release_msg, prerelease)  or die(f"Error with github_make_main_release for main repo")
+            git_tag(MAIN_DIR, version_info['specVersion'], release_msg) or die("Error with git_tag for main repo")
+            git_push(MAIN_DIR) or die("Error with git_push for main repo")
+            github_make_main_release(version_info['specVersion'], release_msg, prerelease)  or die(f"Error with github_make_main_release for main repo")
 
 
 if __name__ == "__main__":
