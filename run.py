@@ -326,10 +326,9 @@ def main():
     version_obj = yaml.load(version_req.content)
 
     sorted_versions = sorted(
-        version_obj, key=lambda d: d['version'], reverse=True)
+        version_obj, key=lambda d: d['version'], reverse=False)
     version_info = sorted_versions[0]
-
-    
+        
     version_parsed = version.parse(version_info['specVersion'])
     prerelease = version_parsed.is_prerelease or version_parsed.major == 0
 
