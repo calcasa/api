@@ -525,18 +525,18 @@ def main():
                 git_commit(lib_dir, release_msg) or die(f"Error with git_commit for {language}")
                 git_tag(lib_dir, version_info['specVersion'], release_msg) or die(f"Error with git_tag for {language}")
 
-                #git_push(lib_dir) or die(f"Error with git_push for {language}")
+                git_push(lib_dir) or die(f"Error with git_push for {language}")
 
-                #pack_publish(language, lib_dir, publish=True) or die(f"Error with pack_publish for {language}")
+                pack_publish(language, lib_dir, publish=True) or die(f"Error with pack_publish for {language}")
 
-                #github_make_release(language, lib_dir, version_info['specVersion'], release_msg, prerelease)  or die(f"Error with github_make_release for {language}")
+                github_make_release(language, lib_dir, version_info['specVersion'], release_msg, prerelease)  or die(f"Error with github_make_release for {language}")
             
             if len(configs) > 0:
                 git_add_all(MAIN_DIR) or die("Error with git_add_all for main repo")
                 git_commit(MAIN_DIR, release_msg) or die("Error with git_commit for main repo")
                 git_tag(MAIN_DIR, version_info['specVersion'], release_msg) or die("Error with git_tag for main repo")
-                #git_push(MAIN_DIR) or die("Error with git_push for main repo")
-                #github_make_main_release(version_info['specVersion'], release_msg, prerelease)  or die(f"Error with github_make_main_release for main repo")
+                git_push(MAIN_DIR) or die("Error with git_push for main repo")
+                github_make_main_release(version_info['specVersion'], release_msg, prerelease)  or die(f"Error with github_make_main_release for main repo")
 
 
 if __name__ == "__main__":
