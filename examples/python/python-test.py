@@ -51,5 +51,5 @@ aa = AdressenApi(ac)
 
 print(aa.get_adres(bag_nummeraanduiding_id=489200000253543))
 
-adres = Adres(postcode="2624NM", huisnummer=73)
+adres = Adres(postcode="2611EB", huisnummer=41)
 print(aa.search_adres(adres=adres))

@@ -24,6 +24,6 @@ try {
     echo 'Exception when calling AdressenApi->getAdres: ', $e->getMessage(), PHP_EOL;
 }
 
-$adres = new Api\Model\Adres(array("postcode"=>"2624NM", "huisnummer"=>73));
+$adres = new Api\Model\Adres(array("postcode"=>"2611EB", "huisnummer"=>41));
 
 print_r($adressen->searchAdres($adres));
