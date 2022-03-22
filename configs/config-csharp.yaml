@@ -11,7 +11,7 @@ modelPropertyNaming: PascalCase
 validatable: true
 disallowAdditionalPropertiesIfNotPresent: false
 library: httpclient
-packageVersion: 1.1.2
+packageVersion: 1.1.3
 licenseId: Apache-2.0
 packageCopyright: Copyright 2021 Calcasa B.V.
 packageDescription: API client for the Calcasa Public API.
@@ -24,5 +24,5 @@ gitUserId: calcasa
 gitRepoId: api-csharp
 homepage: https://calcasa.nl
 excludeTests: true
-httpUserAgent: Calcasa .NET Api Client/1.1.2
+httpUserAgent: Calcasa .NET Api Client/1.1.3
 
