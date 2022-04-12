@@ -43,13 +43,12 @@ namespace ApiTest
              * Adres endpoints *
              * --------------- */
 
-            //var adres = new Adres(postcode: "2611EB", huisnummer: 41, huisnummertoevoeging: "B"); // Create Adres instance to be checked.
-            var adres = new Adres(postcode: "2624NM", huisnummer: 73);
+            var adres = new Adres(postcode: "3823JC", huisnummer: 94); // Create Adres instance to be checked.            
             var adresinfo = await aa.SearchAdresAsync(adres); // Check the adres against the API.
 
             Console.WriteLine(adresinfo);
 
-            var officeAddressInfo = await aa.GetAdresAsync(503200000111166); // Get address information based on the BAG Nummeraanduiding ID.
+            var officeAddressInfo = await aa.GetAdresAsync(307200000435341); // Get address information based on the BAG Nummeraanduiding ID.
 
             Console.WriteLine(officeAddressInfo);
 
@@ -85,9 +84,9 @@ namespace ApiTest
 
             var waarderingInput = new WaarderingInputParameters(
                 productType: ProductType.ModelwaardeDesktopTaxatie,
-                hypotheekwaarde: 280000,
+                hypotheekwaarde: 350000,
                 aanvraagdoel: Aanvraagdoel.AankoopNieuweWoning,
-                klantwaarde: 320000,
+                klantwaarde: 450000,
                 klantwaardeType: KlantwaardeType.Koopsom,
                 isBestaandeWoning: true,
                 bagNummeraanduidingId: adresinfo.BagNummeraanduidingId,
