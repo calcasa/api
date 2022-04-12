@@ -26,6 +26,9 @@ namespace ApiTest
             //    scopes: new string[] { "access_as_user" }, // Scopes
             //    );
 
+            // Set the User Agent of your application
+            conf.UserAgent = "CSharp Application Name/0.0.1";
+
             // HttpClientHandler and HttpClient should be reused.
 
             var httpClientHandler = new HttpClientHandler();
