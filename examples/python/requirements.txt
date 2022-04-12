@@ -1,4 +1,5 @@
 requests
 oauthlib
 requests-oauthlib
-calcasa-api==0.0.3
+file:./../../libraries/api-python
+#calcasa-api==1.1.4

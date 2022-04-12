@@ -7,11 +7,12 @@ invokerPackage: Calcasa\Api
 packageName: calcasa/api
 composerPackageName: calcasa/api
 # Also camelCase etc.
-variableNamingConvention: snake_case
+variableNamingConvention: camelCase
 disallowAdditionalPropertiesIfNotPresent: false
+legacyDiscriminatorBehavior: false
 licenseId: Apache-2.0
 packageVersion: 1.1.4
-packageCopyright: Copyright 2021 Calcasa B.V.
+packageCopyright: Copyright 2022 Calcasa B.V.
 packageDescription: API client for the Calcasa Public API.
 packageCompany: Calcasa
 packageAuthors: Calcasa
