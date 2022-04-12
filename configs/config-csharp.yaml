@@ -8,7 +8,7 @@ useCollection: true
 targetFramework: netstandard2.0
 netCoreProjectFile: true
 modelPropertyNaming: PascalCase
-validatable: true
+validatable: false
 disallowAdditionalPropertiesIfNotPresent: false
 library: httpclient
 packageVersion: 1.1.3

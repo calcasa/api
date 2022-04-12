@@ -18,6 +18,9 @@ yaml = ruamel.yaml.YAML()  # defaults to round-trip
 
 NUGET_API_KEY = os.getenv('NUGET_API_KEY')
 
+#API_URL = "http://192.168.2.189:9102"
+API_URL = "https://api.calcasa.nl"
+
 MAIN_DIR = Path('.')
 TEMPLATE_PATH = Path("templates")
 CONFIG_PATH = Path("configs")
@@ -437,7 +440,7 @@ def empty_dir(folder: os.PathLike, ignore=[]):
 
 
 def main():
-    version_req = requests.get("https://api.calcasa.nl/api-docs/versions.yaml")
+    version_req = requests.get(f"{API_URL}/api-docs/versions.yaml")
     version_obj = yaml.load(version_req.content)
 
     sorted_versions = sorted(
@@ -464,7 +467,7 @@ def main():
 
         print(version_info, version_parsed)
 
-        openapi_req = requests.get(f"https://api.calcasa.nl{version_info['specUrl']}")
+        openapi_req = requests.get(f"{API_URL}{version_info['specUrl']}")
         openapi_obj = yaml.load(openapi_req.content)
 
         with SPEC_FILE.open('wb') as openapi_file:
