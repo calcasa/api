@@ -66,8 +66,6 @@ internal class ServiceOauthConfiguration : Configuration
             ClientCredentialStyle = ClientCredentialStyle.AuthorizationHeader, // Recommended as opposed to secrets in body.
         };
 
-        AuthClient.Reques
-
         Token = AuthClient.RequestClientCredentialsTokenAsync(request).Result;
 
         if (Token.IsError)

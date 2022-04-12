@@ -65,17 +65,6 @@ namespace {{packageName}}.Client
         }
 
         /// <summary>
-        /// Construct a FileParameter from HttpContent
-        /// </summary>
-        /// <param name="httpContent">The HTTP Content object.</param>
-        public FileParameter(HttpContent filename, string contentType, Stream content)
-        {
-            Name = filename;
-            ContentType = contentType;
-            Content = content;
-        }
-
-        /// <summary>
         /// Implicit conversion of stream to file parameter. Useful for backwards compatibility.
         /// </summary>
         /// <param name="s">Stream to convert</param>
