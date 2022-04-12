@@ -116,7 +116,7 @@ namespace ApiTest
 
             var waarderingOutputAfterPatch = await wa.PatchWaarderingenAsync(id, jsonPatch);
 
-            // Now is aa good time to persist the Id and the other information to a database.
+            // Now is a good time to persist the Id and the other information to a database.
 
             // Some time later. (Note this sleep simulation only works for test requests, in the real world valuations might be much slower depending on the ProductType.
             Console.WriteLine("Waiting 10 seconds...");
