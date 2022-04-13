@@ -3,6 +3,14 @@
     "license": "ISR",
 
     "require": {
-        "calcasa/api": "^0.0.3"
-    }
+        "calcasa/api": "@dev",
+        "league/oauth2-client": "^2.6"
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../libraries/api-php"
+        }
+    ]
+    
 }

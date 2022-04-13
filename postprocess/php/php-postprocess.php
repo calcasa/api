@@ -1,5 +1,4 @@
 <?php
-
 $dir = './generated/php/lib/Model';
 if ($argc > 2) {
     die("Only supports one directory to process at a time.".PHP_EOL);
@@ -18,7 +17,7 @@ $files = scandir($dir);
 
 echo "Found " . count($files)." files in directory.".PHP_EOL;
 
-$model_namespace = "\Calcasa\Api\V0\Model\\";
+$model_namespace = "\Calcasa\Api\Model\\";
 
 $full_regex = '/protected static \$openAPITypes = \[[^;]*\];/s';
 
