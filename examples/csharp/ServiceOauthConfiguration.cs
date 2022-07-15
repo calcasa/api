@@ -7,7 +7,9 @@ using System.Net.Http;
 using IdentityModel.Client;
 using System.Threading.Tasks;
 
-internal class ServiceOauthConfiguration : Configuration
+namespace ApiTest;
+
+internal class ServiceOAuthConfiguration : Configuration
 {
     private readonly string ClientId;
     private readonly string ClientSecret;
@@ -16,7 +18,7 @@ internal class ServiceOauthConfiguration : Configuration
     private TokenResponse Token;
     private DateTime ExpiresOn;
 
-    public ServiceOauthConfiguration(string client_id,
+    public ServiceOAuthConfiguration(string client_id,
         string client_secret,
         string token_url = "https://authentication.calcasa.nl/oauth2/v2.0/token",
         string basePath = "https://api.calcasa.nl") : base()

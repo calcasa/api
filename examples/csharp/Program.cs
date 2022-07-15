@@ -16,15 +16,24 @@ namespace ApiTest
     {
         static async Task Main(string[] args)
         {
-            var conf = new ServiceOauthConfiguration(
-                client_id: "<client_id>", // Calcasa Client Id
-                client_secret: "<secret>" // Client Secret
-                );
+            // Change this to change between different authorization schemes.
+            var userAuthentication = false;
 
-            //var conf = new UserOauthConfiguration(
-            //    client_id: "<client_id>", // B2C Client Id
-            //    scopes: new string[] { "access_as_user" }, // Scopes
-            //    );
+            Configuration conf;
+            if (!userAuthentication)
+            {
+                conf = new ServiceOAuthConfiguration(
+                    client_id: "<client_id>", // Calcasa Client Id
+                    client_secret: "<client_secret>" // Client Secret
+                );
+            }
+            else
+            {
+                conf = new UserOAuthConfiguration(
+                    client_id: "<client_id>", // Client Id
+                    scopes: new string[] { "openid", "offline_access" } // Scopes (when these are the only ones given it will be filled with all scopes the user has access to). The `openid` scope is mandatory from the standard.
+                    );
+            }
 
             // Set the User Agent of your application
             conf.UserAgent = "CSharp Application Name/0.0.1";
@@ -98,6 +107,8 @@ namespace ApiTest
                 );
 
             var waarderingOutput = await wa.CreateWaarderingAsync(waarderingInput);
+
+            Console.WriteLine(waarderingOutput);
 
             //Save the Id for future reference.
             var id = waarderingOutput.Id;
@@ -226,7 +237,7 @@ namespace ApiTest
             {
                 foreach (var foto in completeWaardering.Fotos)
                 {
-                    var photo = await fa.GetFactuurAsync(foto.Id);
+                    var photo = await pa.GetFotoAsync(foto.Id);
 
                     if (photo.ContentType.StartsWith("image/"))
                     {

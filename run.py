@@ -18,6 +18,9 @@ yaml = ruamel.yaml.YAML()  # defaults to round-trip
 
 NUGET_API_KEY = os.getenv('NUGET_API_KEY')
 
+CLI_DOCKER_CONTAINER_VERSION = "openapitools/openapi-generator-cli:v6.0.1"
+#CLI_DOCKER_CONTAINER_VERSION = "openapitools/openapi-generator-cli@sha256:5d649ebc5c3d3f8e8cf708498ffae7f8309968625d33bfaa333ce140e30fdd99"
+
 #API_URL = "http://192.168.2.189:9102"
 API_URL = "https://api.calcasa.nl"
 
@@ -40,8 +43,6 @@ GENERATORS = {
 def die(msg:str="Error"):
     print(msg)
     exit(1)
-
-
 
 def run_as_fg_process(*args, **kwargs):
     """
@@ -353,7 +354,7 @@ def openapi_validate(spec_file: Path):
         '--rm',
         '-v',
         f'{spec_file.absolute()}:/spec/validate.yaml:ro',
-        'openapitools/openapi-generator-cli:latest',
+        CLI_DOCKER_CONTAINER_VERSION,
         'validate',
         '-i',
         '/spec/validate.yaml'
@@ -380,7 +381,7 @@ def openapi_generate(language: str, spec_file: Path, gen_dir: Path):
         f'{TEMPLATE_PATH.absolute()}:/templates:ro',
         '-v',
         f'{gen_dir.absolute()}:/out',
-        'openapitools/openapi-generator-cli:latest',
+        CLI_DOCKER_CONTAINER_VERSION,
         'generate',
         '--ignore-file-override',
         '/config/.openapi-generator-ignore',

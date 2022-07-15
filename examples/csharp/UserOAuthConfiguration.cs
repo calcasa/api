@@ -1,46 +1,47 @@
-using Calcasa.Api.Client;
-using Calcasa.Api.Api;
-using Calcasa.Api.Model;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using IdentityModel.Client;
-using System.Threading.Tasks;
-using Microsoft.Identity.Client;
-using Polly;
-using static System.Formats.Asn1.AsnWriter;
-using static System.Net.Mime.MediaTypeNames;
 using System.Linq;
+using System.Threading.Tasks;
 
-internal class UserOauthConfiguration : Configuration
+using Calcasa.Api.Client;
+
+using IdentityModel;
+using IdentityModel.OidcClient;
+using IdentityModel.OidcClient.Results;
+
+namespace ApiTest;
+
+internal class UserOAuthConfiguration : Configuration
 {
-    private readonly string ClientId;
-    private readonly List<string> Scopes;
-    private readonly string TenantId;
-    private readonly string AuthDomain;
-    private readonly string AuthPolicy;
-    private readonly IPublicClientApplication AuthClient;
-    private AuthenticationResult Token;
+    private readonly OidcClient client;
+    private LoginResult loginResult;
+    private RefreshTokenResult refreshResult;
     private DateTimeOffset ExpiresOn;
 
-    public UserOauthConfiguration(string client_id,
+    public UserOAuthConfiguration(string client_id,
         IEnumerable<string> scopes,
-        string tenantId = "c4a66657-fd72-488a-8f44-fd33fc77983f",
-        string authDomain = "calcasalogin.b2clogin.com",
-        string authPolicy = "b2c_1_signin1",
+        string authority = "https://authentication.calcasa.nl/oauth2/v2.0",
+        string redirectUri = "http://localhost",
         string basePath = "https://api.calcasa.nl") : base()
     {
-        ClientId = client_id;
-        Scopes = scopes.Select(s => s.StartsWith("http") ? s : $"https://calcasalogin.onmicrosoft.com/public-api/{s}").ToList();
-        //Scopes.Add("offline_access");
-        TenantId = tenantId;
-        AuthDomain = authDomain;
-        AuthPolicy = authPolicy;
         BasePath = basePath;
-        AuthClient = PublicClientApplicationBuilder.Create(ClientId)
-               .WithB2CAuthority($"https://{AuthDomain}/tfp/{TenantId}/{AuthPolicy}")
-               .WithRedirectUri("http://localhost")
-               .Build();
+        var browser = new BrowserShim();
+        var scope_list = scopes.ToList();
+        //Scopes.Add("offline_access");
+        if (!scopes.Contains(OidcConstants.StandardScopes.OpenId))
+        {
+            scope_list.Add(OidcConstants.StandardScopes.OpenId);
+        }
+        var OidcOptions = new OidcClientOptions
+        {
+            Authority = authority,
+            ClientId = client_id,
+            RedirectUri = redirectUri,
+            Scope = string.Join(' ', scope_list),
+            Browser = browser,
+            LoadProfile = false,
+        };
+        client = new OidcClient(OidcOptions);
     }
     private string accessToken;
 
@@ -65,43 +66,45 @@ internal class UserOauthConfiguration : Configuration
     /// </summary>
     private async Task UpdateAccessToken()
     {
-        if (Token != null)
+        if (loginResult != null)
         {
             if (ExpiresOn > DateTimeOffset.UtcNow)
             {
                 return;
             }
         }
-        try
+        if (refreshResult != null)
         {
-            IEnumerable<IAccount> accounts = await AuthClient.GetAccountsAsync(AuthPolicy);
-            IAccount account = accounts.FirstOrDefault();
-            try
+            if (!string.IsNullOrEmpty(refreshResult.RefreshToken))
             {
-                Token = await AuthClient.AcquireTokenSilent(Scopes, account)
-                                              .ExecuteAsync();
+                refreshResult = await client.RefreshTokenAsync(refreshResult.RefreshToken);
             }
-            catch (MsalUiRequiredException)
+        }
+        else if (loginResult != null)
+        {
+            if (!string.IsNullOrEmpty(refreshResult.RefreshToken))
             {
-                Token = await AuthClient.AcquireTokenInteractive(Scopes)
-                                                .WithAccount(account)
-                                                .ExecuteAsync();
+                refreshResult = await client.RefreshTokenAsync(refreshResult.RefreshToken);
+            }
+        }
 
+        if (refreshResult?.IsError != false)
+        {
+            loginResult = await client.LoginAsync(new LoginRequest() { });
+
+            if (loginResult.IsError)
+            {
+                Console.WriteLine(loginResult.Error, loginResult.ErrorDescription);
+                Environment.Exit(1);
             }
-        }
-        catch (Exception ex)
-        {
-            Token = null;
-            throw new ApplicationException("Could not refresh token: [" + ex.GetType() + "] " + ex.Message);
-        }
-        if (Token != null)
-        {
-            ExpiresOn = Token.ExpiresOn.ToUniversalTime();
-            AccessToken = Token.AccessToken;
+
+            AccessToken = loginResult.AccessToken;
+            ExpiresOn = loginResult.AccessTokenExpiration.ToUniversalTime();
         }
         else
         {
-            throw new ApplicationException("Could not refresh token.");
+            AccessToken = refreshResult.AccessToken;
+            ExpiresOn = refreshResult.AccessTokenExpiration.ToUniversalTime();
         }
 
     }
