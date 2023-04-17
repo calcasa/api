@@ -204,7 +204,7 @@ def pack_publish_python(dir: Path, publish: bool = False):
     os.chdir(dir)
 
     result = run_as_fg_process([
-        'python',
+        'python3',
         'setup.py',
         'sdist',
         'bdist_wheel'
@@ -213,7 +213,7 @@ def pack_publish_python(dir: Path, publish: bool = False):
     if publish and result == 0:
         files = list(map(str,Path('.').glob("dist/*")))
         result = run_as_fg_process([
-            'python',
+            'python3',
             '-m',
             'twine',
             'check'
@@ -221,7 +221,7 @@ def pack_publish_python(dir: Path, publish: bool = False):
         )
         if result == 0:
             result = run_as_fg_process([
-                'python',
+                'python3',
                 '-m',
                 'twine',
                 'upload',
