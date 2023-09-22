@@ -18,11 +18,11 @@ yaml = ruamel.yaml.YAML()  # defaults to round-trip
 
 NUGET_API_KEY = os.getenv('NUGET_API_KEY')
 
+# TODO move to either 6.6 of 7.0
 CLI_DOCKER_CONTAINER_VERSION = "openapitools/openapi-generator-cli:v6.0.1"
-#CLI_DOCKER_CONTAINER_VERSION = "openapitools/openapi-generator-cli@sha256:5d649ebc5c3d3f8e8cf708498ffae7f8309968625d33bfaa333ce140e30fdd99"
 
 #API_URL = "http://192.168.2.189:9102"
-API_URL = "https://api.calcasa.nl"
+API_URL = "https://api.staging.calcasa.nl"
 
 MAIN_DIR = Path('.')
 TEMPLATE_PATH = Path("templates")
@@ -469,10 +469,14 @@ def main():
         print(version_info, version_parsed)
 
         openapi_req = requests.get(f"{API_URL}{version_info['specUrl']}")
-        openapi_obj = yaml.load(openapi_req.content)
 
         with SPEC_FILE.open('wb') as openapi_file:
             openapi_file.write(openapi_req.content)
+
+        input(f"Alter {SPEC_FILE} file and press Enter when ready...")
+
+        with SPEC_FILE.open('r') as openapi_file:
+            openapi_obj = yaml.load(openapi_file)
 
         desc = openapi_obj['info']['description']
 
@@ -521,8 +525,9 @@ def main():
 
                 postprocess(language, gen_dir) or die(f"Error with postprocess for {language}")
 
-                shutil.copytree(gen_dir, lib_dir, dirs_exist_ok=True, ignore=shutil.ignore_patterns('git_push.sh', 'appveyor.yml', 'docs', 'test', 'tox.ini',
-                                                                                                    'phpunit*', '.gitlab-ci.yml', '.travis.yml', 'test-requirements.txt', '.openapi-generator', '.openapi-generator-ignore', '.php_cs'))
+                shutil.copytree(gen_dir, lib_dir, dirs_exist_ok=True, ignore=shutil.ignore_patterns('.github','git_push.sh', 'appveyor.yml', 'docs', 'test', 'tox.ini',
+                                                                                                    'phpunit*', '.gitlab-ci.yml', '.travis.yml', 'test-requirements.txt', '.openapi-generator', 
+                                                                                                    '.openapi-generator-ignore', '.php_cs', 'openapi.yaml'))
                 shutil.copy2('LICENSE', lib_dir)
 
                 git_add_all(lib_dir) or die(f"Error with git_add_all for {language}")
