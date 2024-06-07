@@ -25,6 +25,7 @@ namespace ApiTest
                 conf = new ServiceOAuthConfiguration(
                     client_id: "<client_id>", // Calcasa Client Id
                     client_secret: "<client_secret>" // Client Secret
+                    basePath: "https://api.staging.calcasa.nl", token_url: "https://authentication.01.staging.calcasa.nl/oauth2/v2.0/token" // Staging
                 );
             }
             else
@@ -166,7 +167,7 @@ namespace ApiTest
             foreach (var waardering in waarderingen)
             {
                 // This would give you the oppurtunity to grab the lastest one for example or filter further to pick the one you need.
-                Console.WriteLine($"Found: {waardering.Id}");
+                 Console.WriteLine($"Found: {waardering.Id}");
             }
             if (waarderingen.Any())
             {

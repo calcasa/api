@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/usr/bin/env python3
 import re
 import ruamel.yaml
 
@@ -37,7 +37,8 @@ SPEC_FILE = Path('openapi.yaml')
 GENERATORS = {
     'csharp': 'csharp-netcore',
     'php': 'php',
-    'python': 'python'
+    'python': 'python',
+    'docs': 'html2'
 }
 
 def die(msg:str="Error"):
