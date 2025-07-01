@@ -1,0 +1,13 @@
+emit:
+  - "@typespec/openapi3"
+#   - "@typespec/http-server-csharp"
+#   - "@typespec/http-client-python"
+#   - "@typespec/http-client-js"
+#   - "@typespec/http-client-csharp"
+options:
+  # "@typespec/http-client-csharp":
+  #   option: value
+  "@typespec/openapi3":
+    new-line: lf
+    seal-object-schemas: true
+    omit-unreachable-types: false

@@ -1,5 +1,5 @@
 <?php
-
+error_reporting(E_ALL & ~E_DEPRECATED);
 require_once("vendor/autoload.php");
 require_once("OAuthConfiguration.php");
 
@@ -9,7 +9,8 @@ use Calcasa\Api;
 $conf = new OAuthConfiguration(
     client_id:'<client_id>',
     client_secret:'<client_secret>',
-    base_path: "https://api.calcasa.nl");
+    base_path: "https://api.staging.calcasa.nl/api/v1",
+    token_url: "https://authentication.01.staging.calcasa.nl/oauth2/v2.0/token");
 
 $conf->setUserAgent("PHP Application Name/0.0.1");
 
@@ -28,7 +29,7 @@ try{
 * Adres endpoints *
 * --------------- */
 
-$adres = new Api\Model\Adres(array("postcode"=>"3823JC", "huisnummer" => 94)); // Create Adres instance to be checked.            
+$adres = new Api\Model\Adres(array("postcode"=>"2547KE", "huisnummer" => 259)); // Create Adres instance to be checked.            
 $adresinfo = $aa->searchAdresAsync($adres)->wait(); // Check the adres against the API.
 
 echo $adresinfo.PHP_EOL;
@@ -68,10 +69,10 @@ foreach ($configsReset as $config)
 // If you need to create a new valuation this is a multi step process.
 
 $waarderingInput = new Api\Model\WaarderingInputParameters(array(
-'productType'=> Api\Model\ProductType::MODELWAARDE_DESKTOP_TAXATIE,
-'hypotheekwaarde'=> 350000,
+'productType'=> Api\Model\ProductType::DESKTOP_TAXATIE,
+'hypotheekwaarde'=> 205000,
 'aanvraagdoel'=> Api\Model\Aanvraagdoel::AANKOOP_NIEUWE_WONING,
-'klantwaarde'=> 450000,
+'klantwaarde'=> 305000,
 'klantwaardeType'=> Api\Model\KlantwaardeType::KOOPSOM,
 'isBestaandeWoning'=> true,
 'bagNummeraanduidingId'=> $adresinfo->getBagNummeraanduidingId(),
@@ -130,7 +131,7 @@ echo "Done with valuation {$id}.".PHP_EOL;
 
 //If instead you want to find the waarderingen objects and you don't have the Ids this endpoint lets your search for them. The ProductType and BAG Id are required, we can reuse the results from our previous SearchAdres call.
 $searchParameters = new Api\Model\WaarderingZoekParameters(array(
-    'productType' => Api\Model\ProductType::MODELWAARDE_DESKTOP_TAXATIE, 
+    'productType' => Api\Model\ProductType::DESKTOP_TAXATIE, 
     'bagNummeraanduidingId' => $adresinfo->getBagNummeraanduidingId()
 ));
 $waarderingen = $wa->searchWaarderingenAsync($searchParameters)->wait();

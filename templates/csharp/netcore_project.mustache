@@ -1,6 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
+  <PropertyGroup>{{#useGenericHost}}
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo> <!-- setting GenerateAssemblyInfo to false causes this bug https://github.com/dotnet/project-system/issues/3934 -->{{/useGenericHost}}{{^useGenericHost}}
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo><!-- setting GenerateAssemblyInfo to false causes this bug https://github.com/dotnet/project-system/issues/3934 -->{{/useGenericHost}}
     <TargetFramework{{#multiTarget}}s{{/multiTarget}}>{{targetFramework}}</TargetFramework{{#multiTarget}}s{{/multiTarget}}>
     <AssemblyName>{{packageName}}</AssemblyName>
     <PackageId>{{packageName}}</PackageId>
@@ -17,32 +19,85 @@
     <RepositoryUrl>https://{{{gitHost}}}/{{{gitUserId}}}/{{{gitRepoId}}}.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>{{#releaseNote}}
     <PackageReleaseNotes>{{.}}</PackageReleaseNotes>{{/releaseNote}}{{#packageTags}}
-    <PackageTags>{{{.}}}</PackageTags>{{/packageTags}}
-    {{#nullableReferenceTypes}}
-    <Nullable>annotations</Nullable>
-    {{/nullableReferenceTypes}}
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>{{{.}}}</PackageTags>{{/packageTags}}{{#nrt}}
+    <Nullable>{{#useGenericHost}}enable{{/useGenericHost}}{{^useGenericHost}}annotations{{/useGenericHost}}</Nullable>{{/nrt}}
+    <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
   </PropertyGroup>
 
   <ItemGroup>
     {{#useCompareNetObjects}}
-    <PackageReference Include="CompareNETObjects" Version="4.61.0" />
+    <PackageReference Include="CompareNETObjects" Version="4.83.0" />
     {{/useCompareNetObjects}}
-    <PackageReference Include="JsonSubTypes" Version="1.8.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-      {{#useRestSharp}}
-    <PackageReference Include="RestSharp" Version="106.13.0" />
-      {{/useRestSharp}}
-      {{#supportsRetry}}
-    <PackageReference Include="Polly" Version="7.2.2" />
-      {{/supportsRetry}}
+    {{^useGenericHost}}
+    <PackageReference Include="JsonSubTypes" Version="2.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    {{/useGenericHost}}
+    {{#useRestSharp}}
+    <PackageReference Include="RestSharp" Version="112.0.0" />
+    {{/useRestSharp}}
+    {{#useGenericHost}}
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
+    {{#net8.0}}
+    <PackageReference Include="Microsoft.Extensions.Http" Condition="'$(TargetFramework)' == 'net8.0'" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Condition="'$(TargetFramework)' == 'net8.0'" Version="8.0.1" />
+    {{/net8.0}}
+    {{#net9.0}}
+    <PackageReference Include="Microsoft.Extensions.Http" Condition="'$(TargetFramework)' == 'net9.0'" Version="9.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Condition="'$(TargetFramework)' == 'net9.0'" Version="9.0.6" />
+    {{/net9.0}}
+    {{#supportsRetry}}
+    {{#net8.0}}
+    <PackageReference Include="Microsoft.Extensions.Http.Polly" Condition="'$(TargetFramework)' == 'net8.0'" Version="8.0.17" />
+    {{/net8.0}}
+    {{#net9.0}}
+    <PackageReference Include="Microsoft.Extensions.Http.Polly" Condition="'$(TargetFramework)' == 'net9.0'" Version="9.0.6" />
+    {{/net9.0}}
+    {{/supportsRetry}}
+    {{#net80OrLater}}
+    {{#net8.0}}
+    <PackageReference Include="Microsoft.Net.Http.Headers" Condition="'$(TargetFramework)' == 'net8.0'" Version="8.0.17" />
+    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Condition="'$(TargetFramework)' == 'net8.0'" Version="8.0.17" />
+    {{/net8.0}}
+    {{#net9.0}}
+    <PackageReference Include="Microsoft.Net.Http.Headers" Condition="'$(TargetFramework)' == 'net9.0'" Version="9.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Condition="'$(TargetFramework)' == 'net9.0'" Version="9.0.6" />
+    {{/net9.0}}
+    {{/net80OrLater}}
+    {{^net60OrLater}}
+    <PackageReference Include="System.Threading.Channels" Version="8.0.0" />
+    {{#net47OrLater}}
+    <Reference Include="System.Web" />
+    {{/net47OrLater}}
+    {{/net60OrLater}}
+    {{/useGenericHost}}
+    {{^useGenericHost}}
+    {{#supportsRetry}}
+    <PackageReference Include="Polly" Version="{{^netStandard}}8.1.0{{/netStandard}}{{#netStandard}}8.1.0{{/netStandard}}" />
+    {{/supportsRetry}}
+    {{/useGenericHost}}
     {{#validatable}}
+    {{^net60OrLater}}
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    {{/net60OrLater}}
     {{/validatable}}
   </ItemGroup>
 
+{{^useGenericHost}}
   <ItemGroup>
-    <None Include="../../README.md" Pack="true" PackagePath="\" />
+    {{^net60OrLater}}
+    <None Remove="System.Web" />
+    {{/net60OrLater}}
+    {{#net48}}
+    <None Remove="System.Net.Http" />
+    {{/net48}}
   </ItemGroup>
-
-</Project>
+  <ItemGroup>
+    {{^net60OrLater}}
+    <Reference Include="System.Web" />
+    {{/net60OrLater}}
+    {{#net48}}
+    <Reference Include="System.Net.Http" />
+    {{/net48}}
+  </ItemGroup>
+{{/useGenericHost}}
+{{>netcore_project.additions}}</Project>

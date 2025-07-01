@@ -1,16 +1,11 @@
 generateAliasAsModel: true
 
 ################
-## C# options ##
+## Docs options ##
 ################
 packageName: Calcasa.Api
-useCollection: true
-targetFramework: net8.0;net9.0
-netCoreProjectFile: true
-modelPropertyNaming: PascalCase
 validatable: false
 disallowAdditionalPropertiesIfNotPresent: false
-library: generichost
 packageVersion: 1.4.0-rc1
 licenseId: Apache-2.0
 packageCopyright: Copyright 2025 Calcasa B.V.
@@ -19,14 +14,5 @@ packageCompany: Calcasa
 packageAuthors: Calcasa
 packageTitle: Calcasa API Client
 packageReleaseNotes: Add callback update and read endpoints and models.
-gitHost: github.com
-gitUserId: calcasa
-gitRepoId: api-csharp
 homepage: https://calcasa.nl
-excludeTests: true
-httpUserAgent: Calcasa .NET Api Client/1.4.0-rc1
-dateTimeFormat: yyyy'-'MM'-'dd'T'HH':'mm':'ssZ
-equatable: false
-hideGenerationTimestamp: true
-packageGuid: '{3F2DDA54-9CA2-469D-BD77-84A532BE324D}'
-useSourceGeneration: true
+

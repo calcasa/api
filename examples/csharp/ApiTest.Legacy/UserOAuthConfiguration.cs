@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 using Calcasa.Api.Client;
 
-using IdentityModel;
-using IdentityModel.OidcClient;
-using IdentityModel.OidcClient.Results;
+using Duende.IdentityModel;
+using Duende.IdentityModel.OidcClient;
+using Duende.IdentityModel.OidcClient.Results;
 
-namespace ApiTest;
+namespace ApiTest.Legacy;
 
-internal class UserOAuthConfiguration : Configuration
+public class UserOAuthConfiguration : Configuration
 {
     private readonly OidcClient client;
     private LoginResult loginResult;

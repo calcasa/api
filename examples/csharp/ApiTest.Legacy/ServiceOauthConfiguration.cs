@@ -4,12 +4,12 @@ using Calcasa.Api.Model;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using IdentityModel.Client;
+using Duende.IdentityModel.Client;
 using System.Threading.Tasks;
 
-namespace ApiTest;
+namespace ApiTest.Legacy;
 
-internal class ServiceOAuthConfiguration : Configuration
+public class ServiceOAuthConfiguration : Configuration
 {
     private readonly string ClientId;
     private readonly string ClientSecret;
