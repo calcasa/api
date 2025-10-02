@@ -6,7 +6,7 @@ generateAliasAsModel: true
 packageName: Calcasa.Api
 validatable: false
 disallowAdditionalPropertiesIfNotPresent: false
-packageVersion: 1.4.0-rc1
+packageVersion: 1.4.0-rc2
 licenseId: Apache-2.0
 packageCopyright: Copyright 2025 Calcasa B.V.
 packageDescription: API client for the Calcasa Public API.

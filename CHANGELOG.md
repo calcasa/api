@@ -1,5 +1,10 @@
 # Changelog
 
+## 2025-10-02 (v1.4.0-rc2)
+
+- Updated code formatting.
+- Update client generation tooling and templates.
+
 ## 2025-07-01 (v1.4.0-rc1)
 
 - Change API to TypeSpec as source of truth.
@@ -136,17 +141,7 @@
 
 - Initial release of `v1` based on `v0.0.6`
 
-## Cross-Origin Resource Sharing
-
-This API features Cross-Origin Resource Sharing (CORS) implemented in compliance with [W3C spec](https://www.w3.org/TR/cors/).
-And that allows cross-domain communication from the browser.
-All responses have a wildcard same-origin which makes them completely public and accessible to everyone, including any code on any site.
-
-## Authentication
-
-Authentication is done via [OAuth2](https://oauth.net/2/) and the [client credentials](https://oauth.net/2/grant-types/client-credentials/) grant type.
-
-## Previous versions changelogs
+# Previous versions changelogs
 
 ## 2022-02-02
 

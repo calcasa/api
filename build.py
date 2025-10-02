@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import re
+from typing import Optional
 import ruamel.yaml
 
 import os
@@ -15,12 +16,9 @@ import termios
 yaml = ruamel.yaml.YAML()  # defaults to round-trip
 
 NUGET_API_KEY = os.getenv("NUGET_API_KEY")
+DRY_RUN = False
 
-# TODO move to either 6.6 of 7.0
-CLI_DOCKER_CONTAINER_VERSION = "openapitools/openapi-generator-cli:v7.13.0"
-
-# API_URL = "http://192.168.2.189:9102"
-API_URL = "https://api.staging.calcasa.nl"
+CLI_DOCKER_CONTAINER_VERSION = "openapitools/openapi-generator-cli:v7.16.0"
 
 MAIN_DIR = Path(".")
 TEMPLATE_PATH = Path("templates")
@@ -477,11 +475,16 @@ def tsp_compile(src_dir: Path):
     return result == 0
 
 
-def postprocess_csharp(dir: Path):
-    return True
+def postprocess_csharp(dir: Path, dir_format: Path):
+    cwd = os.getcwd()
+    os.chdir(dir_format)
+    print("Running dotnet format in directory: ", dir_format)
+    res = run_as_fg_process(["dotnet", "format", "--include-generated"])
+    os.chdir(cwd)
+    return res == 0
 
 
-def postprocess_aspnetcore(dir: Path):
+def postprocess_aspnetcore(dir: Path, dir_format: Path):
     for file in dir.glob("**/*.cs"):
         print("Post-processing: ", file)
         with file.open("r") as f:
@@ -489,7 +492,7 @@ def postprocess_aspnetcore(dir: Path):
         if " : ControllerBase" in content:
             content = content.replace(
                 " : ControllerBase",
-                "(IUserTokenScoped userTokenScoped, IOptions<MvcNewtonsoftJsonOptions> mvcNewtonsoftJsonOptions, IExtendedAuthenticationTransient authenticationTransient) : CalcasaControllerBaseV1(userTokenScoped, mvcNewtonsoftJsonOptions, authenticationTransient)",
+                "(IUserTokenScoped userTokenScoped, IOptions<MvcNewtonsoftJsonOptions> mvcNewtonsoftJsonOptions, IConfigurationTransient configurationTransient) : CalcasaControllerBaseV1(userTokenScoped, mvcNewtonsoftJsonOptions, configurationTransient)",
             )
 
             content = content.replace(
@@ -515,10 +518,15 @@ def postprocess_aspnetcore(dir: Path):
             )
         with file.open("w") as f:
             f.write(content)
-    return True
+    cwd = os.getcwd()
+    os.chdir(dir_format)
+    print("Running dotnet format in directory: ", dir_format)
+    res = run_as_fg_process(["dotnet", "format", "--include-generated"])
+    os.chdir(cwd)
+    return res == 0
 
 
-def postprocess_python(dir: Path):
+def postprocess_python(dir: Path, dir_format: Path):
     for file in dir.glob("**/*.py"):
         print("Post-processing: ", file)
         with file.open("r") as f:
@@ -533,25 +541,33 @@ def postprocess_python(dir: Path):
             )
         with file.open("w") as f:
             f.write(content)
+    cwd = os.getcwd()
+    os.chdir(dir_format)
+    print("Running black in directory: ", dir_format)
+    res = run_as_fg_process(["python", "-m", "black", '.'])
+    os.chdir(cwd)
+    return res == 0
+
+
+def postprocess_php(dir: Path, dir_format: Path):
+    # result = run_as_fg_process(
+    #     ["php", "postprocess/php/php-postprocess.php", dir.absolute()]
+    # )
+    # return result == 0
     return True
 
 
-def postprocess_php(dir: Path):
-    result = run_as_fg_process(
-        ["php", "postprocess/php/php-postprocess.php", dir.absolute()]
-    )
-    return result == 0
-
-
-def postprocess(language: str, dir: Path):
+def postprocess(language: str, dir: Path, dir_format: Optional[Path] = None):
+    if dir_format is None:
+        dir_format = dir
     if language == "csharp":
-        return postprocess_csharp(dir)
+        return postprocess_csharp(dir.absolute(), dir_format.absolute())
     elif language == "aspnetcore":
-        return postprocess_aspnetcore(dir)
+        return postprocess_aspnetcore(dir.absolute(), dir_format.absolute())
     elif language == "python":
-        return postprocess_python(dir)
+        return postprocess_python(dir.absolute(), dir_format.absolute())
     elif language == "php":
-        return postprocess_php(dir / "lib/Model")
+        return postprocess_php(dir.absolute() / "lib/Model", dir_format.absolute())
     elif language == "docs" or language == "docs2" or language == "docs3":
         return True
     else:
@@ -651,13 +667,9 @@ def main():
                         empty_dir(lib_dir, [".git"])
                     else:
                         lib_dir.mkdir(parents=True, exist_ok=True)
-                openapi_generate(language, SPEC_FILE, gen_dir) or die(
-                    f"Error with openapi_generate for {language}"
-                )
-
-                postprocess(language, gen_dir) or die(
-                    f"Error with postprocess for {language}"
-                )
+                
+                if not openapi_generate(language, SPEC_FILE, gen_dir):
+                    die(f"Error with openapi_generate for {language}")
 
                 if language in PUBLISHED_LIBRARIES:
                     print(f"Copying generated files to {lib_dir}..")
@@ -684,7 +696,11 @@ def main():
                             "*.Test",
                         ),
                     )
-                    shutil.copy2("LICENSE", lib_dir)
+                    shutil.copy2(MAIN_DIR / "LICENSE", lib_dir / "LICENSE")
+                    shutil.copy2(MAIN_DIR / ".editorconfig", lib_dir / ".editorconfig")
+                    print(f"Post-processing {language} in {lib_dir}...")
+                    if not postprocess(language, lib_dir):
+                        die(f"Error with postprocess for {language}")
                 elif language == "aspnetcore":
                     public_api_service_dir = (
                         MAIN_DIR.absolute().parent / "public-api-service"
@@ -739,49 +755,58 @@ def main():
                             / "openapi-original.json",
                             docs_dir / "openapi.json",
                         )
+                        shutil.copy2(
+                            public_api_service_dir / ".editorconfig",
+                            calcasa_api_dir.parent / ".editorconfig",
+                        )
 
-                if not postprocess(language, lib_dir):
-                    die(f"Error with postprocess for {language}")
+                        print(
+                            f"Post-processing {language} in {calcasa_api_dir.parent}..."
+                        )
+                        if not postprocess(language, calcasa_api_dir, calcasa_api_dir.parent):
+                            die(f"Error with postprocess for {language}")
+                        (calcasa_api_dir.parent / ".editorconfig").unlink()
+                else:
+                    print(f"Post-processing {language} in {gen_dir}...")
+                    if not postprocess(language, gen_dir):
+                        die(f"Error with postprocess for {language}")
 
-                if language in PUBLISHED_LIBRARIES:
-                    git_add_all(lib_dir) or die(
-                        f"Error with git_add_all for {language}"
-                    )
-                    git_commit(lib_dir, release_msg) or die(
-                        f"Error with git_commit for {language}"
-                    )
-                    git_tag(lib_dir, VERSION, release_msg) or die(
-                        f"Error with git_tag for {language}"
-                    )
-
-                    git_push(lib_dir) or die(f"Error with git_push for {language}")
-
-                    pack_publish(language, lib_dir, publish=True) or die(
-                        f"Error with pack_publish for {language}"
-                    )
-
-                    github_make_release(
+                if language in PUBLISHED_LIBRARIES and not DRY_RUN:
+                    if not git_add_all(lib_dir):
+                        die(f"Error with git_add_all for {language}")
+                    if not git_commit(lib_dir, release_msg):
+                        die(f"Error with git_commit for {language}")
+                    if not git_tag(lib_dir, VERSION, release_msg):
+                        die(f"Error with git_tag for {language}")
+                    if not git_push(lib_dir):
+                        die(f"Error with git_push for {language}")
+                    if not pack_publish(language, lib_dir, publish=True):
+                        die(f"Error with pack_publish for {language}")
+                    if not github_make_release(
                         language, lib_dir, VERSION, release_msg, prerelease
-                    ) or die(f"Error with github_make_release for {language}")
+                    ):
+                        die(f"Error with github_make_release for {language}")
 
-            if any(filter(lambda x: x in PUBLISHED_LIBRARIES, configs)):
-                git_add_all(MAIN_DIR) or die("Error with git_add_all for main repo")
-                git_commit(MAIN_DIR, release_msg) or die(
-                    "Error with git_commit for main repo"
-                )
-                git_tag(MAIN_DIR, VERSION, release_msg) or die(
-                    "Error with git_tag for main repo"
-                )
-                git_push(MAIN_DIR) or die("Error with git_push for main repo")
-                github_make_main_release(VERSION, release_msg, prerelease) or die(
-                    f"Error with github_make_main_release for main repo"
-                )
+            if any(filter(lambda x: x in PUBLISHED_LIBRARIES, configs)) and not DRY_RUN:
+                if not git_add_all(MAIN_DIR):
+                    die("Error with git_add_all for main repo")
+                if not git_commit(MAIN_DIR, release_msg):
+                    die("Error with git_commit for main repo")
+                if not git_tag(MAIN_DIR, VERSION, release_msg):
+                    die("Error with git_tag for main repo")
+                if not git_push(MAIN_DIR):
+                    die("Error with git_push for main repo")
+                if not github_make_main_release(VERSION, release_msg, prerelease):
+                    die(f"Error with github_make_main_release for main repo")
 
 
 if __name__ == "__main__":
-    if not NUGET_API_KEY:
-        die("NUGET_API_KEY not set.")
+    if not DRY_RUN:
+        if not NUGET_API_KEY:
+            die("NUGET_API_KEY not set.")
+        else:
+            print(f"Got NUGET_API_KEY ({len(NUGET_API_KEY)}) from environment.")
     else:
-        print(f"Got NUGET_API_KEY ({len(NUGET_API_KEY)}) from environment.")
+        print("Running in dry-run mode, no changes will be pushed.")
 
     main()

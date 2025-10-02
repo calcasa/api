@@ -46,7 +46,7 @@ namespace Waarderingen {
    */
   @useAuth(oauth<["api:waarderingen:patch"]>)
   @route("/{id}")
-  @patch
+  @patch(#{implicitOptionality: false})
   @summary("Patcht een waardering.")
   @operationId("PatchWaarderingen")
   op PatchWaarderingen(

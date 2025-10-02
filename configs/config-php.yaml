@@ -11,7 +11,7 @@ variableNamingConvention: camelCase
 disallowAdditionalPropertiesIfNotPresent: false
 legacyDiscriminatorBehavior: false
 licenseId: Apache-2.0
-packageVersion: 1.4.0-rc1
+packageVersion: 1.4.0-rc2
 packageCopyright: Copyright 2025 Calcasa B.V.
 packageDescription: API client for the Calcasa Public API.
 packageCompany: Calcasa
@@ -20,4 +20,4 @@ packageTitle: Calcasa API Client
 packageUrl: https://github.com/calcasa/api-php
 homepage: https://calcasa.nl
 excludeTests: true
-httpUserAgent: Calcasa PHP Api Client/1.4.0-rc1
+httpUserAgent: Calcasa PHP Api Client/1.4.0-rc2

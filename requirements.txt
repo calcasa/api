@@ -3,3 +3,4 @@ packaging
 twine
 setuptools
 wheel
+black

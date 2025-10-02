@@ -20,7 +20,7 @@ internal class Program
 {
     public static async Task Main(string[] args)
     {
-        var host = Host.CreateDefaultBuilder(args).ConfigureApi((context, services, options) =>
+        var host = Host.CreateDefaultBuilder(args).ConfigureApi(static (context, services, options) =>
         {
             options.AddApiHttpClients(c => c.BaseAddress = new Uri("https://api.staging.calcasa.nl/api/v1"));
             services.Configure<CalcasaApiOptions>(o =>
@@ -193,7 +193,7 @@ internal class Program
         // Do we have a photo?
         if (completeWaardering.Rapport != null && completeWaardering.Rapport.Id != Guid.Empty)
         {
-            using var reportResponse = await ra.GetRapportAsync(completeWaardering.Rapport.Id);
+            var reportResponse = await ra.GetRapportAsync(completeWaardering.Rapport.Id);
 
             if (!reportResponse.TryOk(out var reportStream)) reportResponse.HandleErrorResponse();
 
