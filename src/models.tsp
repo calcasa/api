@@ -457,9 +457,14 @@ model Referentieobject {
 
 model Taxatiedata {
   /**
-   * De naam van de taxatieorganisatie.
+   * De interne naam van de taxatieorganisatie. Deze wijzigt niet.
    */
   taxatieorganisatie?: string;
+
+  /**
+   * De externe of rapport naam van de taxatieorganisatie.
+   */
+  taxatieorganisatieWeergave?: string;
 
   /**
    * De naam van de taxateur die de waardering heeft behandeld.

@@ -1,0 +1,11 @@
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
+    {{#net80OrLater}}
+    {{#net8.0}}
+    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Condition="'$(TargetFramework)' == 'net8.0'" Version="8.0.17" />
+    {{/net8.0}}
+    {{#net9.0}}
+    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Condition="'$(TargetFramework)' == 'net9.0'" Version="9.0.6" />
+    {{/net9.0}}
+    {{/net80OrLater}}
+  </ItemGroup>

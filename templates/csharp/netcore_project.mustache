@@ -36,7 +36,6 @@
     <PackageReference Include="RestSharp" Version="112.0.0" />
     {{/useRestSharp}}
     {{#useGenericHost}}
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
     {{#netStandard}}
     <PackageReference Include="Microsoft.Extensions.Http" Condition="'$(TargetFramework)' == 'netstandard1.3' or '$(TargetFramework)' == 'netstandard1.4' or '$(TargetFramework)' == 'netstandard1.5' or '$(TargetFramework)' == 'netstandard1.6' or '$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1'" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Condition="'$(TargetFramework)' == 'netstandard1.3' or '$(TargetFramework)' == 'netstandard1.4' or '$(TargetFramework)' == 'netstandard1.5' or '$(TargetFramework)' == 'netstandard1.6' or '$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1'" Version="6.0.1" />
@@ -92,11 +91,9 @@
     {{#net80OrLater}}
     {{#net8.0}}
     <PackageReference Include="Microsoft.Net.Http.Headers" Condition="'$(TargetFramework)' == 'net8.0'" Version="8.0.17" />
-    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Condition="'$(TargetFramework)' == 'net8.0'" Version="8.0.17" />
     {{/net8.0}}
     {{#net9.0}}
     <PackageReference Include="Microsoft.Net.Http.Headers" Condition="'$(TargetFramework)' == 'net9.0'" Version="9.0.6" />
-    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Condition="'$(TargetFramework)' == 'net9.0'" Version="9.0.6" />
     {{/net9.0}}
     {{/net80OrLater}}
     {{^net60OrLater}}

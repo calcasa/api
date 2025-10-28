@@ -4,7 +4,7 @@ generateAliasAsModel: true
 ## C# options ##
 ################
 packageName: Calcasa.Api.V1
-packageVersion: 1.4.0-rc2
+packageVersion: 1.4.0-rc3
 licenseId: Apache-2.0
 packageCopyright: Copyright 2025 Calcasa B.V.
 packageDescription: API client for the Calcasa Public API.
@@ -17,7 +17,7 @@ gitUserId: calcasa
 gitRepoId: api-csharp
 homepage: https://calcasa.nl
 excludeTests: true
-httpUserAgent: Calcasa .NET Api Client/1.4.0-rc2
+httpUserAgent: Calcasa .NET Api Client/1.4.0-rc3
 dateTimeFormat: yyyy'-'MM'-'dd'T'HH':'mm':'ssZ
 equatable: true
 hideGenerationTimestamp: true
