@@ -2,7 +2,7 @@
 
 ## 2025-10-28 (v1.4.0-rc3)
 
-- Add `taxateurorganisatieWeergave` to `Taxatiedata` model.
+- Add `taxatieorganisatieWeergave` to `Taxatiedata` model.
 
 ## 2025-10-02 (v1.4.0-rc2)
 
