@@ -9,5 +9,5 @@ options:
   #   option: value
   "@typespec/openapi3":
     new-line: lf
-    seal-object-schemas: true
+    seal-object-schemas: false
     omit-unreachable-types: false

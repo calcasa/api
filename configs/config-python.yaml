@@ -8,7 +8,7 @@ generateAliasAsModel: true
 # packageName: calcasa.api
 pythonAttrNoneIfUnset: true
 packageName: calcasa.api
-packageVersion: 1.4.0-rc3
+packageVersion: 1.4.0-rc4
 licenseInfo: Apache-2.0
 licenseId: Apache-2.0
 infoName: Calcasa B.V.
@@ -17,4 +17,4 @@ packageUrl: https://github.com/calcasa/api-python
 packageCopyright: Copyright 2025 Calcasa B.V.
 appDescription: API client for the Calcasa Public API.
 excludeTests: true
-httpUserAgent: Calcasa Python Api Client/1.4.0-rc3
+httpUserAgent: Calcasa Python Api Client/1.4.0-rc4

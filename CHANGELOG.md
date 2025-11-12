@@ -1,5 +1,10 @@
 # Changelog
 
+## 2025-11-12 (v1.4.0-rc4)
+
+- Disabled `seal-object-schemas` TypeSpec emitter option.
+- Added `geenEigenBewoning` and `incorrecteErfpacht` values to `BusinessRulesCode`.
+
 ## 2025-10-28 (v1.4.0-rc3)
 
 - Add `taxatieorganisatieWeergave` to `Taxatiedata` model.
