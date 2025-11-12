@@ -68,7 +68,8 @@ enum BodemStatusType {
  * | `calcasaWaardeTeHoogVoorNhg` | Calcasa-waarde is te hoog voor een NHG-waardering volgens de business rules. |
  * | `calcasaWaardeEnKoopsomTeHoogVoorNhg` | Calcasa-waarde en ingevoerde koopsom zijn te hoog voor een NHG-waardering volgens de business rules. |
  * | `ltvTeHoogOverbrugging` | Loan-to-value is te hoog voor deze overbrugging volgens de business rules. |
- *
+ * | `geenEigenBewoning` | Woning is niet bestemd voor eigen bewoning. |
+ * | `incorrecteErfpacht` | Erfpachtsituatie is niet toegestaan volgens de business rules. |
  */
 @extension("x-zero-based-enum", true)
 enum BusinessRulesCode {
@@ -83,6 +84,8 @@ enum BusinessRulesCode {
   calcasaWaardeTeHoogVoorNhg,
   calcasaWaardeEnKoopsomTeHoogVoorNhg,
   ltvTeHoogOverbrugging,
+  geenEigenBewoning,
+  incorrecteErfpacht,
 }
 
 /**
