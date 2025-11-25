@@ -1,5 +1,27 @@
 # Changelog
 
+
+## 2025-11-25 (v1.4.0)
+
+- Change API to TypeSpec as source of truth.
+- Change generated libraries to `openapi-generator` version 7 with modified templates (see `templates` directory).
+    - PHP
+        - Minimal changes in the use of the library.
+    - Python
+        - Imports have changes, all models and apis are in separate modules and some have moved for example `api.model` -> `api.models` and `api.apis` -> `api.api`.
+        - Model members are now `snake_case`.
+        - Enums are now derived from `enum.Enum`.
+        - `JsonPatchDocument` has been replaced with `list[Operation]`.
+        - Files are now returned as plain `bytearray`.
+    - C#
+        - New library is generic host based, so `Configuration` class has been removed and more. See the new example on how to use the client with tokens.
+        - Uses `System.Text.Json` for JSON processing
+        - `JsonPatchDocument`, `Operation` and `OperationType` were dropped and now use the models from `Microsoft.AspNetCore.JsonPatch`
+        - `ValidationProblemDetails` and `ProblemDetails` were dropped and now use the models from `Microsoft.AspNetCore.Mvc.Core`
+        - Sync versions of operations been removed, added Events based alternative
+- Add `taxatieorganisatieWeergave` to `Taxatiedata` model.
+- Added `geenEigenBewoning` and `incorrecteErfpacht` values to `BusinessRulesCode`.
+
 ## 2025-11-12 (v1.4.0-rc4)
 
 - Disabled `seal-object-schemas` TypeSpec emitter option.
