@@ -29,7 +29,7 @@ public class ServiceOAuthTokenProvider : TokenProvider<OAuthToken>
         AuthClient = new HttpClient();
     }
 
-    public override ValueTask<OAuthToken> GetAsync(string header = "", CancellationToken cancellation = default)
+    protected override ValueTask<OAuthToken> GetAsync(string header = "", CancellationToken cancellation = default)
     {
         var data = Tokens.GetValueOrDefault(header);
 
@@ -53,7 +53,7 @@ public class ServiceOAuthTokenProvider : TokenProvider<OAuthToken>
 
         if (data.Token.IsError)
         {
-            throw new ApplicationException("Could not refresh token: [" + data.Token.ErrorType + "] " + data.Token.Error + "; " + data.Token.ErrorDescription);
+            throw new Exception("Could not refresh token: [" + data.Token.ErrorType + "] " + data.Token.Error + "; " + data.Token.ErrorDescription);
         }
         else
         {

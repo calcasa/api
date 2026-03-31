@@ -310,6 +310,7 @@ enum OperationType {
  * | `modelwaardeDesktopTaxatie` | Modelwaarde aanvraag met Desktop Taxatie Beknoptwaarderapport. |
  * | `desktopTaxatie` | Desktop taxatie aanvraag met Desktop Taxatie rapport. |
  * | `desktopTaxatieHerwaardering` | Desktop taxatie aanvraag met Desktop Taxatie rapport voor herwaarderingen. |
+ * | `desktopTaxatiePlus` | Desktop taxatie plus aanvraag met Desktop Taxatie Plus rapport. |
  *
  */
 @extension("x-zero-based-enum", true)
@@ -320,6 +321,7 @@ enum ProductType {
   modelwaardeDesktopTaxatie,
   desktopTaxatie,
   desktopTaxatieHerwaardering,
+  desktopTaxatiePlus,
 }
 
 /**
@@ -422,4 +424,15 @@ enum WoningType {
   maisonnette,
   bovenwoning,
   benedenwoning,
+}
+
+@extension("x-zero-based-enum", true)
+enum OnderhoudStaat {
+  onbekend,
+  slecht,
+  matig,
+  redelijk,
+  goed,
+  nietWaarneembaar,
+  nietVanToepassing,
 }

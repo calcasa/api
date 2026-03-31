@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-03-31 (v1.5.0)
+
+- Add `desktopTaxatiePlus` product to `ProductType`.
+- Add `heeftAflossingvrijDeel` and `aflossingvrijDeel` to `WaarderingInputParameters` model.
+- Add `OpnameStaat` enum and `Opnamedata` model.
+- Add `opname` object to `Waardering` model.
+- Add `bagPandId` and `bagVerblijfsobjectId` to `Objectdata` model.
 
 ## 2025-11-25 (v1.4.0)
 

@@ -368,6 +368,16 @@ model Objectdata {
 
   energielabel?: Energielabel;
   energielabelData?: EnergielabelData;
+
+  bagPandId?: int64;
+  bagVerblijfsobjectId?: int64;
+}
+
+model Opnamedata {
+    /**
+     * De algemene staat van onderhoud buiten.
+     */
+    algemeenOnderhoudBuiten?: OnderhoudStaat;
 }
 
 model Omgevingsdata {
@@ -533,6 +543,7 @@ model Waardering {
   `model`?: Modeldata;
   taxatie?: Taxatiedata;
   object?: Objectdata;
+  opname?: Opnamedata;
   cbsIndeling?: CbsIndeling;
   fotos?: Foto[] | null;
   referenties?: Referentieobject[] | null;
@@ -613,6 +624,17 @@ model WaarderingInputParameters {
    * Vrij veld voor het opslaan van een klantkenmerk, zoals bijvoorbeeld een dossiernummer of andere interne referentie. Dit veld komt later weer terug in het `origineleInput` veld in het `waardering` object.
    */
   @minLength(0) @maxLength(100) klantkenmerk?: string;
+
+  /**
+   * True als de lening een aflossingsvrij deel heeft.
+   */
+  heeftAflossingsvrijDeel?: boolean | null;
+
+  /**
+   * De hoogte van het aflossingsvrije deel van het veld `hypotheekwaarde` van de lening. Alleen relevant als `heeftAflossingsvrijDeel` true is.
+   * In hele euros.
+   */
+  aflossingsvrijDeel?: int32 | null;
 }
 
 model WaarderingOntwikkeling {
