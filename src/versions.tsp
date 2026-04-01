@@ -1,5 +1,5 @@
 enum Versions {
-  v1 : "1.5.0"
+  v1 : "1.5.1"
 }
 
 enum VersionNames {

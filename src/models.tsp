@@ -552,13 +552,11 @@ model Waardering {
   factuur?: Factuur;
 }
 
-model WaarderingInputParameters {
+model ProductCheckParameters {
   /**
-   * Ongebruikt voor alle producttypen op dit moment. Deze informatie komt uit de credentials.
+   * Ongebruikt voor de meeste client typen op dit moment. Deze informatie komt uit de credentials. Als dit veld wel verplicht is dan is dit gecommuniceerd.
    */
   geldverstrekker?: string;
-
-  productType: ProductType;
 
   /**
    * Verplicht voor de producttypen `modelwaardeDesktopTaxatie` en `desktopTaxatie`.
@@ -602,7 +600,7 @@ model WaarderingInputParameters {
   isBestaandeNhgHypotheek?: boolean;
 
   /**
-   * Verplicht voor de combinatie van de producttypen `modelwaardeDesktopTaxatie` en `desktopTaxatie` en het aanvraagdoel `overbruggingsfinanciering`.
+   * Verplicht voor de combinatie van de producttypen `modelwaardeDesktopTaxatie`, `desktopTaxatie` en `desktopTaxatiePlus` en het aanvraagdoel `overbruggingsfinanciering`.
    * In hele euros.
    */
   benodigdeOverbrugging?: int32;
@@ -616,7 +614,7 @@ model WaarderingInputParameters {
   peildatum?: plainDate | null;
 
   /**
-   * Potentieel verplicht voor de product typen `modelwaardeDesktopTaxatie` en `desktopTaxatie` afhankelijk van de geldverstrekker- en accountconfiguratie.
+   * Potentieel verplicht voor de product typen `modelwaardeDesktopTaxatie`, `desktopTaxatie` en `desktopTaxatiePlus` afhankelijk van de geldverstrekker- en accountconfiguratie.
    */
   isErfpacht?: boolean | null;
 
@@ -626,15 +624,46 @@ model WaarderingInputParameters {
   @minLength(0) @maxLength(100) klantkenmerk?: string;
 
   /**
-   * True als de lening een aflossingsvrij deel heeft.
+   * True als de lening een aflossingsvrij deel heeft. Potentieel verplicht voor de product typen `modelwaardeDesktopTaxatie`, `desktopTaxatie` en `desktopTaxatiePlus` afhankelijk van de geldverstrekker- en accountconfiguratie.
    */
   heeftAflossingsvrijDeel?: boolean | null;
 
   /**
-   * De hoogte van het aflossingsvrije deel van het veld `hypotheekwaarde` van de lening. Alleen relevant als `heeftAflossingsvrijDeel` true is.
+   * De hoogte van het aflossingsvrije deel van het veld `hypotheekwaarde` van de lening. Alleen relevant als `heeftAflossingsvrijDeel` true is. Potentieel verplicht voor de product typen `modelwaardeDesktopTaxatie`, `desktopTaxatie` en `desktopTaxatiePlus` afhankelijk van de geldverstrekker- en accountconfiguratie.
    * In hele euros.
    */
   aflossingsvrijDeel?: int32 | null;
+}
+
+model ProductCheck {
+  /**
+   * De producttypen waarvoor met de gegeven input een waardering mogelijk is.
+   */
+  mogelijkeProducten: ProductCheckItem[];
+
+  /**
+   * De producttypen waarvoor met de gegeven input geen waardering mogelijk is.
+   */
+  afgekeurdeProducten: ProductCheckItem[];
+}
+
+model ProductCheckItem {
+    /**
+     * De producttypen waarvoor deze waardering geldt.
+     */
+    productType: ProductType;
+
+    
+    /**
+     * Indien deze waardering niet voldoet aan de eisen voor dit product type, dan is dit veld ingevuld met de reden waarom deze is afgekeurd.
+     */
+    businessRulesCode?: BusinessRulesCode | null;
+}
+
+model WaarderingInputParameters {
+  productType: ProductType;
+
+  ...ProductCheckParameters;
 }
 
 model WaarderingOntwikkeling {
@@ -950,4 +979,12 @@ model SearchWaarderingen200Response {
 model CreateWaardering200Response {
   @statusCode statusCode: 200;
   @bodyRoot body: Waardering;
+}
+
+/**
+ * OK
+ */
+model CheckProducten200Response {
+  @statusCode statusCode: 200;
+  @bodyRoot body: ProductCheck;
 }

@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-04-01 (v1.5.1)
+
+- Add `CheckProducten` endpoint at `POST /v1/waarderingen/check` and related models, this allows to check for all configured products if they are possible for the given input.
+- Updated some documentation strings to better reflect the fields.
+
 ## 2026-03-31 (v1.5.0)
 
 - Add `desktopTaxatiePlus` product to `ProductType`.

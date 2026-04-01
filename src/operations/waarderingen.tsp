@@ -104,7 +104,7 @@ namespace Waarderingen {
 
   /**
    * Het waardering object zal gefilterd terug komen afhankelijk van het client_id wat gebruikt is voor de authenticatie.
-   * Nadat de waardering aangemaakt is zal deze bevestigd moeten worden. De BagNummeraanduidingId en ProductType velden zijn verplicht.
+   * Nadat de waardering aangemaakt is zal deze bevestigd moeten worden. De BagNummeraanduidingId en ProductType velden zijn (ten minste) verplicht.
    *
    * ### Callbacks
    * | Name | Url | Schema |
@@ -124,6 +124,22 @@ namespace Waarderingen {
     | UnauthorizedProblemDetails
     | PermissionsDeniedProblemDetails
     | BusinessRulesProblemDetails
+    | ValidationProblemDetails
+    | ProblemDetails;
+
+  /**
+   * Geeft de mogelijke en afgekeurde producten terug voor een waardering op basis van de input parameters. Het BagNummeraanduidingId veld is (ten minste) verplicht. Als er geen enkel product geconfigureerd komt er een exception terug.
+  */
+  @useAuth(oauth<["api:waarderingen:create"]>)
+  @route("check")
+  @post
+  @summary("Controleert mogelijke producten.")
+  @operationId("CheckProducten")
+  op CheckProducten(@bodyRoot body: ProductCheckParameters):
+    | CheckProducten200Response
+    | InvalidArgumentProblemDetails
+    | UnauthorizedProblemDetails
+    | PermissionsDeniedProblemDetails
     | ValidationProblemDetails
     | ProblemDetails;
 }
