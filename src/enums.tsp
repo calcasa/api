@@ -436,3 +436,12 @@ enum OnderhoudStaat {
   nietWaarneembaar,
   nietVanToepassing,
 }
+
+@extension("x-zero-based-enum", true)
+@doc("Het type authenticatie dat gebruikt wordt voor callbacks. PublicCA is deprecated en wordt uitgefaseerd. Het gebruikte certificaat is beschikbaar op het endpoint GET /v1/callbacks/mtls-certificate.")
+enum MTLSType {
+  none,
+  #deprecated "Use mTLSSelfSigned instead and configure the client certificate using the appropriate endpoints."
+  PublicCA,
+  SelfSigned,
+}

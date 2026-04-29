@@ -23,7 +23,7 @@ namespace Facturen {
      */
     @format("uuid") @path id: string,
   ):
-    | GetFactuur200ApplicationPdfResponse
+    | File<"application/pdf", Contents = bytes>
     | UnauthorizedProblemDetails
     | PermissionsDeniedProblemDetails
     | NotFoundProblemDetails

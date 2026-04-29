@@ -22,9 +22,9 @@ namespace Geldverstrekkers {
      * Een parameter om de lijst te filteren op gesupporte producttypen.
      */
     @path productType: ProductType,
-  ): 
-  | GetGeldverstrekkers200Response 
-  | UnauthorizedProblemDetails 
-  | PermissionsDeniedProblemDetails
+  ):
+    | GetGeldverstrekkers200Response
+    | UnauthorizedProblemDetails
+    | PermissionsDeniedProblemDetails
     | ProblemDetails;
 }

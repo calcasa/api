@@ -23,7 +23,7 @@ namespace Rapporten {
      */
     @format("uuid") @path id: string,
   ):
-    | GetRapport200ApplicationPdfResponse
+    | File<"application/pdf", Contents = bytes>
     | UnauthorizedProblemDetails
     | PermissionsDeniedProblemDetails
     | NotFoundProblemDetails

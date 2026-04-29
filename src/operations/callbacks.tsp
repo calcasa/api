@@ -20,11 +20,10 @@ namespace Callbacks {
   @get
   @summary("Haal de callback inschrijvingen binnen voor deze client.")
   @operationId("GetNotificationSubscriptions")
-  op GetNotificationSubscriptions(
-  ): 
-  | GetNotificationSubscriptions200Response 
-  | UnauthorizedProblemDetails 
-  | PermissionsDeniedProblemDetails
+  op GetNotificationSubscriptions():
+    | GetNotificationSubscriptions200Response
+    | UnauthorizedProblemDetails
+    | PermissionsDeniedProblemDetails
     | ProblemDetails;
 
   /**

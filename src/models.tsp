@@ -102,6 +102,33 @@ model Callback {
   @maxLength(2048) url?: string | null;
 }
 
+model CallbackAuthentication {
+  /**
+   * Het type mTLS authenticatie dat gebruikt wordt voor de callback.
+   */
+  mTlsType: MTLSType;
+
+  /**
+   * De Authorization header scheme die gebruikt moet worden bij het aanroepen van de callback URL. 
+   * Maximale lengte van 128 tekens. Voorbeelden zijn "Basic" of "Bearer". 
+   * Als deze leeg is wordt de header achterwege gelaten. Dit veld is verplicht als `authorizationHeaderValue` is ingevuld. 
+   * 
+   * Zie ook: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Authorization
+   */
+  @maxLength(128)
+  authorizationHeaderScheme?: string | null;
+
+  /**
+   * De Authorization header value die gebruikt moet worden bij het aanroepen van de callback URL. 
+   * Deze wordt plain text accessible opgeslagen, dus gebruik unieke credentials voor deze service. De maximale lengte van de header is 2048 tekens. 
+   * Als deze leeg is wordt de header achterwege gelaten. Dit veld is verplicht als `authorizationHeaderScheme` is ingevuld.  Dit is een write-only veld.
+   * 
+   * Zie ook: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Authorization
+   */
+  @maxLength(2048)
+  authorizationHeaderValue?: string | null;
+}
+
 model CallbackInschrijving {
   /**
    * Verplicht.
@@ -368,16 +395,15 @@ model Objectdata {
 
   energielabel?: Energielabel;
   energielabelData?: EnergielabelData;
-
   bagPandId?: int64;
   bagVerblijfsobjectId?: int64;
 }
 
 model Opnamedata {
-    /**
-     * De algemene staat van onderhoud buiten.
-     */
-    algemeenOnderhoudBuiten?: OnderhoudStaat;
+  /**
+   * De algemene staat van onderhoud buiten.
+   */
+  algemeenOnderhoudBuiten?: OnderhoudStaat;
 }
 
 model Omgevingsdata {
@@ -648,27 +674,25 @@ model ProductCheck {
 }
 
 model ProductCheckItem {
-    /**
-     * De producttypen waarvoor deze waardering geldt.
-     */
-    productType: ProductType;
+  /**
+   * De producttypen waarvoor deze waardering geldt.
+   */
+  productType: ProductType;
 
-    
-    /**
-     * Indien deze waardering niet voldoet aan de eisen voor dit product type, dan is dit veld ingevuld met de reden waarom deze is afgekeurd.
-     */
-    businessRulesCode?: BusinessRulesCode | null;
+  /**
+   * Indien deze waardering niet voldoet aan de eisen voor dit product type, dan is dit veld ingevuld met de reden waarom deze is afgekeurd.
+   */
+  businessRulesCode?: BusinessRulesCode | null;
 }
 
 model WaarderingInputParameters {
   productType: ProductType;
-
   ...ProductCheckParameters;
 }
 
 model WaarderingOntwikkeling {
   /**
-   * Id van de waardering of tracking Id.
+   * Id van de waardering.
    */
   @format("uuid") id?: string;
 
@@ -884,36 +908,25 @@ model GetCallbacks200Response {
 /**
  * OK
  */
+model GetCallbackAuthentication200Response {
+  @statusCode statusCode: 200;
+  @bodyRoot body: CallbackAuthentication;
+}
+
+/**
+ * OK
+ */
+model PostCallbackAuthentication200Response {
+  @statusCode statusCode: 200;
+  @bodyRoot body: CallbackAuthentication;
+}
+
+/**
+ * OK
+ */
 model UpdateCallbacks200Response {
   @statusCode statusCode: 200;
   @bodyRoot body: Callback[];
-}
-
-/**
- * OK
- */
-model GetFactuur200ApplicationPdfResponse {
-  @statusCode statusCode: 200;
-  @bodyRoot body: bytes;
-  @header contentType: "application/pdf";
-}
-
-/**
- * OK
- */
-model GetFoto200ImageJpegResponse {
-  @statusCode statusCode: 200;
-  @bodyRoot body: bytes;
-  @header contentType: "image/jpeg";
-}
-
-/**
- * OK
- */
-model GetFoto200ImagePngResponse {
-  @statusCode statusCode: 200;
-  @bodyRoot body: bytes;
-  @header contentType: "image/png";
 }
 
 /**
@@ -930,15 +943,6 @@ model GetFunderingById200Response {
 model GetGeldverstrekkers200Response {
   @statusCode statusCode: 200;
   @bodyRoot body: Geldverstrekker[];
-}
-
-/**
- * OK
- */
-model GetRapport200ApplicationPdfResponse {
-  @statusCode statusCode: 200;
-  @bodyRoot body: bytes;
-  @header contentType: "application/pdf";
 }
 
 /**

@@ -46,7 +46,7 @@ namespace Waarderingen {
    */
   @useAuth(oauth<["api:waarderingen:patch"]>)
   @route("/{id}")
-  @patch(#{implicitOptionality: false})
+  @patch(#{ implicitOptionality: false })
   @summary("Patcht een waardering.")
   @operationId("PatchWaarderingen")
   op PatchWaarderingen(
@@ -129,7 +129,7 @@ namespace Waarderingen {
 
   /**
    * Geeft de mogelijke en afgekeurde producten terug voor een waardering op basis van de input parameters. Het BagNummeraanduidingId veld is (ten minste) verplicht. Als er geen enkel product geconfigureerd komt er een exception terug.
-  */
+   */
   @useAuth(oauth<["api:waarderingen:create"]>)
   @route("check")
   @post

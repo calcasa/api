@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-04-29 (v1.5.2)
+
+- Added support for including an Authorization header in the callbacks.
+- Added support for [RFC 9421 HTTP Message Signatures](https://datatracker.ietf.org/doc/rfc9421/).
+- Start deprecation of the Public CA based mTLS, Let's Encrypt no longer includes the TLS Client Authentication EKU starting the 11th of February 2026 in the default ACME profile. See also: https://letsencrypt.org/2025/05/14/ending-tls-client-authentication. Please transistion to the self-signed mTLS option, to a signature based approach or to using a Authorization header.
+- Added endpoints and models to configure callback authentication options, `GET /v1/callbacks/authentication` and `POST /v1/callbacks/authentication`.
+- Added endpoints for retrieving the mTLS leaf certificate (in PEM format) and the signing keys (JWKS) as used with the callbacks.
+- Updated the way file responses and requests are defined in TypeSpec.
+
 ## 2026-04-01 (v1.5.1)
 
 - Add `CheckProducten` endpoint at `POST /v1/waarderingen/check` and related models, this allows to check for all configured products if they are possible for the given input.

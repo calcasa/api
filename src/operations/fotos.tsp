@@ -23,8 +23,7 @@ namespace Fotos {
      */
     @format("uuid") @path id: string,
   ):
-    | GetFoto200ImageJpegResponse
-    | GetFoto200ImagePngResponse
+    | File<"image/jpeg" | "image/png", Contents = bytes>
     | UnauthorizedProblemDetails
     | PermissionsDeniedProblemDetails
     | NotFoundProblemDetails
