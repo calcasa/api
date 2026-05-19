@@ -445,3 +445,13 @@ enum MTLSType {
   PublicCA,
   SelfSigned,
 }
+
+@extension("x-zero-based-enum", true)
+enum Funderingsrisico {
+  onbekend,
+  a,
+  b,
+  c,
+  d,
+  e
+}

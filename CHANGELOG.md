@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-05-19 (v1.5.3)
+- Added `risicolabel` to `Funderingdata` model and the supporting `Funderingsrisico` enum.
+
 ## 2026-04-29 (v1.5.2)
 
 - Added support for including an Authorization header in the callbacks.

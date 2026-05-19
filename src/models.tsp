@@ -255,11 +255,16 @@ model Funderingdata {
   bioInfectieRisico?: FunderingRisico;
 
   /**
-   * Indicatieve herstelkosten van de fundering.
+   * Indicatieve herstelkosten van de fundering. Voor consumenten doeleinden ronden gebruiken we de volgende regels om tot een orijsrange te komen:
+   * < 5_000: "Minder dan 5000"
+   * < 50_000: "afronden op 5000, min: floor, max: ceil"
+   * else: min: x * 0.9, max: x * 1.1, beiden afgerond op 5000
    */
   herstelkosten?: float64 | null;
 
   bron?: FunderingDataBron;
+
+  risicolabel?: Funderingsrisico;
 }
 
 model Gebiedsdata {
