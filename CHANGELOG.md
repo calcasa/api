@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-06-03 (v1.5.4)
+- Added `deeplinks` to `ProductCheckItem` model and the supporting `FrontendDeeplinks` model. This contains deeplinks for starting the requests on the portal.
+
 ## 2026-05-19 (v1.5.3)
 - Added `risicolabel` to `Funderingdata` model and the supporting `Funderingsrisico` enum.
 

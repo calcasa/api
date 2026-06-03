@@ -688,6 +688,15 @@ model ProductCheckItem {
    * Indien deze waardering niet voldoet aan de eisen voor dit product type, dan is dit veld ingevuld met de reden waarom deze is afgekeurd.
    */
   businessRulesCode?: BusinessRulesCode | null;
+
+  deeplinks?: FrontendDeeplinks | null;
+}
+
+model FrontendDeeplinks {
+  /**
+   * De URL van de frontend deeplink om deze waardering aan te vragen. Deze link is voor gebruikers met een account.
+   */
+  loggedIn?: string | null;
 }
 
 model WaarderingInputParameters {
