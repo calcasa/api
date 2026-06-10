@@ -94,8 +94,6 @@ model BusinessRulesProblemDetails {
 
 /**
  * Invalid argument was provided.
- *
- *
  */
 @error
 model InvalidArgumentProblemDetails {
@@ -103,3 +101,16 @@ model InvalidArgumentProblemDetails {
   paramName?: string;
   ...ProblemDetails;
 }
+
+/**
+ * Expired valuation.
+ */
+@error
+model ExpiredValuationProblemDetails {
+  @statusCode statusCode: 410;
+  @format("uuid") waarderingId?: string;
+  @example(plainDate.fromISO("2021-04-28"))
+  origineleAanmaakDatum?: plainDate | null;
+  ...ProblemDetails;
+}
+

@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-06-09 (v1.5.5)
+- Added `GET /v1/waarderinen/by-hash/{hash}` operation. This can be used to lookup valuations by report file hash.
+- Added `fundering` to `Waardering` model, deprecate endpoint `GET /v1/funderingen/{bagNummeraanduidingId}`.
+- Added `technischHerstelType` field to `Funderingdata` model, replaces `herstelType` which is marked deprecated.
+- Added `ExpiredValuationProblemDetails` model for when a valuation is too old and can not be returned.
+- Deprecated enum `FunderingRisicoLabel` this is replaced by enum `Funderingsrisico`.
+
 ## 2026-06-03 (v1.5.4)
 - Added `deeplinks` to `ProductCheckItem` model and the supporting `FrontendDeeplinks` model. This contains deeplinks for starting the requests on the portal.
 

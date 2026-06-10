@@ -68,7 +68,8 @@ CSHARP_SCHEMA_MAPPINGS_SERVER = {
     "TooManyRequestsProblemDetails": "Calcasa.Protocols.Exceptions.Details.TooManyRequestsProblemDetails",
     "ValuationStateImpossibleProblemDetail": "Calcasa.Protocols.OnlineValuation.Details.ValuationStateImpossibleProblemDetail",
     "BusinessRulesProblemDetails": "Calcasa.Api.Exceptions.Details.BusinessRulesProblemDetails",
-    "UnauthorizedProblemDetails": "Microsoft.AspNetCore.Mvc.ProblemDetails",  # TODO verifity
+    "ExpiredValuationProblemDetails": "Calcasa.Api.Exceptions.Details.ExpiredValuationProblemDetails",
+    "UnauthorizedProblemDetails": "Microsoft.AspNetCore.Mvc.ProblemDetails",  # TODO verify
 }
 
 

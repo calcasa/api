@@ -9,6 +9,7 @@ using OpenAPI;
 
 namespace CalcasaPublicApi;
 
+#deprecated "These operations are deprecated and will be removed in a future version. The fundering data is now included with the Waardering object."
 @tag("Funderingen")
 @route("/funderingen")
 namespace Funderingen {

@@ -222,7 +222,10 @@ model Foto {
  * Informatie over een bepaald funderingrisico.
  */
 model FunderingRisico {
+  #deprecated "Use `risicolabel` instead. This field will be removed in a future version."
+  @example(FunderingRisicoLabel.onbekend)
   label?: FunderingRisicoLabel;
+  risicolabel?: Funderingsrisico;
   bron?: FunderingSoortBron;
 
   /**
@@ -249,7 +252,9 @@ model FunderingTypering {
  */
 model Funderingdata {
   typering?: FunderingTypering;
+  #deprecated "Field was never filled. This field will be removed in a future version."
   herstelType?: FunderingHerstelType;
+  technischHerstelType?: FunderingTechnischHerstelType;
   droogstandRisico?: FunderingRisico;
   optrekkendVochtRisico?: FunderingRisico;
   bioInfectieRisico?: FunderingRisico;
@@ -581,6 +586,7 @@ model Waardering {
   vorigeVerkopen?: VorigeVerkoop[] | null;
   rapport?: Rapport;
   factuur?: Factuur;
+  fundering?: Funderingdata;
 }
 
 model ProductCheckParameters {

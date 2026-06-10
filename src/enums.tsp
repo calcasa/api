@@ -136,6 +136,16 @@ enum FunderingDataBron {
   fundermaps,
 }
 
+@extension("x-zero-based-enum", true)
+enum FunderingTechnischHerstelType {
+  onbekendTechnischHerstelType,
+  tafelconstructie,
+  betonbalkOverPaal,
+  paalkopverlaging,
+  paalInWandMethode,
+  grondinjectieOfVerbetering,
+}
+
 /**
  * Herstel-types voor funderingen.
  * | Waarde | Omschrijving |
@@ -166,6 +176,7 @@ enum FunderingHerstelType {
  * | `hoog` | Hoogste risico. |
  *
  */
+#deprecated "Use `Funderingsrisico` enum instead. This type will be removed in a future version."
 @extension("x-zero-based-enum", true)
 enum FunderingRisicoLabel {
   onbekend,

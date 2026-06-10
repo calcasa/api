@@ -27,6 +27,7 @@ namespace Waarderingen {
     | GetWaardering200Response
     | UnauthorizedProblemDetails
     | PermissionsDeniedProblemDetails
+    | ExpiredValuationProblemDetails
     | NotFoundProblemDetails
     | ValidationProblemDetails
     | ProblemDetails;
@@ -140,6 +141,29 @@ namespace Waarderingen {
     | InvalidArgumentProblemDetails
     | UnauthorizedProblemDetails
     | PermissionsDeniedProblemDetails
+    | ValidationProblemDetails
+    | ProblemDetails;
+
+  @useAuth(oauth<["api:rapporten:read"]>)
+  @route("/by-hash/{hash}")
+  @get
+  @summary("Waardering op basis van upper-case hex SHA-256 hash van een PDF rapport. Als er een collision is wordt de nieuwste waardering teruggegeven.")
+  @operationId("GetWaarderingByReportHash")
+  op GetWaarderingByReportHash(
+    /**
+     * De SHA-256 hash van het bestand, in upper-case hex.
+     */
+    @format("hex")
+    @pattern("^[A-F0-9]{64}$")
+    @example("E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855")
+    @path
+    hash: string,
+  ):
+    | GetWaardering200Response
+    | UnauthorizedProblemDetails
+    | PermissionsDeniedProblemDetails
+    | ExpiredValuationProblemDetails
+    | NotFoundProblemDetails
     | ValidationProblemDetails
     | ProblemDetails;
 }
