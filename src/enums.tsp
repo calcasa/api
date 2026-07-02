@@ -122,14 +122,7 @@ enum Energielabel {
   a4,
 }
 
-/**
- * Bron waar de funderingsinformatie opgehaald is.
- * | Waarde | Omschrijving |
- * | --- | --- |
- * | `calcasa` | Calcasa data. |
- * | `fundermaps` | Fundermaps data. |
- *
- */
+
 @extension("x-zero-based-enum", true)
 enum FunderingDataBron {
   calcasa,
@@ -249,17 +242,6 @@ enum FunderingType {
   houtAmsterdamSpaarboog,
 }
 
-/**
- *
- * | Waarde | Omschrijving |
- * | --- | --- |
- * | `onbekend` |  |
- * | `koopsom` |  |
- * | `taxatiewaarde` |  |
- * | `wozWaarde` |  |
- * | `eigenWaardeinschatting` |  |
- *
- */
 @extension("x-zero-based-enum", true)
 enum KlantwaardeType {
   onbekend,
@@ -287,19 +269,7 @@ enum Notitie {
   ontbreekt,
 }
 
-/**
- *
- * | Waarde | Omschrijving |
- * | --- | --- |
- * | `add` |  |
- * | `remove` |  |
- * | `replace` |  |
- * | `move` |  |
- * | `copy` |  |
- * | `test` |  |
- * | `invalid` |  |
- *
- */
+
 @extension("x-zero-based-enum", true)
 enum OperationType {
   add,

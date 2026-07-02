@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-07-02 (v1.6.0-beta1)
+- Added `verdieping`, `woonadresInBuitenland`, `woonadresBagNummeraanduidingId`, and `opdrachtgever` to `ProductCheckParameters` and to `WaarderingInputParameters`.
+- Added file sets API with new inbound and outbound operations:
+    - `POST /v1/file-sets/inbound`
+    - `GET /v1/file-sets/inbound`
+    - `GET /v1/file-sets/inbound/{fileSetId}`
+    - `PUT /v1/file-sets/inbound/{fileSetId}/{fileIndex}`
+    - `PUT /v1/file-sets/inbound/{fileSetId}`
+    - `GET /v1/file-sets/outbound`
+    - `GET /v1/file-sets/outbound/{fileSetId}`
+    - `GET /v1/file-sets/outbound/{fileSetId}/{fileIndex}`
+    - `DELETE /v1/file-sets/outbound/{fileSetId}`
+- Added file set models and webhook payloads: `FileInfo`, `FileSet`, `InboundFileSet`, `OutboundFileSet`, `InboundFileSetWebhookPayload`, and `OutboundFileSetWebhookPayload`.
+- Added file set related errors: `InboundFileSetAlreadyCompletedProblemDetails`, and `InboundFileSetAlreadyExistsProblemDetails`.
+- Added file set status enums: `InboundFileSetState` and `OutboundFileSetState`.
+
 ## 2026-06-09 (v1.5.5)
 - Added `GET /v1/waarderinen/by-hash/{hash}` operation. This can be used to lookup valuations by report file hash.
 - Added `fundering` to `Waardering` model, deprecate endpoint `GET /v1/funderingen/{bagNummeraanduidingId}`.

@@ -651,7 +651,7 @@ model ProductCheckParameters {
   peildatum?: plainDate | null;
 
   /**
-   * Potentieel verplicht voor de product typen `modelwaardeDesktopTaxatie`, `desktopTaxatie` en `desktopTaxatiePlus` afhankelijk van de geldverstrekker- en accountconfiguratie.
+   * Potentieel verplicht voor de producttypen `modelwaardeDesktopTaxatie`, `desktopTaxatie` en `desktopTaxatiePlus` afhankelijk van de geldverstrekker- en accountconfiguratie.
    */
   isErfpacht?: boolean | null;
 
@@ -661,15 +661,35 @@ model ProductCheckParameters {
   @minLength(0) @maxLength(100) klantkenmerk?: string;
 
   /**
-   * True als de lening een aflossingsvrij deel heeft. Potentieel verplicht voor de product typen `modelwaardeDesktopTaxatie`, `desktopTaxatie` en `desktopTaxatiePlus` afhankelijk van de geldverstrekker- en accountconfiguratie.
+   * True als de lening een aflossingsvrij deel heeft. Potentieel verplicht voor de producttypen `modelwaardeDesktopTaxatie`, `desktopTaxatie` en `desktopTaxatiePlus` afhankelijk van de geldverstrekker- en accountconfiguratie.
    */
   heeftAflossingsvrijDeel?: boolean | null;
 
   /**
-   * De hoogte van het aflossingsvrije deel van het veld `hypotheekwaarde` van de lening. Alleen relevant als `heeftAflossingsvrijDeel` true is. Potentieel verplicht voor de product typen `modelwaardeDesktopTaxatie`, `desktopTaxatie` en `desktopTaxatiePlus` afhankelijk van de geldverstrekker- en accountconfiguratie.
+   * De hoogte van het aflossingsvrije deel van het veld `hypotheekwaarde` van de lening. Alleen relevant als `heeftAflossingsvrijDeel` true is. Potentieel verplicht voor de producttypen `modelwaardeDesktopTaxatie`, `desktopTaxatie` en `desktopTaxatiePlus` afhankelijk van de geldverstrekker- en accountconfiguratie.
    * In hele euros.
    */
   aflossingsvrijDeel?: int32 | null;
+
+  /**
+   * Dit is de verdieping waarop de woning gelegen is (bel-etage), voor een eengezinswoning is dit de begane grond (=0). In de toekomst verplicht voor de producttypen `desktopTaxatie` en `desktopTaxatiePlus`.
+   */
+  verdieping?: int32 | null;
+
+  /**
+   * Geeft aan of het woonadres van de aanvrager in het buitenland ligt. In de toekomst verplicht voor de producttypen `desktopTaxatie` en `desktopTaxatiePlus`.
+   */
+  woonadresInBuitenland?: boolean | null;
+
+  /**
+   * Het BAG Id van het woonadres van de aanvrager. Alleen als woonadresInBuitenland false is. In de toekomst verplicht voor de producttypen `desktopTaxatie` en `desktopTaxatiePlus`.
+   */
+  woonadresBagNummeraanduidingId?: int64 | null;
+
+  /**
+   * De volledige naam van de opdrachtgever. In de toekomst verplicht voor de producttypen `desktopTaxatie` en `desktopTaxatiePlus`.
+   */
+  opdrachtgever?: string | null;
 }
 
 model ProductCheck {
@@ -822,6 +842,7 @@ model DeelWaarderingWebhookPayload {
    */
   @format("uuid") waarderingId?: string;
 }
+
 
 model WaarderingZoekParameters {
   /**
