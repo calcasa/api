@@ -31,12 +31,6 @@ This API is documented in [TypeSpec](https://typespec.io/), we generate an [Open
 
 View changelog [here](CHANGELOG.md)
 
-## Cross-Origin Resource Sharing
-
-This API features Cross-Origin Resource Sharing (CORS) implemented in compliance with [W3C spec](https://www.w3.org/TR/cors/).
-And that allows cross-domain communication from the browser.
-All responses have a wildcard same-origin which makes them completely public and accessible to everyone, including any code on any site.
-
 ## Authentication
 
 Authentication is done via [OAuth2](https://oauth.net/2/) and the [client credentials](https://oauth.net/2/grant-types/client-credentials/) or [authorization code](https://oauth.net/2/grant-types/authorization-code/) grant types.
