@@ -60,7 +60,7 @@ namespace FileSets {
     @operationId("PutFileChunk")
     op PutFileChunk(
         @format("uuid") inboundFileSetId: string,
-        fileIndex: uint32,
+        fileIndex: int32,
         @bodyRoot file: File,
     ):
         | NoContentResponse
@@ -85,7 +85,7 @@ namespace FileSets {
     @operationId("ConfirmInboundFileSetById")
     op ConfirmInboundFileSetById(@format("uuid") inboundFileSetId: string):
         | InboundFileSet
-        | InboundFileSetAlreadyCompletedProblemDetails
+        | InboundFileSetAlreadyConfirmedProblemDetails
         | NotFoundProblemDetails
         | UnauthorizedProblemDetails
         | ProblemDetails;
@@ -117,7 +117,7 @@ namespace FileSets {
     op GetOutboundFile(
         @header range?: string,
         @format("uuid") outboundFileSetId: string,
-        fileIndex: uint32,
+        fileIndex: int32,
     ):
         | File<"application/octet-stream", Contents = bytes>
         | NotFoundProblemDetails

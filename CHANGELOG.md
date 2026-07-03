@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-07-03 (v1.6.0-beta2)
+- Added `preparing` value to `OutboundFileSetState` enum, indicating a file set is being prepared for download.
+- Renamed `InboundFileSetAlreadyCompletedProblemDetails` to `InboundFileSetAlreadyConfirmedProblemDetails`.
+- Restructured `FileSet`, `InboundFileSet`, and `OutboundFileSet` models:
+    - Moved `id`, `type`, `revision`, and `period` fields into the base `FileSet` model.
+    - Added `createdOn`, `modifiedOn`, and `expiresAfter` fields to `FileSet`.
+- Changed `FileInfo.fileSize` field to `size`.
+- Added `contentType` field to `FileInfo`.
+- Changed `period` field type from `string` to `plainDate | null`. The first day of the period is used for year, quarter, or month values.
+- Changed integer types from unsigned (`uint32`/`uint64`) to signed (`int32`/`int64`) for `FileInfo.index`, `FileInfo.size`, `FileSet.revision`, `FileError`, `FileWarning`, and `fileIndex` path parameters.
+
 ## 2026-07-02 (v1.6.0-beta1)
 - Added `verdieping`, `woonadresInBuitenland`, `woonadresBagNummeraanduidingId`, and `opdrachtgever` to `ProductCheckParameters` and to `WaarderingInputParameters`.
 - Added file sets API with new inbound and outbound operations:

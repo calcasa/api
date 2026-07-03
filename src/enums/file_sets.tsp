@@ -8,12 +8,14 @@ using OpenAPI;
  *
  * | Value | Description |
  * | --- | --- |
+ * | `preparing` | File set is being prepared for download. |
  * | `ready` | File set is ready and is waiting for the files to be downloaded. |
  * | `deleted` | File set has been downloaded and has been deleted. |
  * | `expired` | File set has expired and all its contents have been deleted. |
  */
 @extension("x-zero-based-enum", true)
 enum OutboundFileSetState {
+    preparing,
     ready,
     deleted,
     expired,

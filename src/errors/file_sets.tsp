@@ -9,7 +9,7 @@ using Http;
 using OpenAPI;
 
 model FileError {
-    @key index: uint32;
+    @key index: int32;
 
     @example("data.csv")
     name: string;
@@ -25,7 +25,7 @@ model FileError {
     /**
      * The expected file size in bytes.
      */
-    expectedFileSize: uint64;
+    expectedFileSize: int64;
 
     /**
      * The actual SHA256 hash of the file contents, represented as an uppercase hexadecimal string.
@@ -38,11 +38,11 @@ model FileError {
     /**
      * The actual file size in bytes.
      */
-    actualFileSize: uint64;
+    actualFileSize: int64;
 }
 
 model FileWarning {
-    @key index: uint32;
+    @key index: int32;
 
     @example("data.csv")
     name: string;
@@ -59,7 +59,7 @@ model FileWarning {
 }
 
 @error
-model InboundFileSetAlreadyCompletedProblemDetails {
+model InboundFileSetAlreadyConfirmedProblemDetails {
     @statusCode statusCode: 409;
     ...ProblemDetails;
 }
