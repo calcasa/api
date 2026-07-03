@@ -14,7 +14,7 @@ namespace CalcasaPublicApi;
 @route("/funderingen")
 namespace Funderingen {
   /**
-   * Het funderingdata object zal gefilterd terug komen afhankelijk van het client_id wat gebruikt is voor de authenticatie.
+  * Het funderingsdataobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
    */
   @useAuth(oauth<["api:funderingen:read"]>)
   @route("/{bagNummeraanduidingId}")

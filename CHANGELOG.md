@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-07-03 (v1.6.0-beta3)
+- Added `InvalidArgumentProblemDetails` as return type to `POST /v0/waarderingen/zoeken`.
+- Renamed hash fields for consistency:
+    - `FileInfo.sha256hash` → `contentHash`
+    - `FileError.expectedSha256hash` → `expectedContentHash`
+    - `FileError.actualSha256hash` → `actualContentHash`
+- Updated OAuth scopes for file set operations:
+    - `api:file-set-inbound:*` → `api:file-set:inbound:*`
+    - `api:file-set-outbound:*` → `api:file-set:outbound:*`
+- Added support for compressed file transfers:
+    - Added `Content-Encoding` header parameter to `PUT /v1/file-sets/inbound/{fileSetId}/{fileIndex}` for specifying compression (br, gzip, deflate, identity).
+    - Added `Accept-Encoding` header parameter to `GET /v1/file-sets/outbound/{fileSetId}/{fileIndex}` for requesting compressed responses.
+
 ## 2026-07-03 (v1.6.0-beta2)
 - Added `preparing` value to `OutboundFileSetState` enum, indicating a file set is being prepared for download.
 - Renamed `InboundFileSetAlreadyCompletedProblemDetails` to `InboundFileSetAlreadyConfirmedProblemDetails`.

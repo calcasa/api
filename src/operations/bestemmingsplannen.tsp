@@ -14,7 +14,7 @@ namespace CalcasaPublicApi;
 @route("/bestemmingsplannen")
 namespace Bestemmingsplannen {
   /**
-   * Het bodemdata object zal gefilterd terug komen afhankelijk van het client_id wat gebruikt is voor de authenticatie.
+  * Het bestemmingsplanobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
    */
   @route("/{bagNummeraanduidingId}")
   @get

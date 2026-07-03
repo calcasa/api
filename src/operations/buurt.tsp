@@ -14,7 +14,7 @@ namespace CalcasaPublicApi;
 @route("/buurt")
 namespace Buurt {
   /**
-   * Het omgevingdata object zal gefilterd terug komen afhankelijk van het client_id wat gebruikt is voor de authenticatie.
+  * Het omgevingsdataobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
    */
   @route("/{buurtCode}")
   @get

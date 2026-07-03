@@ -12,7 +12,7 @@ namespace CalcasaPublicApi;
 @tag("Waarderingen")
 @route("/waarderingen")
 namespace Waarderingen {
-  @doc("Het waardering object zal gefilterd terug komen afhankelijk van het client_id wat gebruikt is voor de authenticatie.")
+  @doc("Het waarderingsobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.")
   @useAuth(oauth<["api:waarderingen:read"]>)
   @route("/{id}")
   @get
@@ -33,7 +33,7 @@ namespace Waarderingen {
     | ProblemDetails;
 
   /**
-   * Het waardering object zal gefilterd terug komen afhankelijk van het client_id wat gebruikt is voor de authenticatie.
+  * Het waarderingsobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
    *
    * Op dit moment kan alleen de waarderingsstatus gepatcht worden.
    * Dit endpoint kan gebruikt worden om een waarderingsinitialisatie te bevestigen.
@@ -68,7 +68,7 @@ namespace Waarderingen {
     | ValidationProblemDetails
     | ProblemDetails;
 
-  @doc("Het waardering object zal gefilterd terug komen afhankelijk van het client_id wat gebruikt is voor de authenticatie.")
+  @doc("Het waarderingsobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.")
   @useAuth(oauth<["api:waarderingen:ontwikkeling"]>)
   @route("/{id}/ontwikkeling")
   @get
@@ -88,7 +88,7 @@ namespace Waarderingen {
     | ProblemDetails;
 
   @doc("""
-    Het waardering object zal gefilterd terug komen afhankelijk van het client_id wat gebruikt is voor de authenticatie.
+    Het waarderingsobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
     Alle items kunnen gebruikt worden voor het zoeken, ProductType en BagNummeraanduidingId zijn verplicht.  
     """)
   @useAuth(oauth<["api:waarderingen:read"]>)
@@ -98,13 +98,14 @@ namespace Waarderingen {
   @operationId("SearchWaarderingen")
   op SearchWaarderingen(@bodyRoot body: WaarderingZoekParameters):
     | SearchWaarderingen200Response
+    | InvalidArgumentProblemDetails
     | UnauthorizedProblemDetails
     | PermissionsDeniedProblemDetails
     | ValidationProblemDetails
     | ProblemDetails;
 
   /**
-   * Het waardering object zal gefilterd terug komen afhankelijk van het client_id wat gebruikt is voor de authenticatie.
+  * Het waarderingsobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
    * Nadat de waardering aangemaakt is zal deze bevestigd moeten worden. De BagNummeraanduidingId en ProductType velden zijn (ten minste) verplicht.
    *
    * ### Callbacks
@@ -117,7 +118,7 @@ namespace Waarderingen {
   @useAuth(oauth<["api:waarderingen:create"]>)
   @route("")
   @post
-  @summary("Creërt een waardering.")
+  @summary("Maak een waardering aan.")
   @operationId("CreateWaardering")
   op CreateWaardering(@bodyRoot body: WaarderingInputParameters):
     | CreateWaardering200Response

@@ -11,9 +11,9 @@ using OpenAPI;
  * | `aankoopNieuweWoning` | English: New Home Purchase. |
  * | `overbruggingsfinanciering` | English: Bridge Financing. |
  * | `hypotheekOversluiten` | English: Refinancing Mortgage. |
- * | `hypotheekOphogen` | English: Increasing Mortage. |
+ * | `hypotheekOphogen` | English: Increasing Mortgage. |
  * | `hypotheekWijziging` | English: Changing Mortgage. |
- * | `hypotheekrenteWijzigen` | English: Change Mortgage Intrest. |
+ * | `hypotheekrenteWijzigen` | English: Change Mortgage Interest. |
  *
  *
  *
@@ -37,8 +37,8 @@ enum Aanvraagdoel {
  * | `onbekend` | De status van deze bodem is niet bekend. |
  * | `nietVervuild` | De bodem is niet vervuild. |
  * | `nietErnstig` | De bodem is niet ernstig vervuild. |
- * | `potentieelErnstig` | De bodem is potentieel ernstig veruild. |
- * | `ernstig` | De bodem is ernstig veruild. |
+ * | `potentieelErnstig` | De bodem is potentieel ernstig vervuild. |
+ * | `ernstig` | De bodem is ernstig vervuild. |
  *
  *
  *
@@ -282,7 +282,7 @@ enum OperationType {
 }
 
 /**
- * Het product type voor een waardering. Deze moeten handmatig aangezet worden voor de gebruikte credentails.
+ * Het producttype voor een waardering. Deze moeten handmatig aangezet worden voor de gebruikte credentials.
  * | Waarde | Omschrijving |
  * | --- | --- |
  * | `onbekend` | Geen geldige invoer. Onbekend product type. |

@@ -19,7 +19,7 @@ namespace Geldverstrekkers {
   @operationId("GetGeldverstrekkers")
   op GetGeldverstrekkers(
     /**
-     * Een parameter om de lijst te filteren op gesupporte producttypen.
+    * Een parameter om de lijst te filteren op ondersteunde producttypen.
      */
     @path productType: ProductType,
   ):

@@ -31,7 +31,7 @@ model FileInfo {
     @format("hex")
     @pattern("^[A-F0-9]{64}$")
     @example("E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855")
-    sha256hash: string;
+    contentHash: string;
 
     /**
      * The file size in bytes. For the outbound file sets this is the expected size, for inbound file sets this is the actual size of the file contents.
@@ -66,7 +66,7 @@ model FileSet {
     createdOn: utcDateTime;
 
     /**
-     * If specified the file set will expire after this date and time. If no appropiate action is taken before this date and time, the file set and all its contents will be deleted.
+    * If specified, the file set will expire after this date and time. If no appropriate action is taken before this date and time, the file set and all its contents will be deleted.
      */
     @visibility(Lifecycle.Read)
     @example(utcDateTime.fromISO("2021-04-28T12:34:45Z"))
@@ -80,12 +80,12 @@ model FileSet {
 
     /**
      * The type of the file set.
-     * This value should be constant for a given type of file set and should be agreed upon with Calcasa before use. It is used to ensure that the correct processing logic is applied to the file set based on its intended purpose.
+     * This value should be constant for a given type of file set and should be agreed upon with Calcasa before use. It is used to ensure that the correct processing logic is applied to the file set based on its intended purpose.  The tuple type, revision and period should always be unique.
      */
     type: string;
 
     /**
-     * A revision number for the file set that is incremented for every retry or redelivery.
+     * A revision number for the file set that is incremented for every retry or redelivery. The tuple type, revision and period should always be unique.
      */
     revision: int32;
 
@@ -93,6 +93,7 @@ model FileSet {
      * The period of the inbound file set. This is a string that represents the time period for which the file set is relevant. It is used to categorize and identify the time frame of the data contained in the file set.
      * The first day of the period is used when the period is a year, quarter or month. For example use the first of April for Q2. The period is represented in the format YYYY-MM-DD, where YYYY is the year, MM is the month, and DD is the day.
      * If the period is not applicable, it can be set to null, only do this after consulting with Calcasa.
+     * The tuple type, revision and period should always be unique.
      */
     @example(plainDate.fromISO("2021-04-28"))
     period?: plainDate | null;
@@ -102,7 +103,7 @@ model OutboundFileSet {
     ...FileSet;
 
     /**
-     * The id of the inbound file set from which this outbound file set originated. This is used to track the relationship between inbound and outbound file sets. The inboundFileSetId and revision combination should be unique for each outbound file set.
+     * The id of the inbound file set from which this outbound file set originated. This is used to track the relationship between inbound and outbound file sets. The tuple inboundFileSetId, type, revision and period should always be unique.
      */
     @format("uuid") inboundFileSetId: string;
 
@@ -138,9 +139,9 @@ model InboundFileSetWebhookPayload {
     ...WebhookPayload;
 
     /**
-     * The Id of the file set to which this callback pertains.
+    * The ID of the file set to which this callback pertains.
      */
-    @format("uuid") fileSetId?: string;
+    @format("uuid") inboundFileSetId?: string;
 
     oldStatus?: InboundFileSetState;
     newStatus?: InboundFileSetState;
@@ -153,9 +154,9 @@ model OutboundFileSetWebhookPayload {
     ...WebhookPayload;
 
     /**
-     * The Id of the file set to which this callback pertains.
+    * The ID of the file set to which this callback pertains.
      */
-    @format("uuid") fileSetId?: string;
+    @format("uuid") outboundFileSetId?: string;
 
     oldStatus?: OutboundFileSetState;
     newStatus?: OutboundFileSetState;

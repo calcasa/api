@@ -4,14 +4,15 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "check": "npm-check -uE"
+    "check": "npm-check -uE",
+    "build": "tsp compile"
   },
   "dependencies": {
-    "@typespec/compiler": "1.5.0",
-    "@typespec/http": "1.5.0",
-    "@typespec/openapi3": "1.5.0",
-    "@typespec/rest": "0.75.0",
-    "@typespec/versioning": "0.75.0"
+    "@typespec/compiler": "1.13.0",
+    "@typespec/http": "1.13.0",
+    "@typespec/openapi3": "1.13.0",
+    "@typespec/rest": "0.83.0",
+    "@typespec/versioning": "0.83.0"
   },
   "devDependencies": {
     "npm-check": "6.0.1"

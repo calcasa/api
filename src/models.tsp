@@ -138,14 +138,14 @@ model CallbackInschrijving {
 
   /**
    * Verplicht.
-   * De datum tot wanneer deze inschrijving effect moet hebben. Als deze inschrijving verloopt wordt deze automatisch opgeruimt. De maximale termijn is afhankelijk van de gebruikte client.
+  * De datum tot wanneer deze inschrijving effect moet hebben. Als deze inschrijving verloopt, wordt deze automatisch opgeruimd. De maximale termijn is afhankelijk van de gebruikte client.
    */
   @example(utcDateTime.fromISO("2021-04-28T12:34:45Z"))
   @encode(DateTimeKnownEncoding.rfc3339)
   geldigTot: utcDateTime;
 
   /**
-   * Een vrij veld dat terug komt met de callback payload om callbacks aan de juiste callback inschrijving te koppelen.
+  * Een vrij veld dat terugkomt met de callback payload om callbacks aan de juiste callbackinschrijving te koppelen.
    */
   externeReferentie?: string | null;
 

@@ -13,7 +13,7 @@ namespace CalcasaPublicApi;
 @route("/callbacks")
 namespace Callbacks {
   /**
-   * De callback objecten zullen gefilterd terug komen afhankelijk van het client_id wat gebruikt is voor de authenticatie.
+  * De callbackobjecten zullen gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
    */
   @useAuth(oauth<["api:callback:read"]>)
   @route("/inschrijvingen")
@@ -27,9 +27,9 @@ namespace Callbacks {
     | ProblemDetails;
 
   /**
-   * De callback objecten zullen gefilterd terug komen afhankelijk van het client_id wat gebruikt is voor de authenticatie.
+  * De callbackobjecten zullen gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
    * Als er al een inschrijving bestaat voor dit adres dan wordt deze overschreven.
-   * De inschrijvingen worden vanzelf opgeruimt als ze verlopen.
+  * De inschrijvingen worden vanzelf opgeruimd als ze verlopen.
    */
   @useAuth(oauth<["api:callback:write"]>)
   @route("/inschrijvingen")
@@ -68,7 +68,7 @@ namespace Callbacks {
     | ProblemDetails;
 
   /**
-   * Het callback object zal gefilterd terug komen afhankelijk van het client_id wat gebruikt is voor de authenticatie.
+  * Het callbackobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
    */
   @useAuth(oauth<["api:callback:read"]>)
   @route("/inschrijvingen/{bagNummeraanduidingId}")

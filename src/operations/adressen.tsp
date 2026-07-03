@@ -15,7 +15,7 @@ namespace CalcasaPublicApi;
 namespace Adressen {
   /**
    * De Notities zullen leeg blijven voor dit endpoint.
-   * Het adres object zal gefilterd terug komen afhankelijk van het client_id wat gebruikt is voor de authenticatie.
+  * Het adresobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
    */
   @route("/{bagNummeraanduidingId}")
   @get
@@ -34,14 +34,14 @@ namespace Adressen {
 
   /**
    * De notities geven aan of de input al dan niet gewijzigd of onbekend is.
-   * De enige velden die echt nodig zijn voor een compleet resultaat zijn de postcode, het huisnummer en de huisnummer toevoeging.
+  * De enige velden die echt nodig zijn voor een compleet resultaat zijn de postcode, het huisnummer en de huisnummertoevoeging.
    */
   @route("/zoeken")
   @post
-  @summary("Zoek adres info op basis van het gegeven adres.")
+  @summary("Zoek adresinformatie op basis van het opgegeven adres.")
   @operationId("SearchAdres")
   op SearchAdres(
-    @doc("Het adres object dat gebruikt wordt om te zoeken naar adres informatie.")
+    @doc("Het adresobject dat gebruikt wordt om naar adresinformatie te zoeken.")
     @bodyRoot
     body: Adres,
   ):

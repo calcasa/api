@@ -470,7 +470,7 @@ def openapi_generate(language: str, spec_file: Path, gen_dir: Path):
 def tsp_compile(src_dir: Path):
     cwd = os.getcwd()
 
-    args = ["tsp", "compile", str(src_dir)]
+    args = ["npm", "run", "build", "--", str(src_dir)]
     result = run_as_fg_process(args)
     os.chdir(cwd)
     return result == 0

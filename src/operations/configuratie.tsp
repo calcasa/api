@@ -13,7 +13,7 @@ namespace CalcasaPublicApi;
 @route("/configuratie")
 namespace Configuratie {
   /**
-   * Het callback object zal gefilterd terug komen afhankelijk van het client_id wat gebruikt is voor de authenticatie.
+   * Het callbackobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
    */
   @useAuth(oauth<["api:configuratie:read"]>)
   @route("/callbacks")
@@ -42,7 +42,7 @@ namespace Configuratie {
     | ProblemDetails;
 
   /**
-   * Het callback authentication object zal gefilterd terug komen afhankelijk van het client_id wat gebruikt is voor de authenticatie.
+  * Het callback-authenticatieobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
    */
   @useAuth(oauth<["api:configuratie:read"]>)
   @route("/callbacks/authentication")
@@ -56,7 +56,7 @@ namespace Configuratie {
     | ProblemDetails;
 
   /**
-   * Update callback authentication object zal gefilterd terug komen afhankelijk van het client_id wat gebruikt is voor de authenticatie.
+  * Het callback-authenticatieobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
    */
   @useAuth(oauth<["api:configuratie:write"]>)
   @route("/callbacks/authentication")
