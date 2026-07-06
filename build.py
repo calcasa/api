@@ -18,7 +18,7 @@ yaml = ruamel.yaml.YAML()  # defaults to round-trip
 NUGET_API_KEY = os.getenv("NUGET_API_KEY")
 DRY_RUN = True
 
-CLI_DOCKER_CONTAINER_VERSION = "openapitools/openapi-generator-cli:v7.16.0"
+CLI_DOCKER_CONTAINER_VERSION = "openapitools/openapi-generator-cli:v7.23.0"
 
 MAIN_DIR = Path(".")
 TEMPLATE_PATH = Path("templates")
@@ -70,6 +70,10 @@ CSHARP_SCHEMA_MAPPINGS_SERVER = {
     "BusinessRulesProblemDetails": "Calcasa.Api.Exceptions.Details.BusinessRulesProblemDetails",
     "ExpiredValuationProblemDetails": "Calcasa.Api.Exceptions.Details.ExpiredValuationProblemDetails",
     "UnauthorizedProblemDetails": "Microsoft.AspNetCore.Mvc.ProblemDetails",  # TODO verify
+    "InboundFileSetAlreadyConfirmedProblemDetails": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+    "InboundFileSetAlreadyExistsProblemDetails": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+    "LengthRequiredProblemDetails": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+    "ContentTooLargeProblemDetails": "Calcasa.Api.Exceptions.Details.ContentTooLargeProblemDetails",
 }
 
 
@@ -622,6 +626,8 @@ def main():
         if not SPEC_FILE.exists():
             die(f"TypeSpec compilation failed, file {SPEC_FILE} does not exist.")
 
+        shutil.copy2(SPEC_FILE, MAIN_DIR / "openapi.yaml")
+
         configs = {}
 
         for config in CONFIG_PATH.glob("*.yaml"):
@@ -702,6 +708,23 @@ def main():
                     print(f"Post-processing {language} in {lib_dir}...")
                     if not postprocess(language, lib_dir):
                         die(f"Error with postprocess for {language}")
+                elif language == "docs":
+                    docs_dir = MAIN_DIR / "docs"
+                    if docs_dir.exists():
+                        print("Copying generated files to docs...")
+                        empty_dir(docs_dir)
+                        shutil.copytree(
+                            gen_dir,
+                            docs_dir,
+                            dirs_exist_ok=True,
+                            ignore=shutil.ignore_patterns(
+                                ".github",
+                                "git_push.sh",
+                                "appveyor.yml",
+                                "test",
+                                "**/README.md",
+                            ),
+                        )
                 elif language == "aspnetcore":
                     public_api_service_dir = (
                         MAIN_DIR.absolute().parent / "public-api-service"

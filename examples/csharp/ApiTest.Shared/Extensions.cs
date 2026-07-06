@@ -1,20 +1,8 @@
-using System;
-using System.IO;
-using System.Net.Http;
-using System.Threading.Tasks;
-using ApiTest.Shared;
-using Calcasa.Api.Api;
 using Calcasa.Api.Client;
-using Calcasa.Api.Extensions;
-using Calcasa.Api.Model;
-using Duende.IdentityModel.OidcClient;
-using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
-namespace ApiTest.New;
-internal static class Extensions
+namespace ApiTest.Shared;
+
+public static class Extensions
 {
     public static void HandleErrorResponse<TResponse>(this TResponse response)
         where TResponse : IApiResponse
@@ -39,7 +27,7 @@ internal static class Extensions
         {
             if (NotFoundResponse.TryNotFound(out var result))
             {
-                throw new ApiException($"Forbidden: {result.Detail} {result.Entity}", response.StatusCode, response.RawContent);
+                throw new ApiException($"Not Found: {result.Detail} {result.Entity}", response.StatusCode, response.RawContent);
             }
         }
 

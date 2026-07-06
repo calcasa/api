@@ -1,0 +1,4117 @@
+openapi: 3.0.0
+info:
+  title: Calcasa Public API
+  contact:
+    url: https://www.calcasa.nl/contact
+    email: info@calcasa.nl
+  license:
+    name: Apache License 2.0
+    url: https://spdx.org/licenses/Apache-2.0.html
+  termsOfService: https://calcasa.nl/gebruiksvoorwaarden
+  description: |-
+    The Calcasa API is used to connect to Calcasa provided services.
+    For more information, please visit [Documentation](https://docs.calcasa.nl) or [GitHub](https://github.com/calcasa/api).
+  version: 1.6.0-beta4
+tags:
+  - name: Adressen
+  - name: Bestemmingsplannen
+  - name: Bodem
+  - name: Buurt
+  - name: Callbacks
+  - name: Configuratie
+  - name: Facturen
+  - name: Fotos
+  - name: Funderingen
+  - name: Geldverstrekkers
+  - name: Rapporten
+  - name: Waarderingen
+  - name: FileSets
+paths:
+  /adressen/zoeken:
+    post:
+      operationId: SearchAdres
+      summary: Zoek adresinformatie op basis van het opgegeven adres.
+      description: |-
+        De notities geven aan of de input al dan niet gewijzigd of onbekend is.
+        De enige velden die echt nodig zijn voor een compleet resultaat zijn de postcode, het huisnummer en de huisnummertoevoeging.
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdresInfo'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '403':
+          description: Access is forbidden.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/PermissionsDeniedProblemDetails'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Adressen
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Adres'
+        description: Het adresobject dat gebruikt wordt om naar adresinformatie te zoeken.
+      security:
+        - oauth:
+            - api:adressen:read
+  /adressen/{bagNummeraanduidingId}:
+    get:
+      operationId: GetAdres
+      summary: Adres info op basis van BAG Nummeraanduiding Id.
+      description: |-
+        De Notities zullen leeg blijven voor dit endpoint.
+        Het adresobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
+      parameters:
+        - name: bagNummeraanduidingId
+          in: path
+          required: true
+          description: Een BAG Nummeraanduiding ID om een adres te specificeren.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdresInfo'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '403':
+          description: Access is forbidden.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/PermissionsDeniedProblemDetails'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Adressen
+      security:
+        - oauth:
+            - api:adressen:read
+  /bestemmingsplannen/{bagNummeraanduidingId}:
+    get:
+      operationId: GetBestemmingById
+      summary: Gegevens over de bestemmingsplannen op de locatie van een adres (BAG Nummeraanduiding ID).
+      description: Het bestemmingsplanobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
+      parameters:
+        - name: bagNummeraanduidingId
+          in: path
+          required: true
+          description: Een BAG Nummeraanduiding ID om een adres te specificeren.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bestemmingsdata'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '403':
+          description: Access is forbidden.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/PermissionsDeniedProblemDetails'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Bestemmingsplannen
+      security:
+        - oauth:
+            - api:bestemmingsplannen:read
+  /bodem/{bagNummeraanduidingId}:
+    get:
+      operationId: GetBodemById
+      summary: Gegevens over de bodemkwaliteit op de locatie van een adres (BAG Nummeraanduiding ID).
+      description: Het bodemdataobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
+      parameters:
+        - name: bagNummeraanduidingId
+          in: path
+          required: true
+          description: Een BAG Nummeraanduiding ID om een adres te specificeren.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bodemdata'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '403':
+          description: Access is forbidden.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/PermissionsDeniedProblemDetails'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Bodem
+      security:
+        - oauth:
+            - api:bodem:read
+  /buurt/{buurtCode}:
+    get:
+      operationId: GetBuurt
+      summary: Gegevens over een buurt en de wijk, gemeente en land waarin deze buurt gesitueerd is.
+      description: Het omgevingsdataobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
+      parameters:
+        - name: buurtCode
+          in: path
+          required: true
+          description: Een CBS buurt code.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Omgevingsdata'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '403':
+          description: Access is forbidden.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/PermissionsDeniedProblemDetails'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Buurt
+      security:
+        - oauth:
+            - api:buurt:read
+  /callbacks/inschrijvingen:
+    get:
+      operationId: GetNotificationSubscriptions
+      summary: Haal de callback inschrijvingen binnen voor deze client.
+      description: De callbackobjecten zullen gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CallbackInschrijving'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '403':
+          description: Access is forbidden.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/PermissionsDeniedProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Callbacks
+      security:
+        - oauth:
+            - api:callback:read
+    post:
+      operationId: AddOrUpdateCallbackSubscription
+      summary: Voeg een callback inschrijving toe (of werk bij) voor de huidige client voor een adres.
+      description: |-
+        De callbackobjecten zullen gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
+        Als er al een inschrijving bestaat voor dit adres dan wordt deze overschreven.
+        De inschrijvingen worden vanzelf opgeruimd als ze verlopen.
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallbackInschrijving'
+        '400':
+          description: Invalid argument was provided.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/InvalidArgumentProblemDetails'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '403':
+          description: Access is forbidden.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/PermissionsDeniedProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Callbacks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CallbackInschrijving'
+        description: De te configureren callback inschrijving.
+      security:
+        - oauth:
+            - api:callback:write
+  /callbacks/inschrijvingen/{bagNummeraanduidingId}:
+    delete:
+      operationId: DeleteNotificationSubscription
+      summary: Verwijder de callback inschrijving voor deze client, dit adres en optioneel een geldverstrekker.
+      parameters:
+        - name: bagNummeraanduidingId
+          in: path
+          required: true
+          description: Het BAG Nummeraanduiding ID waar de callback inschrijving voor geldt.
+          schema:
+            type: integer
+            format: int64
+        - name: geldverstrekker
+          in: query
+          required: false
+          description: De naam van de geldverstrekker waar de callback inschrijving voor geldt.
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '403':
+          description: Access is forbidden.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/PermissionsDeniedProblemDetails'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Callbacks
+      security:
+        - oauth:
+            - api:callback:write
+    get:
+      operationId: GetNotificationSubscription
+      summary: Haal de callback inschrijving op voor deze client, dit adres en eventueel opgegeven geldverstrekker.
+      description: Het callbackobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
+      parameters:
+        - name: bagNummeraanduidingId
+          in: path
+          required: true
+          description: Het BAG Nummeraanduiding ID waar de callback inschrijving voor geldt.
+          schema:
+            type: integer
+            format: int64
+        - name: geldverstrekker
+          in: query
+          required: false
+          description: De naam van de geldverstrekker waar de callback inschrijving voor geldt.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallbackInschrijving'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '403':
+          description: Access is forbidden.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/PermissionsDeniedProblemDetails'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Callbacks
+      security:
+        - oauth:
+            - api:callback:read
+  /configuratie/callbacks:
+    get:
+      operationId: GetCallbacks
+      summary: Haal de geconfigureerde callback URL's op voor de huidige client.
+      description: Het callbackobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Callback'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '403':
+          description: Access is forbidden.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/PermissionsDeniedProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Configuratie
+      security:
+        - oauth:
+            - api:configuratie:read
+    post:
+      operationId: UpdateCallbacks
+      summary: Configureer callback URL voor een specifieke API versie voor de huidige client.
+      description: Indien er al een callback geconfigureerd is voor de opgegeven versie zal deze overschreven worden. Bij het aanroepen van de callback URL zal de CallbackName achter de URL toegevoegd worden. Een lege string of null verwijdert de geconfigureerde URL.
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Callback'
+        '400':
+          description: Invalid argument was provided.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/InvalidArgumentProblemDetails'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '403':
+          description: Access is forbidden.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/PermissionsDeniedProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Configuratie
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Callback'
+      security:
+        - oauth:
+            - api:configuratie:write
+  /configuratie/callbacks/authentication:
+    get:
+      operationId: GetCallbackAuthentication
+      summary: Haal de geconfigureerde callback authenticatie op voor de huidige client.
+      description: Het callback-authenticatieobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallbackAuthentication'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '403':
+          description: Access is forbidden.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/PermissionsDeniedProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Configuratie
+      security:
+        - oauth:
+            - api:configuratie:read
+    post:
+      operationId: PostCallbackAuthentication
+      summary: Update de geconfigureerde callback authenticatie voor de huidige client.
+      description: Het callback-authenticatieobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallbackAuthentication'
+        '400':
+          description: Invalid argument was provided.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/InvalidArgumentProblemDetails'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '403':
+          description: Access is forbidden.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/PermissionsDeniedProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Configuratie
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CallbackAuthentication'
+      security:
+        - oauth:
+            - api:configuratie:write
+  /configuratie/callbacks/mtls-certificate:
+    get:
+      operationId: GetMtlsCertificate
+      summary: Get the self-signed mTLS certificate.
+      description: Get the self-signed mTLS certificate.
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/x-x509-user-cert:
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '403':
+          description: Access is forbidden.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/PermissionsDeniedProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Configuratie
+      security:
+        - oauth:
+            - api:configuratie:read
+  /configuratie/callbacks/signature-keys:
+    get:
+      operationId: GetSignatureKeys
+      summary: Get the JWKS keys, deze kunnen worden gebruikt om de echtheid van webhooks te verifiëren.
+      description: Get the JWKS keys, deze kunnen worden gebruikt om de echtheid van webhooks te verifiëren
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/jwk-set+json:
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '403':
+          description: Access is forbidden.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/PermissionsDeniedProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Configuratie
+      security:
+        - oauth:
+            - api:configuratie:read
+  /facturen/{id}:
+    get:
+      operationId: GetFactuur
+      summary: Factuur op basis van een waardering Id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: De Id van een waardering.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '403':
+          description: Access is forbidden.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/PermissionsDeniedProblemDetails'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Facturen
+      security:
+        - oauth:
+            - api:facturen:read
+  /file-sets/inbound:
+    post:
+      operationId: CreateInboundFileSet
+      summary: Create a new inbound file set.
+      description: |-
+        Create a new inbound file set and all its included files. If the type, period, and revision combination already exists, an InboundFileSetAlreadyExistsProblemDetails will be returned. If the file set is not confirmed within 24 hours, it will expire and all its uploaded contents will be deleted.
+
+        ### Callbacks
+        | Name | Url | Schema |
+        | --- | --- | --- |
+        | inbound-file-set | {configuredWebhookUrl}inbound-file-set | [InboundFileSetWebhookPayload](/api/v1/reference/schemas/InboundFileSetWebhookPayload) |
+        | outbound-file-set | {configuredWebhookUrl}outbound-file-set | [OutboundFileSetWebhookPayload](/api/v1/reference/schemas/OutboundFileSetWebhookPayload) |
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboundFileSet'
+        '400':
+          description: Invalid argument was provided.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/InvalidArgumentProblemDetails'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '409':
+          description: The request conflicts with the current state of the server.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/InboundFileSetAlreadyExistsProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - FileSets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateInboundFileSetRequest'
+      security:
+        - oauth:
+            - api:file-set:inbound:write
+    get:
+      operationId: GetInboundFileSets
+      summary: Get all inbound file sets.
+      description: This will not include the file details, only the metadata of the file set. Use the GetInboundFileSetById operation to get the details of a specific file set.
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InboundFileSet'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - FileSets
+      security:
+        - oauth:
+            - api:file-set:inbound:read
+  /file-sets/inbound/{inboundFileSetId}:
+    get:
+      operationId: GetInboundFileSetById
+      summary: Get a specific inbound file set by its ID.
+      parameters:
+        - name: inboundFileSetId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboundFileSet'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - FileSets
+      security:
+        - oauth:
+            - api:file-set:inbound:read
+    put:
+      operationId: ConfirmInboundFileSetById
+      summary: Confirm an inbound file set after it has been fully uploaded.
+      description: |-
+        Confirm an inbound file set after it has been fully uploaded. This will start verification of the file set. When the status is updated, the callback will be triggered with the new status. When validation fails, a new file set must be created. If the file set is not confirmed within 24 hours, it will expire and all its uploaded contents will be deleted.
+
+        ### Callbacks
+        | Name | Url | Schema |
+        | --- | --- | --- |
+        | inbound-file-set | {configuredWebhookUrl}inbound-file-set | [InboundFileSetWebhookPayload](/api/v1/reference/schemas/InboundFileSetWebhookPayload) |
+        | outbound-file-set | {configuredWebhookUrl}outbound-file-set | [OutboundFileSetWebhookPayload](/api/v1/reference/schemas/OutboundFileSetWebhookPayload) |
+      parameters:
+        - name: inboundFileSetId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboundFileSet'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundProblemDetails'
+        '409':
+          description: The request conflicts with the current state of the server.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/InboundFileSetAlreadyConfirmedProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - FileSets
+      security:
+        - oauth:
+            - api:file-set:inbound:write
+  /file-sets/inbound/{inboundFileSetId}/{fileIndex}:
+    put:
+      operationId: PutFileChunk
+      summary: Upload a specific file chunk for an inbound file set.
+      description: Upload a specific file chunk for an inbound file set. All chunks must be uploaded in order, if the file is small enough, it can be uploaded in a single request. Total size must not exceed reported file size in the file set.
+      parameters:
+        - name: inboundFileSetId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: fileIndex
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: content-encoding
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - br
+              - gzip
+              - deflate
+              - identity
+      responses:
+        '204':
+          description: There is no content to send for this request, but the headers may be useful.
+        '400':
+          description: Invalid argument was provided.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/InvalidArgumentProblemDetails'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundProblemDetails'
+        '411':
+          description: Client error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/LengthRequiredProblemDetails'
+        '413':
+          description: Client error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ContentTooLargeProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - FileSets
+      requestBody:
+        required: true
+        content:
+          '*/*':
+            schema:
+              type: string
+              format: binary
+      security:
+        - oauth:
+            - api:file-set:inbound:write
+  /file-sets/limits:
+    get:
+      operationId: GetFileSetLimits
+      summary: Get file set limits.
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileSetLimits'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - FileSets
+      security:
+        - oauth:
+            - api:file-set:inbound:read
+  /file-sets/outbound:
+    get:
+      operationId: GetOutboundFileSets
+      summary: Get all outbound file sets.
+      description: This will not include the file details, only the metadata of the file set. Use the GetOutboundFileSetById operation to get the details of a specific file set.
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OutboundFileSet'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - FileSets
+      security:
+        - oauth:
+            - api:file-set:outbound:read
+  /file-sets/outbound/{outboundFileSetId}:
+    get:
+      operationId: GetOutboundFileSetById
+      summary: Get a specific outbound file set by its ID.
+      parameters:
+        - name: outboundFileSetId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutboundFileSet'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - FileSets
+      security:
+        - oauth:
+            - api:file-set:outbound:read
+    delete:
+      operationId: DeleteOutboundFileSetById
+      summary: Delete an outbound file set after it has been correctly received. If an outbound file set is not downloaded and deleted within 48 hours, it will expire and all its contents will be deleted automatically.
+      description: Delete an outbound file set after it has been correctly received. If an outbound file set is not downloaded and deleted within 48 hours, it will expire and all its contents will be deleted automatically.
+      parameters:
+        - name: outboundFileSetId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: There is no content to send for this request, but the headers may be useful.
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - FileSets
+      security:
+        - oauth:
+            - api:file-set:outbound:write
+  /file-sets/outbound/{outboundFileSetId}/{fileIndex}:
+    get:
+      operationId: GetOutboundFileByIndex
+      summary: Get a specific outbound file content by its index within a file set.
+      description: Get a specific outbound file content by its index within a file set. Use the Http Range header to request a specific byte range of the file and Accept-Encoding to specify the compression. If the Range header is not provided, the entire file will be returned.
+      parameters:
+        - name: range
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: accept-encoding
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: outboundFileSetId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: fileIndex
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - FileSets
+      security:
+        - oauth:
+            - api:file-set:outbound:read
+  /fotos/{id}:
+    get:
+      operationId: GetFoto
+      summary: Foto op basis van een foto Id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: De Id van een foto, welke onder andere bij waarderingen en referenties teruggestuurd worden.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+            image/png:
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '403':
+          description: Access is forbidden.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/PermissionsDeniedProblemDetails'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Fotos
+      security:
+        - oauth:
+            - api:fotos:read
+  /funderingen/{bagNummeraanduidingId}:
+    get:
+      operationId: GetFunderingById
+      summary: Gegevens over de fundering op de locatie van een adres (BAG Nummeraanduiding ID).
+      description: Het funderingsdataobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
+      parameters:
+        - name: bagNummeraanduidingId
+          in: path
+          required: true
+          description: Een BAG Nummeraanduiding ID om een adres te specificeren.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Funderingdata'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '403':
+          description: Access is forbidden.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/PermissionsDeniedProblemDetails'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Funderingen
+      security:
+        - oauth:
+            - api:funderingen:read
+      deprecated: true
+  /geldverstrekkers/{productType}:
+    get:
+      operationId: GetGeldverstrekkers
+      summary: Alle geldverstrekkers die te gebruiken zijn voor aanvragen.
+      parameters:
+        - name: productType
+          in: path
+          required: true
+          description: Een parameter om de lijst te filteren op ondersteunde producttypen.
+          schema:
+            $ref: '#/components/schemas/ProductType'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Geldverstrekker'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '403':
+          description: Access is forbidden.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/PermissionsDeniedProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Geldverstrekkers
+      security:
+        - oauth:
+            - api:geldverstrekkers:read
+  /rapporten/{id}:
+    get:
+      operationId: GetRapport
+      summary: Rapport op basis van waardering Id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: De Id van een waardering.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '403':
+          description: Access is forbidden.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/PermissionsDeniedProblemDetails'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Rapporten
+      security:
+        - oauth:
+            - api:rapporten:read
+  /waarderingen:
+    post:
+      operationId: CreateWaardering
+      summary: Maak een waardering aan.
+      description: |-
+        Het waarderingsobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
+        Nadat de waardering aangemaakt is zal deze bevestigd moeten worden. De BagNummeraanduidingId en ProductType velden zijn (ten minste) verplicht.
+
+        ### Callbacks
+        | Name | Url | Schema |
+        | --- | --- | --- |
+        | waardering | {configuredWebhookUrl}waardering | [WaarderingWebhookPayload](/api/v1/reference/schemas/WaarderingWebhookPayload) |
+        | deel-waardering | {configuredWebhookUrl}deel-waardering | [DeelWaarderingWebhookPayload](/api/v1/reference/schemas/DeelWaarderingWebhookPayload) |
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Waardering'
+        '400':
+          description: Invalid argument was provided.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/InvalidArgumentProblemDetails'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '403':
+          description: Access is forbidden.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/PermissionsDeniedProblemDetails'
+        '406':
+          description: Client error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BusinessRulesProblemDetails'
+        '422':
+          description: Client error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Waarderingen
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WaarderingInputParameters'
+      security:
+        - oauth:
+            - api:waarderingen:create
+  /waarderingen/by-hash/{hash}:
+    get:
+      operationId: GetWaarderingByReportHash
+      summary: Waardering op basis van upper-case hex SHA-256 hash van een PDF rapport. Als er een collision is wordt de nieuwste waardering teruggegeven.
+      parameters:
+        - name: hash
+          in: path
+          required: true
+          description: De SHA-256 hash van het bestand, in upper-case hex.
+          schema:
+            type: string
+            format: hex
+            pattern: ^[A-F0-9]{64}$
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Waardering'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '403':
+          description: Access is forbidden.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/PermissionsDeniedProblemDetails'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundProblemDetails'
+        '410':
+          description: Expired valuation.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ExpiredValuationProblemDetails'
+        '422':
+          description: Client error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Waarderingen
+      security:
+        - oauth:
+            - api:rapporten:read
+  /waarderingen/check:
+    post:
+      operationId: CheckProducten
+      summary: Controleert mogelijke producten.
+      description: Geeft de mogelijke en afgekeurde producten terug voor een waardering op basis van de input parameters. Het BagNummeraanduidingId veld is (ten minste) verplicht. Als er geen enkel product geconfigureerd komt er een exception terug.
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductCheck'
+        '400':
+          description: Invalid argument was provided.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/InvalidArgumentProblemDetails'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '403':
+          description: Access is forbidden.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/PermissionsDeniedProblemDetails'
+        '422':
+          description: Client error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Waarderingen
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductCheckParameters'
+      security:
+        - oauth:
+            - api:waarderingen:create
+  /waarderingen/zoeken:
+    post:
+      operationId: SearchWaarderingen
+      summary: Zoek waardering op basis van input parameters.
+      description: |-
+        Het waarderingsobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
+        Alle items kunnen gebruikt worden voor het zoeken, ProductType en BagNummeraanduidingId zijn verplicht.  
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Waardering'
+        '400':
+          description: Invalid argument was provided.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/InvalidArgumentProblemDetails'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '403':
+          description: Access is forbidden.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/PermissionsDeniedProblemDetails'
+        '422':
+          description: Client error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Waarderingen
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WaarderingZoekParameters'
+      security:
+        - oauth:
+            - api:waarderingen:read
+  /waarderingen/{id}:
+    get:
+      operationId: GetWaardering
+      summary: Waardering op basis van Id.
+      description: Het waarderingsobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: De waardering Id in de vorm van een UUID.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Waardering'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '403':
+          description: Access is forbidden.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/PermissionsDeniedProblemDetails'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundProblemDetails'
+        '410':
+          description: Expired valuation.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ExpiredValuationProblemDetails'
+        '422':
+          description: Client error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Waarderingen
+      security:
+        - oauth:
+            - api:waarderingen:read
+    patch:
+      operationId: PatchWaarderingen
+      summary: Patcht een waardering.
+      description: |-
+        Het waarderingsobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
+
+        Op dit moment kan alleen de waarderingsstatus gepatcht worden.
+        Dit endpoint kan gebruikt worden om een waarderingsinitialisatie te bevestigen.
+
+        ### Callbacks
+        | Name | Url | Schema |
+        | --- | --- | --- |
+        | waardering | {configuredWebhookUrl}waardering | [WaarderingWebhookPayload](/api/v1/reference/schemas/WaarderingWebhookPayload) |
+        | deel-waardering | {configuredWebhookUrl}deel-waardering | [DeelWaarderingWebhookPayload](/api/v1/reference/schemas/DeelWaarderingWebhookPayload) |
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: De waardering Id in de vorm van een UUID.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Waardering'
+        '400':
+          description: Invalid argument was provided.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/InvalidArgumentProblemDetails'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '402':
+          description: Resource exhausted.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ResourceExhaustedProblemDetails'
+        '403':
+          description: Access is forbidden.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/PermissionsDeniedProblemDetails'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundProblemDetails'
+        '422':
+          description: Client error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Waarderingen
+      requestBody:
+        required: true
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/JsonPatchDocument'
+      security:
+        - oauth:
+            - api:waarderingen:patch
+  /waarderingen/{id}/ontwikkeling:
+    get:
+      operationId: GetWaarderingOntwikkeling
+      summary: Waardering ontwikkeling op basis van waardering Id.
+      description: Het waarderingsobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: De waardering Id in de vorm van een UUID.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WaarderingOntwikkeling'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '403':
+          description: Access is forbidden.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/PermissionsDeniedProblemDetails'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundProblemDetails'
+        '422':
+          description: Client error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Waarderingen
+      security:
+        - oauth:
+            - api:waarderingen:ontwikkeling
+security:
+  - oauth: []
+components:
+  schemas:
+    Aanvraagdoel:
+      type: string
+      enum:
+        - onbekend
+        - aankoopNieuweWoning
+        - overbruggingsfinanciering
+        - hypotheekOversluiten
+        - hypotheekOphogen
+        - hypotheekWijziging
+        - hypotheekrenteWijzigen
+      description: |-
+        English: Request Goal.
+        | Waarde | Omschrijving |
+        | --- | --- |
+        | `onbekend` | English: Unknown. |
+        | `aankoopNieuweWoning` | English: New Home Purchase. |
+        | `overbruggingsfinanciering` | English: Bridge Financing. |
+        | `hypotheekOversluiten` | English: Refinancing Mortgage. |
+        | `hypotheekOphogen` | English: Increasing Mortgage. |
+        | `hypotheekWijziging` | English: Changing Mortgage. |
+        | `hypotheekrenteWijzigen` | English: Change Mortgage Interest. |
+      x-zero-based-enum: true
+    Adres:
+      type: object
+      properties:
+        straat:
+          type: string
+          description: De straatnaam zoals geschreven in de BAG (Basisregistratie Adressen en Gebouwen).
+          example: Voorbeeldstraat
+        huisnummer:
+          type: integer
+          format: int32
+          description: Het huisnummer.
+          example: 123
+        huisnummertoevoeging:
+          type: string
+          nullable: true
+          description: De huisnummertoevoeging.
+          example: A
+        postcode:
+          type: string
+          pattern: ^[0-9]{4}[A-Z]{2}$
+          description: De postcode met 4 cijfers en 2 letters zonder spatie.
+          example: 1234AB
+        woonplaats:
+          type: string
+          description: De woonplaats zoals geschreven in de BAG (Basisregistratie Adressen en Gebouwen).
+          example: Voorbeeldstad
+    AdresInfo:
+      type: object
+      required:
+        - bagNummeraanduidingId
+      properties:
+        bagNummeraanduidingId:
+          type: integer
+          format: int64
+          description: |-
+            Het BAG nummeraanduiding Id van het adres.
+            Normaal aangevuld met nullen tot 16 karakters.
+        adres:
+          $ref: '#/components/schemas/Adres'
+        notities:
+          $ref: '#/components/schemas/Notities'
+        adresGevonden:
+          type: boolean
+          nullable: true
+          description: Geeft aan of er een correct adres is gevonden voor deze zoekopdracht.
+    Bestemmingsdata:
+      type: object
+      properties:
+        enkelbestemming:
+          type: string
+          nullable: true
+          description: De enkelbestemming volgens het bestemmingsplan.
+          example: woongebied
+        datumBestemmingplan:
+          type: string
+          format: date
+          nullable: true
+          description: De datum waarop dit bestemmingsplan vastgelegd is.
+          example: '2021-04-28'
+    BodemStatusType:
+      type: string
+      enum:
+        - geenData
+        - onbekend
+        - nietVervuild
+        - nietErnstig
+        - potentieelErnstig
+        - ernstig
+      description: |-
+        | Waarde | Omschrijving |
+        | --- | --- |
+        | `geenData` | Er is geen data beschikbaar over deze bodem. |
+        | `onbekend` | De status van deze bodem is niet bekend. |
+        | `nietVervuild` | De bodem is niet vervuild. |
+        | `nietErnstig` | De bodem is niet ernstig vervuild. |
+        | `potentieelErnstig` | De bodem is potentieel ernstig vervuild. |
+        | `ernstig` | De bodem is ernstig vervuild. |
+      x-zero-based-enum: true
+    Bodemdata:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/BodemStatusType'
+        datumLaatsteOnderzoek:
+          type: string
+          format: date
+          nullable: true
+          description: De datum van het laatste bodemonderzoek.
+          example: '2021-04-28'
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: De url met informatie over het bodemonderzoek.
+    BusinessRulesCode:
+      type: string
+      enum:
+        - geenWaardebepalingMogelijk
+        - geenBestaandeWoning
+        - fouteOfOntbrekendeInvoer
+        - calcasaWaardeTeHoog
+        - ltvTeHoog
+        - hypotheekTeHoog
+        - woningtypeIncorrect
+        - calcasaWaardeTeLaag
+        - calcasaWaardeTeHoogVoorNhg
+        - calcasaWaardeEnKoopsomTeHoogVoorNhg
+        - ltvTeHoogOverbrugging
+        - geenEigenBewoning
+        - incorrecteErfpacht
+      description: |-
+        Reden voor het niet voldoen aan de business rules.
+        | Waarde | Omschrijving |
+        | --- | --- |
+        | `geenWaardebepalingMogelijk` | De ingevoerde woning kan modelmatig niet goed genoeg worden vastgesteld. |
+        | `geenBestaandeWoning` | Geen bestaande koopwoning. |
+        | `fouteOfOntbrekendeInvoer` | Noodzakelijke invoer ontbreekt of is foutief ingevoerd. |
+        | `calcasaWaardeTeHoog` | Calcasa-waarde is te hoog volgens de business rules. |
+        | `ltvTeHoog` | Loan-to-value is te hoog volgens de business rules. |
+        | `hypotheekTeHoog` | Hypotheekbedrag is te hoog volgens de business rules. |
+        | `woningtypeIncorrect` | Woningtype is incorrect volgens de business rules. |
+        | `calcasaWaardeTeLaag` | Calcasa-waarde is te laag volgens de business rules. |
+        | `calcasaWaardeTeHoogVoorNhg` | Calcasa-waarde is te hoog voor een NHG-waardering volgens de business rules. |
+        | `calcasaWaardeEnKoopsomTeHoogVoorNhg` | Calcasa-waarde en ingevoerde koopsom zijn te hoog voor een NHG-waardering volgens de business rules. |
+        | `ltvTeHoogOverbrugging` | Loan-to-value is te hoog voor deze overbrugging volgens de business rules. |
+        | `geenEigenBewoning` | Woning is niet bestemd voor eigen bewoning. |
+        | `incorrecteErfpacht` | Erfpachtsituatie is niet toegestaan volgens de business rules. |
+      x-zero-based-enum: true
+    BusinessRulesProblemDetails:
+      type: object
+      properties:
+        businessRulesCode:
+          $ref: '#/components/schemas/BusinessRulesCode'
+        type:
+          type: string
+          nullable: true
+          description: A URI reference [RFC3986] that identifies the problem type.
+        title:
+          type: string
+          nullable: true
+          description: A short, human-readable summary of the problem type.
+        status:
+          type: integer
+          format: int32
+          nullable: true
+          description: The HTTP status code for this occurrence of the problem.
+        detail:
+          type: string
+          nullable: true
+          description: A human-readable explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          nullable: true
+          description: A URI reference that identifies the specific occurrence of the problem.
+    Callback:
+      type: object
+      properties:
+        version:
+          type: string
+          description: De API versie waarvoor deze callback aangeroepen wordt.
+        url:
+          type: string
+          nullable: true
+          maxLength: 2048
+          description: 'De URL van de callback. Bij het aanroepen zal de CallbackName hier achter geplaatst worden. Null of lege string om te verwijderen. English: when making the call, the CallbackName will be appended to this Url. Null or empty string to remove.'
+    CallbackAuthentication:
+      type: object
+      required:
+        - mTlsType
+      properties:
+        mTlsType:
+          allOf:
+            - $ref: '#/components/schemas/MTLSType'
+          description: Het type mTLS authenticatie dat gebruikt wordt voor de callback.
+        authorizationHeaderScheme:
+          type: string
+          nullable: true
+          maxLength: 128
+          description: |-
+            De Authorization header scheme die gebruikt moet worden bij het aanroepen van de callback URL. 
+            Maximale lengte van 128 tekens. Voorbeelden zijn "Basic" of "Bearer". 
+            Als deze leeg is wordt de header achterwege gelaten. Dit veld is verplicht als `authorizationHeaderValue` is ingevuld. 
+
+            Zie ook: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Authorization
+        authorizationHeaderValue:
+          type: string
+          nullable: true
+          maxLength: 2048
+          description: |-
+            De Authorization header value die gebruikt moet worden bij het aanroepen van de callback URL. 
+            Deze wordt plain text accessible opgeslagen, dus gebruik unieke credentials voor deze service. De maximale lengte van de header is 2048 tekens. 
+            Als deze leeg is wordt de header achterwege gelaten. Dit veld is verplicht als `authorizationHeaderScheme` is ingevuld.  Dit is een write-only veld.
+
+            Zie ook: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Authorization
+    CallbackInschrijving:
+      type: object
+      required:
+        - bagNummeraanduidingId
+        - geldigTot
+      properties:
+        bagNummeraanduidingId:
+          type: integer
+          format: int64
+          description: |-
+            Verplicht.
+            Het BAG (Basisregistratie Adressen en Gebouwen) nummeraanduiding id.
+        geldigTot:
+          type: string
+          format: date-time
+          description: |-
+            Verplicht.
+            De datum tot wanneer deze inschrijving effect moet hebben. Als deze inschrijving verloopt, wordt deze automatisch opgeruimd. De maximale termijn is afhankelijk van de gebruikte client.
+          example: '2021-04-28T12:34:45Z'
+        externeReferentie:
+          type: string
+          nullable: true
+          description: Een vrij veld dat terugkomt met de callback payload om callbacks aan de juiste callbackinschrijving te koppelen.
+        geldverstrekker:
+          type: string
+          nullable: true
+          description: Optioneel veld om alleen op aanvragen voor een bepaalde geldverstrekker in te schrijven.
+    CbsIndeling:
+      type: object
+      properties:
+        buurtId:
+          type: integer
+          format: int32
+          description: De buurt code zoals bekend bij het CBS (Centraal Bureau voor de Statistiek).
+        buurtCode:
+          type: string
+          description: De buurt code zoals bekend bij het CBS (Centraal Bureau voor de Statistiek).
+        buurtnaam:
+          type: string
+          description: De naam van de buurt.
+        wijknaam:
+          type: string
+          description: De naam van de wijk.
+        gemeentenaam:
+          type: string
+          description: De naam van de gemeente.
+    ContentTooLargeProblemDetails:
+      type: object
+      properties:
+        maxContentLength:
+          type: integer
+          format: int64
+          nullable: true
+          description: If known the remaining content length in bytes that can be sent to the server. If not known, this property will be null.
+        type:
+          type: string
+          nullable: true
+          description: A URI reference [RFC3986] that identifies the problem type.
+        title:
+          type: string
+          nullable: true
+          description: A short, human-readable summary of the problem type.
+        status:
+          type: integer
+          format: int32
+          nullable: true
+          description: The HTTP status code for this occurrence of the problem.
+        detail:
+          type: string
+          nullable: true
+          description: A human-readable explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          nullable: true
+          description: A URI reference that identifies the specific occurrence of the problem.
+    CreateInboundFileSetRequest:
+      type: object
+      required:
+        - type
+        - revision
+      properties:
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/FileInfo'
+          nullable: true
+          description: The files associated with the file set.
+        type:
+          type: string
+          description: |-
+            The type of the file set.
+            This value should be constant for a given type of file set and should be agreed upon with Calcasa before use. It is used to ensure that the correct processing logic is applied to the file set based on its intended purpose.  The tuple type, revision and period should always be unique.
+        revision:
+          type: integer
+          format: int32
+          description: A revision number for the file set that is incremented for every retry or redelivery. The tuple type, revision and period should always be unique.
+        period:
+          type: string
+          format: date
+          nullable: true
+          description: |-
+            The period of the inbound file set. This is a string that represents the time period for which the file set is relevant. It is used to categorize and identify the time frame of the data contained in the file set.
+            The first day of the period is used when the period is a year, quarter or month. For example use the first of April for Q2. The period is represented in the format YYYY-MM-DD, where YYYY is the year, MM is the month, and DD is the day.
+            If the period is not applicable, it can be set to null, only do this after consulting with Calcasa.
+            The tuple type, revision and period should always be unique.
+          example: '2021-04-28'
+    DeelWaarderingWebhookPayload:
+      type: object
+      required:
+        - callbackName
+        - eventId
+        - timestamp
+      properties:
+        callbackName:
+          type: string
+          readOnly: true
+        eventId:
+          type: string
+          format: uuid
+          description: Uniek Id voor deze callback.
+        timestamp:
+          type: string
+          format: date-time
+          description: Het tijdstip van het event, in UTC.
+          example: '2021-04-28T12:34:45Z'
+        waarderingId:
+          type: string
+          format: uuid
+          description: Het Id van de waardering waarop deze callback betrekking heeft.
+      description: De payload van de webhooks die verstuurd worden op het moment dat een klant toestemming geeft voor het delen van een waardering.
+    Energielabel:
+      type: string
+      enum:
+        - onbekend
+        - g
+        - f
+        - e
+        - d
+        - c
+        - b
+        - a
+        - a1
+        - a2
+        - a3
+        - a4
+      description: |-
+        | Waarde | Omschrijving |
+        | --- | --- |
+        | `onbekend` |  |
+        | `g` |  |
+        | `f` |  |
+        | `e` |  |
+        | `d` |  |
+        | `c` |  |
+        | `b` |  |
+        | `a` |  |
+        | `a1` | A+. |
+        | `a2` | A++. |
+        | `a3` | A+++. |
+        | `a4` | A++++. |
+      x-zero-based-enum: true
+    EnergielabelData:
+      type: object
+      properties:
+        aantalSterren:
+          type: integer
+          format: int32
+          nullable: true
+          description: Het aantal sterren van het energielabel. 1 is voorlopig label. 3 is beperkt definitief label (zonder energieprestatie-index). 4 is definitief label met energieprestatie-index.
+        geldigTot:
+          type: string
+          format: date
+          nullable: true
+          description: De registratiedatum. Beschikbaar voor 2 en 3 sterrenlabels.
+        registratiedatum:
+          type: string
+          format: date
+          nullable: true
+          description: De datum tot wanneer het label geldig is. Beschikbaar voor 2 en 3 sterrenlabels.
+    ExpiredValuationProblemDetails:
+      type: object
+      properties:
+        waarderingId:
+          type: string
+          format: uuid
+        origineleAanmaakDatum:
+          type: string
+          format: date
+          nullable: true
+          example: '2021-04-28'
+        type:
+          type: string
+          nullable: true
+          description: A URI reference [RFC3986] that identifies the problem type.
+        title:
+          type: string
+          nullable: true
+          description: A short, human-readable summary of the problem type.
+        status:
+          type: integer
+          format: int32
+          nullable: true
+          description: The HTTP status code for this occurrence of the problem.
+        detail:
+          type: string
+          nullable: true
+          description: A human-readable explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          nullable: true
+          description: A URI reference that identifies the specific occurrence of the problem.
+      description: Expired valuation.
+    Factuur:
+      type: object
+      required:
+        - id
+        - factuurnummer
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Het factuur Id.
+        factuurnummer:
+          type: string
+          description: Het factuurnummer van de factuur.
+    FileError:
+      type: object
+      required:
+        - index
+        - name
+        - expectedContentHash
+        - expectedFileSize
+        - actualContentHash
+        - actualFileSize
+      properties:
+        index:
+          type: integer
+          format: int32
+        name:
+          type: string
+          example: data.csv
+        expectedContentHash:
+          type: string
+          pattern: ^[A-F0-9]{64}$
+          format: hex
+          description: The expected SHA256 hash of the file contents, represented as an uppercase hexadecimal string.
+          example: E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855
+        expectedFileSize:
+          type: integer
+          format: int64
+          description: The expected file size in bytes.
+        actualContentHash:
+          type: string
+          pattern: ^[A-F0-9]{64}$
+          format: hex
+          description: The actual SHA256 hash of the file contents, represented as an uppercase hexadecimal string.
+          example: E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855
+        actualFileSize:
+          type: integer
+          format: int64
+          description: The actual file size in bytes.
+    FileInfo:
+      type: object
+      required:
+        - index
+        - name
+        - contentHash
+        - size
+        - contentType
+      properties:
+        index:
+          type: integer
+          format: int32
+          description: The index of the file within the file set. Zero-based.
+        name:
+          type: string
+          description: The name of the file, including its extension. This needs to be unique within the file set.
+          example: data.csv
+        contentHash:
+          type: string
+          pattern: ^[A-F0-9]{64}$
+          format: hex
+          description: The SHA256 hash of the file contents, represented as an uppercase hexadecimal string. For the outbound file sets this is the expected hash, for inbound file sets this is the actual hash of the file contents.
+          example: E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855
+        size:
+          type: integer
+          format: int64
+          description: The file size in bytes. For the outbound file sets this is the expected size, for inbound file sets this is the actual size of the file contents.
+        contentType:
+          type: string
+          description: |-
+            The content type of the file, which indicates the media type of the file contents. This is used to determine how to handle and process the file. For example, "application/pdf" for PDF files, "image/jpeg" for JPEG images, etc.
+            Refer to [IANA Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml) for possible values.
+    FileSet:
+      type: object
+      required:
+        - id
+        - createdOn
+        - modifiedOn
+        - type
+        - revision
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: |-
+            The file set ID, which is a unique identifier for the file set. This ID is used to track and manage the file set throughout its lifecycle.
+            It is generated by the system when the file set is created and is used in API requests to reference the specific file set.
+          readOnly: true
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/FileInfo'
+          nullable: true
+          description: The files associated with the file set.
+        createdOn:
+          type: string
+          format: date-time
+          example: '2021-04-28T12:34:45Z'
+          readOnly: true
+        expiresAfter:
+          type: string
+          format: date-time
+          nullable: true
+          description: If specified, the file set will expire after this date and time. If no appropriate action is taken before this date and time, the file set and all its contents will be deleted.
+          example: '2021-04-28T12:34:45Z'
+          readOnly: true
+        modifiedOn:
+          type: string
+          format: date-time
+          example: '2021-04-28T12:34:45Z'
+          readOnly: true
+        type:
+          type: string
+          description: |-
+            The type of the file set.
+            This value should be constant for a given type of file set and should be agreed upon with Calcasa before use. It is used to ensure that the correct processing logic is applied to the file set based on its intended purpose.  The tuple type, revision and period should always be unique.
+        revision:
+          type: integer
+          format: int32
+          description: A revision number for the file set that is incremented for every retry or redelivery. The tuple type, revision and period should always be unique.
+        period:
+          type: string
+          format: date
+          nullable: true
+          description: |-
+            The period of the inbound file set. This is a string that represents the time period for which the file set is relevant. It is used to categorize and identify the time frame of the data contained in the file set.
+            The first day of the period is used when the period is a year, quarter or month. For example use the first of April for Q2. The period is represented in the format YYYY-MM-DD, where YYYY is the year, MM is the month, and DD is the day.
+            If the period is not applicable, it can be set to null, only do this after consulting with Calcasa.
+            The tuple type, revision and period should always be unique.
+          example: '2021-04-28'
+    FileSetLimits:
+      type: object
+      required:
+        - inboundMaxTotalSizeInKiloBytes
+        - inboundMaxFileSizeInKiloBytes
+        - inboundMaxCompressedChunkSizeInKiloBytes
+        - inboundMaxTotalFiles
+        - inboundTtlInSeconds
+        - outboundTtlInSeconds
+      properties:
+        inboundMaxTotalSizeInKiloBytes:
+          type: integer
+          format: int64
+          description: The maximum total size of all files in an inbound file set, in kilobytes (1000 bytes). This limit ensures that the combined size of all files within a file set does not exceed a certain threshold, which helps manage storage and processing resources.
+        inboundMaxFileSizeInKiloBytes:
+          type: integer
+          format: int64
+          description: The maximum size of a single file in an inbound file set, in kilobytes (1000 bytes). This limit ensures that individual files do not exceed a certain size, which helps manage storage and processing resources.
+        inboundMaxCompressedChunkSizeInKiloBytes:
+          type: integer
+          format: int64
+          description: The maximum size of a compressed chunk in an inbound file set, in kilobytes (1000 bytes). This limit ensures that individual compressed chunks do not exceed a certain size, which helps manage storage and processing resources.
+        inboundMaxTotalFiles:
+          type: integer
+          format: int32
+          description: The maximum number of files in an inbound file set. This limit ensures that the number of files within a file set does not exceed a certain threshold, which helps manage storage and processing resources.
+        inboundTtlInSeconds:
+          type: integer
+          format: int32
+          description: The time-to-live (TTL) for inbound file sets, in seconds. This value indicates how long an inbound file set will remain valid before it expires and is deleted if it is not confirmed. It helps manage the lifecycle of inbound file sets and ensures that they are processed within a certain timeframe.
+        outboundTtlInSeconds:
+          type: integer
+          format: int32
+          description: The time-to-live (TTL) for outbound file sets, in seconds. This value indicates how long an outbound file set will remain valid before it expires and is deleted if it is not downloaded. It helps manage the lifecycle of outbound file sets and ensures that they are processed within a certain timeframe.
+    FileWarning:
+      type: object
+      required:
+        - index
+        - name
+        - type
+        - description
+      properties:
+        index:
+          type: integer
+          format: int32
+        name:
+          type: string
+          example: data.csv
+        type:
+          type: string
+          description: The type of the warning. Short mostly stable strings that can be used to identify the warning type.
+        description:
+          type: string
+          description: A description of the warning to be presented to the user.
+    Foto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Het foto Id.
+    FrontendDeeplinks:
+      type: object
+      properties:
+        loggedIn:
+          type: string
+          nullable: true
+          description: De URL van de frontend deeplink om deze waardering aan te vragen. Deze link is voor gebruikers met een account.
+    FunderingDataBron:
+      type: string
+      enum:
+        - calcasa
+        - fundermaps
+      x-zero-based-enum: true
+    FunderingHerstelType:
+      type: string
+      enum:
+        - onbekendHerstelType
+        - vergunning
+        - funderingRapport
+        - archiefRapport
+        - eigenaarBewijs
+      description: |-
+        Herstel-types voor funderingen.
+        | Waarde | Omschrijving |
+        | --- | --- |
+        | `onbekendHerstelType` | Hersteltype is onbekend. |
+        | `vergunning` | O.b.v. vergunning. |
+        | `funderingRapport` | O.b.v. fundering-rapport. |
+        | `archiefRapport` | O.b.v. archief-rapport. |
+        | `eigenaarBewijs` | O.b.v. bewijs van eigenaar. |
+      x-zero-based-enum: true
+    FunderingRisico:
+      type: object
+      properties:
+        label:
+          allOf:
+            - $ref: '#/components/schemas/FunderingRisicoLabel'
+          deprecated: true
+          example: onbekend
+        risicolabel:
+          $ref: '#/components/schemas/Funderingsrisico'
+        bron:
+          $ref: '#/components/schemas/FunderingSoortBron'
+        omschrijving:
+          type: string
+          description: De omschrijving van het risico.
+      description: Informatie over een bepaald funderingrisico.
+    FunderingRisicoLabel:
+      type: string
+      enum:
+        - onbekend
+        - laag
+        - gemiddeld
+        - hoog
+      description: |-
+        Indicatie voor een funderingsrisico.
+        | Waarde | Omschrijving |
+        | --- | --- |
+        | `onbekend` | Risico klasse onbekend. |
+        | `laag` | Laagste risico. |
+        | `gemiddeld` | Gemiddeld risico. |
+        | `hoog` | Hoogste risico. |
+      deprecated: true
+      x-zero-based-enum: true
+    FunderingSoortBron:
+      type: string
+      enum:
+        - onbekend
+        - model
+        - document
+        - bouweenheid
+      description: |-
+        Bron voor funderingsinformatie.
+        | Waarde | Omschrijving |
+        | --- | --- |
+        | `onbekend` | Onbekende bron. |
+        | `model` | Modelmatig. |
+        | `document` | Uit een document. |
+        | `bouweenheid` | Op basis van woningen in hetzelfde woonblok. |
+      x-zero-based-enum: true
+    FunderingTechnischHerstelType:
+      type: string
+      enum:
+        - onbekendTechnischHerstelType
+        - tafelconstructie
+        - betonbalkOverPaal
+        - paalkopverlaging
+        - paalInWandMethode
+        - grondinjectieOfVerbetering
+      x-zero-based-enum: true
+    FunderingType:
+      type: string
+      enum:
+        - onbekendFunderingType
+        - hout
+        - houtAmsterdam
+        - houtRotterdam
+        - beton
+        - nietOnderheid
+        - nietOnderheidGemetseld
+        - nietOnderheidStroken
+        - nietOnderheidPlaat
+        - nietOnderheidBetonplaat
+        - nietOnderheidSlieten
+        - houtOplanger
+        - betonVerzwaard
+        - gecombineerd
+        - staal
+        - houtAmsterdamRotterdam
+        - houtRotterdamSpaarboog
+        - houtAmsterdamSpaarboog
+      description: |-
+        Funderingstypes.
+        | Waarde | Omschrijving |
+        | --- | --- |
+        | `onbekendFunderingType` | Onbekend fundering-type. |
+        | `hout` | Hout. |
+        | `houtAmsterdam` | Hout, Amsterdamse variant. |
+        | `houtRotterdam` | Hout, Rotterdamse variant. |
+        | `beton` | Beton. |
+        | `nietOnderheid` | Niet onderheid. |
+        | `nietOnderheidGemetseld` | Niet onderheid, gemetseld. |
+        | `nietOnderheidStroken` | Niet onderheid, stroken. |
+        | `nietOnderheidPlaat` | Niet onderheid, plaat. |
+        | `nietOnderheidBetonplaat` | Niet onderheid, betonplaat. |
+        | `nietOnderheidSlieten` | Niet onderheid, slieten. |
+        | `houtOplanger` | Hout met oplanger. |
+        | `betonVerzwaard` | Beton verzwaard. |
+        | `gecombineerd` | Gecombineerd. |
+        | `staal` | Stalen buispaal. |
+        | `houtAmsterdamRotterdam` | Houten paal, Rotterdam/Amsterdam methode. |
+        | `houtRotterdamSpaarboog` | Houten paal, Rotterdam methode met spaarboog. |
+        | `houtAmsterdamSpaarboog` | Houten paal, Amsterdam methode met spaarboog. |
+      x-zero-based-enum: true
+    FunderingTypering:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/FunderingType'
+        bron:
+          $ref: '#/components/schemas/FunderingSoortBron'
+        omschrijving:
+          type: string
+          description: De omschrijving van het funderingstype.
+      description: Informatie over type fundering.
+    Funderingdata:
+      type: object
+      properties:
+        typering:
+          $ref: '#/components/schemas/FunderingTypering'
+        herstelType:
+          allOf:
+            - $ref: '#/components/schemas/FunderingHerstelType'
+          deprecated: true
+        technischHerstelType:
+          $ref: '#/components/schemas/FunderingTechnischHerstelType'
+        droogstandRisico:
+          $ref: '#/components/schemas/FunderingRisico'
+        optrekkendVochtRisico:
+          $ref: '#/components/schemas/FunderingRisico'
+        bioInfectieRisico:
+          $ref: '#/components/schemas/FunderingRisico'
+        herstelkosten:
+          type: number
+          format: double
+          nullable: true
+          description: |-
+            Indicatieve herstelkosten van de fundering. Voor consumenten doeleinden ronden gebruiken we de volgende regels om tot een orijsrange te komen:
+            < 5_000: "Minder dan 5000"
+            < 50_000: "afronden op 5000, min: floor, max: ceil"
+            else: min: x * 0.9, max: x * 1.1, beiden afgerond op 5000
+        bron:
+          $ref: '#/components/schemas/FunderingDataBron'
+        risicolabel:
+          $ref: '#/components/schemas/Funderingsrisico'
+      description: Uitvoer met funderingsinformatie.
+    Funderingsrisico:
+      type: string
+      enum:
+        - onbekend
+        - a
+        - b
+        - c
+        - d
+        - e
+      x-zero-based-enum: true
+    Gebiedsdata:
+      type: object
+      properties:
+        naam:
+          type: string
+        gemiddeldePrijsEengezinswoningen:
+          type: integer
+          format: int32
+          nullable: true
+          minimum: 0
+          description: In hele euros.
+        gemiddeldePrijsMeergezinswoningen:
+          type: integer
+          format: int32
+          nullable: true
+          minimum: 0
+          description: In hele euros.
+        gemiddeldeVierkantemeterPrijsEengezinswoningen:
+          type: integer
+          format: int32
+          nullable: true
+          minimum: 0
+          description: In hele euros per vierkante meter.
+        gemiddeldeVierkantemeterPrijsMeergezinswoningen:
+          type: integer
+          format: int32
+          nullable: true
+          minimum: 0
+          description: In hele euros per vierkante meter.
+        prijsveranderingAfgelopenJaar:
+          type: integer
+          format: int32
+          nullable: true
+          description: In hele procenten.
+        prijsveranderingAfgelopen3Jaar:
+          type: integer
+          format: int32
+          nullable: true
+          description: In hele procenten.
+        prijsveranderingAfgelopen5Jaar:
+          type: integer
+          format: int32
+          nullable: true
+          description: In hele procenten.
+        prijsveranderingAfgelopen10Jaar:
+          type: integer
+          format: int32
+          nullable: true
+          description: In hele procenten.
+    Geldverstrekker:
+      type: object
+      properties:
+        slug:
+          type: string
+          description: De slug voor deze geldverstrekker, dit is de waarde die gebruikt moet worden als input voor andere endpoints.
+        name:
+          type: string
+          description: De volledige naam van deze geldverstrekker.
+    InboundFileSet:
+      type: object
+      required:
+        - id
+        - createdOn
+        - modifiedOn
+        - type
+        - revision
+        - state
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: |-
+            The file set ID, which is a unique identifier for the file set. This ID is used to track and manage the file set throughout its lifecycle.
+            It is generated by the system when the file set is created and is used in API requests to reference the specific file set.
+          readOnly: true
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/FileInfo'
+          nullable: true
+          description: The files associated with the file set.
+        createdOn:
+          type: string
+          format: date-time
+          example: '2021-04-28T12:34:45Z'
+          readOnly: true
+        expiresAfter:
+          type: string
+          format: date-time
+          nullable: true
+          description: If specified, the file set will expire after this date and time. If no appropriate action is taken before this date and time, the file set and all its contents will be deleted.
+          example: '2021-04-28T12:34:45Z'
+          readOnly: true
+        modifiedOn:
+          type: string
+          format: date-time
+          example: '2021-04-28T12:34:45Z'
+          readOnly: true
+        type:
+          type: string
+          description: |-
+            The type of the file set.
+            This value should be constant for a given type of file set and should be agreed upon with Calcasa before use. It is used to ensure that the correct processing logic is applied to the file set based on its intended purpose.  The tuple type, revision and period should always be unique.
+        revision:
+          type: integer
+          format: int32
+          description: A revision number for the file set that is incremented for every retry or redelivery. The tuple type, revision and period should always be unique.
+        period:
+          type: string
+          format: date
+          nullable: true
+          description: |-
+            The period of the inbound file set. This is a string that represents the time period for which the file set is relevant. It is used to categorize and identify the time frame of the data contained in the file set.
+            The first day of the period is used when the period is a year, quarter or month. For example use the first of April for Q2. The period is represented in the format YYYY-MM-DD, where YYYY is the year, MM is the month, and DD is the day.
+            If the period is not applicable, it can be set to null, only do this after consulting with Calcasa.
+            The tuple type, revision and period should always be unique.
+          example: '2021-04-28'
+        state:
+          allOf:
+            - $ref: '#/components/schemas/InboundFileSetState'
+          description: The current state of the inbound file set. This indicates the processing status of the file set.
+          readOnly: true
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/FileError'
+          description: Errors that occurred during the processing of the inbound file set. This is an array of FileError objects that provide details about each error, including the index of the file within the file set, the name of the file, the expected and actual SHA256 hash values, and the expected and actual file sizes.
+          readOnly: true
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/FileWarning'
+          nullable: true
+          description: Warnings that occurred during the processing of the inbound file set. This is an array of FileWarning objects that provide details about each warning, including the index of the file within the file set, the name of the file.
+          readOnly: true
+    InboundFileSetAlreadyConfirmedProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          nullable: true
+          description: A URI reference [RFC3986] that identifies the problem type.
+        title:
+          type: string
+          nullable: true
+          description: A short, human-readable summary of the problem type.
+        status:
+          type: integer
+          format: int32
+          nullable: true
+          description: The HTTP status code for this occurrence of the problem.
+        detail:
+          type: string
+          nullable: true
+          description: A human-readable explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          nullable: true
+          description: A URI reference that identifies the specific occurrence of the problem.
+    InboundFileSetAlreadyExistsProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          nullable: true
+          description: A URI reference [RFC3986] that identifies the problem type.
+        title:
+          type: string
+          nullable: true
+          description: A short, human-readable summary of the problem type.
+        status:
+          type: integer
+          format: int32
+          nullable: true
+          description: The HTTP status code for this occurrence of the problem.
+        detail:
+          type: string
+          nullable: true
+          description: A human-readable explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          nullable: true
+          description: A URI reference that identifies the specific occurrence of the problem.
+    InboundFileSetState:
+      type: string
+      enum:
+        - created
+        - uploading
+        - verifying
+        - accepted
+        - accepted_with_warnings
+        - rejected
+        - expired
+      description: |-
+        Inbound file set states.
+
+        | Value | Description |
+        | --- | --- |
+        | `created` | File set has just been created and is waiting for the files to be uploaded. |
+        | `uploading` | File set is being uploaded, but not all files have been uploaded yet. |
+        | `verifying` | File set has been fully uploaded and has been confirmed, the file set is in the process of being verified. |
+        | `accepted` | File set has been fully uploaded and has been confirmed, the file set has been verified and is ready for processing. |
+        | `accepted_with_warnings` | File set has been fully uploaded and has been confirmed, the file set has been verified and is ready for processing, but there were some warnings during the verification process. |
+        | `rejected` | File set has been fully uploaded and has been confirmed, but the file set has been rejected during the verification process. There will be errors in the file set that need to be fixed before it can be processed. |
+        | `expired` | File set has expired and all its uploaded contents have been deleted. |
+      x-zero-based-enum: true
+    InboundFileSetWebhookPayload:
+      type: object
+      required:
+        - callbackName
+        - eventId
+        - timestamp
+      properties:
+        callbackName:
+          type: string
+          readOnly: true
+        eventId:
+          type: string
+          format: uuid
+          description: Uniek Id voor deze callback.
+        timestamp:
+          type: string
+          format: date-time
+          description: Het tijdstip van het event, in UTC.
+          example: '2021-04-28T12:34:45Z'
+        inboundFileSetId:
+          type: string
+          format: uuid
+          description: The ID of the file set to which this callback pertains.
+        oldStatus:
+          $ref: '#/components/schemas/InboundFileSetState'
+        newStatus:
+          $ref: '#/components/schemas/InboundFileSetState'
+      description: The payload for the webhooks for the inbound file sets.
+    InvalidArgumentProblemDetails:
+      type: object
+      properties:
+        paramName:
+          type: string
+        type:
+          type: string
+          nullable: true
+          description: A URI reference [RFC3986] that identifies the problem type.
+        title:
+          type: string
+          nullable: true
+          description: A short, human-readable summary of the problem type.
+        status:
+          type: integer
+          format: int32
+          nullable: true
+          description: The HTTP status code for this occurrence of the problem.
+        detail:
+          type: string
+          nullable: true
+          description: A human-readable explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          nullable: true
+          description: A URI reference that identifies the specific occurrence of the problem.
+      description: Invalid argument was provided.
+    JsonPatchDocument:
+      type: array
+      items:
+        $ref: '#/components/schemas/Operation'
+      description: Array of operations to perform
+    KlantwaardeType:
+      type: string
+      enum:
+        - onbekend
+        - koopsom
+        - taxatiewaarde
+        - wozWaarde
+        - eigenWaardeinschatting
+      x-zero-based-enum: true
+    Kwartaal:
+      type: object
+      properties:
+        jaar:
+          type: integer
+          format: int32
+        number:
+          type: integer
+          format: int32
+          description: Het kwartaal van 1 tot 4.
+    LengthRequiredProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          nullable: true
+          description: A URI reference [RFC3986] that identifies the problem type.
+        title:
+          type: string
+          nullable: true
+          description: A short, human-readable summary of the problem type.
+        status:
+          type: integer
+          format: int32
+          nullable: true
+          description: The HTTP status code for this occurrence of the problem.
+        detail:
+          type: string
+          nullable: true
+          description: A human-readable explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          nullable: true
+          description: A URI reference that identifies the specific occurrence of the problem.
+    MTLSType:
+      type: string
+      enum:
+        - none
+        - PublicCA
+        - SelfSigned
+      description: Het type authenticatie dat gebruikt wordt voor callbacks. PublicCA is deprecated en wordt uitgefaseerd. Het gebruikte certificaat is beschikbaar op het endpoint GET /v1/callbacks/mtls-certificate.
+      x-zero-based-enum: true
+    Modeldata:
+      type: object
+      properties:
+        marktwaarde:
+          type: integer
+          format: int32
+          description: In hele euros.
+        marktwaardeOndergrens:
+          type: integer
+          format: int32
+          description: In hele euros.
+        marktwaardeBovengrens:
+          type: integer
+          format: int32
+          description: In hele euros.
+        confidenceLevel:
+          type: number
+          format: float
+          description: Op een schaal van 0 tot 7.
+        waardebepalingsdatum:
+          type: string
+          format: date
+          example: '2021-04-28'
+        executiewaarde:
+          type: integer
+          format: int32
+          description: In hele euros.
+    NotFoundProblemDetails:
+      type: object
+      properties:
+        entity:
+          type: string
+          example: entity:1234123
+        type:
+          type: string
+          nullable: true
+          description: A URI reference [RFC3986] that identifies the problem type.
+        title:
+          type: string
+          nullable: true
+          description: A short, human-readable summary of the problem type.
+        status:
+          type: integer
+          format: int32
+          nullable: true
+          description: The HTTP status code for this occurrence of the problem.
+        detail:
+          type: string
+          nullable: true
+          description: A human-readable explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          nullable: true
+          description: A URI reference that identifies the specific occurrence of the problem.
+    Notitie:
+      type: string
+      enum:
+        - geen
+        - gecorrigeerd
+        - onbekend
+        - ontbreekt
+      description: |-
+        | Waarde | Omschrijving |
+        | --- | --- |
+        | `geen` | De input was correct. |
+        | `gecorrigeerd` | De input was gecorrigeerd. |
+        | `onbekend` | De input is onbekend en kon niet gevonden of gecorrigeerd worden. |
+        | `ontbreekt` | De input was leeg en is wel nodig voor een succesvolle zoekopdracht. |
+      x-zero-based-enum: true
+    Notities:
+      type: object
+      properties:
+        straat:
+          $ref: '#/components/schemas/Notitie'
+        huisnummer:
+          $ref: '#/components/schemas/Notitie'
+        huisnummertoevoeging:
+          $ref: '#/components/schemas/Notitie'
+        postcode:
+          $ref: '#/components/schemas/Notitie'
+        woonplaats:
+          $ref: '#/components/schemas/Notitie'
+    Objectdata:
+      type: object
+      properties:
+        woningType:
+          $ref: '#/components/schemas/WoningType'
+        bouwjaar:
+          type: integer
+          format: int32
+        oppervlak:
+          type: integer
+          format: int32
+          description: Het woonoppervlak in hele vierkante meters.
+        perceeloppervlak:
+          type: integer
+          format: int32
+          description: Het perceeloppervlak in hele vierkante meters.
+        inhoud:
+          type: integer
+          format: int32
+          description: De inhoud in hele kubieke meters.
+        energielabel:
+          $ref: '#/components/schemas/Energielabel'
+        energielabelData:
+          $ref: '#/components/schemas/EnergielabelData'
+        bagPandId:
+          type: integer
+          format: int64
+        bagVerblijfsobjectId:
+          type: integer
+          format: int64
+    Omgevingsdata:
+      type: object
+      properties:
+        buurt:
+          $ref: '#/components/schemas/Gebiedsdata'
+        wijk:
+          $ref: '#/components/schemas/Gebiedsdata'
+        gemeente:
+          $ref: '#/components/schemas/Gebiedsdata'
+        provincie:
+          $ref: '#/components/schemas/Gebiedsdata'
+        land:
+          $ref: '#/components/schemas/Gebiedsdata'
+    OnderhoudStaat:
+      type: string
+      enum:
+        - onbekend
+        - slecht
+        - matig
+        - redelijk
+        - goed
+        - nietWaarneembaar
+        - nietVanToepassing
+      x-zero-based-enum: true
+    Operation:
+      type: object
+      properties:
+        op:
+          $ref: '#/components/schemas/OperationType'
+        from:
+          type: string
+          nullable: true
+          example: /a/b/c
+        value:
+          nullable: true
+          example:
+            a: b
+        path:
+          type: string
+          example: /d/e/f
+    OperationType:
+      type: string
+      enum:
+        - add
+        - remove
+        - replace
+        - move
+        - copy
+        - test
+        - invalid
+      x-zero-based-enum: true
+    Opnamedata:
+      type: object
+      properties:
+        algemeenOnderhoudBuiten:
+          allOf:
+            - $ref: '#/components/schemas/OnderhoudStaat'
+          description: De algemene staat van onderhoud buiten.
+    OutboundFileSet:
+      type: object
+      required:
+        - id
+        - createdOn
+        - modifiedOn
+        - type
+        - revision
+        - inboundFileSetId
+        - state
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: |-
+            The file set ID, which is a unique identifier for the file set. This ID is used to track and manage the file set throughout its lifecycle.
+            It is generated by the system when the file set is created and is used in API requests to reference the specific file set.
+          readOnly: true
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/FileInfo'
+          nullable: true
+          description: The files associated with the file set.
+        createdOn:
+          type: string
+          format: date-time
+          example: '2021-04-28T12:34:45Z'
+          readOnly: true
+        expiresAfter:
+          type: string
+          format: date-time
+          nullable: true
+          description: If specified, the file set will expire after this date and time. If no appropriate action is taken before this date and time, the file set and all its contents will be deleted.
+          example: '2021-04-28T12:34:45Z'
+          readOnly: true
+        modifiedOn:
+          type: string
+          format: date-time
+          example: '2021-04-28T12:34:45Z'
+          readOnly: true
+        type:
+          type: string
+          description: |-
+            The type of the file set.
+            This value should be constant for a given type of file set and should be agreed upon with Calcasa before use. It is used to ensure that the correct processing logic is applied to the file set based on its intended purpose.  The tuple type, revision and period should always be unique.
+        revision:
+          type: integer
+          format: int32
+          description: A revision number for the file set that is incremented for every retry or redelivery. The tuple type, revision and period should always be unique.
+        period:
+          type: string
+          format: date
+          nullable: true
+          description: |-
+            The period of the inbound file set. This is a string that represents the time period for which the file set is relevant. It is used to categorize and identify the time frame of the data contained in the file set.
+            The first day of the period is used when the period is a year, quarter or month. For example use the first of April for Q2. The period is represented in the format YYYY-MM-DD, where YYYY is the year, MM is the month, and DD is the day.
+            If the period is not applicable, it can be set to null, only do this after consulting with Calcasa.
+            The tuple type, revision and period should always be unique.
+          example: '2021-04-28'
+        inboundFileSetId:
+          type: string
+          format: uuid
+          description: The id of the inbound file set from which this outbound file set originated. This is used to track the relationship between inbound and outbound file sets. The tuple inboundFileSetId, type, revision and period should always be unique.
+        state:
+          $ref: '#/components/schemas/OutboundFileSetState'
+    OutboundFileSetState:
+      type: string
+      enum:
+        - preparing
+        - ready
+        - deleted
+        - expired
+      description: |-
+        Outbound file set states.
+
+        | Value | Description |
+        | --- | --- |
+        | `preparing` | File set is being prepared for download. |
+        | `ready` | File set is ready and is waiting for the files to be downloaded. |
+        | `deleted` | File set has been downloaded and has been deleted. |
+        | `expired` | File set has expired and all its contents have been deleted. |
+      x-zero-based-enum: true
+    OutboundFileSetWebhookPayload:
+      type: object
+      required:
+        - callbackName
+        - eventId
+        - timestamp
+      properties:
+        callbackName:
+          type: string
+          readOnly: true
+        eventId:
+          type: string
+          format: uuid
+          description: Uniek Id voor deze callback.
+        timestamp:
+          type: string
+          format: date-time
+          description: Het tijdstip van het event, in UTC.
+          example: '2021-04-28T12:34:45Z'
+        outboundFileSetId:
+          type: string
+          format: uuid
+          description: The ID of the file set to which this callback pertains.
+        oldStatus:
+          $ref: '#/components/schemas/OutboundFileSetState'
+        newStatus:
+          $ref: '#/components/schemas/OutboundFileSetState'
+      description: The payload for the webhooks for the outbound file sets.
+    PermissionsDeniedProblemDetails:
+      type: object
+      properties:
+        requiredPermission:
+          type: string
+          example: entity:read
+        type:
+          type: string
+          nullable: true
+          description: A URI reference [RFC3986] that identifies the problem type.
+        title:
+          type: string
+          nullable: true
+          description: A short, human-readable summary of the problem type.
+        status:
+          type: integer
+          format: int32
+          nullable: true
+          description: The HTTP status code for this occurrence of the problem.
+        detail:
+          type: string
+          nullable: true
+          description: A human-readable explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          nullable: true
+          description: A URI reference that identifies the specific occurrence of the problem.
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          nullable: true
+          description: A URI reference [RFC3986] that identifies the problem type.
+        title:
+          type: string
+          nullable: true
+          description: A short, human-readable summary of the problem type.
+        status:
+          type: integer
+          format: int32
+          nullable: true
+          description: The HTTP status code for this occurrence of the problem.
+        detail:
+          type: string
+          nullable: true
+          description: A human-readable explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          nullable: true
+          description: A URI reference that identifies the specific occurrence of the problem.
+      description: Base error response model as defined in RFC 7807 Problem Details for HTTP APIs.
+    ProductCheck:
+      type: object
+      required:
+        - mogelijkeProducten
+        - afgekeurdeProducten
+      properties:
+        mogelijkeProducten:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductCheckItem'
+          description: De producttypen waarvoor met de gegeven input een waardering mogelijk is.
+        afgekeurdeProducten:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductCheckItem'
+          description: De producttypen waarvoor met de gegeven input geen waardering mogelijk is.
+    ProductCheckItem:
+      type: object
+      required:
+        - productType
+      properties:
+        productType:
+          allOf:
+            - $ref: '#/components/schemas/ProductType'
+          description: De producttypen waarvoor deze waardering geldt.
+        businessRulesCode:
+          allOf:
+            - $ref: '#/components/schemas/BusinessRulesCode'
+          nullable: true
+          description: Indien deze waardering niet voldoet aan de eisen voor dit product type, dan is dit veld ingevuld met de reden waarom deze is afgekeurd.
+        deeplinks:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/FrontendDeeplinks'
+          nullable: true
+    ProductCheckParameters:
+      type: object
+      required:
+        - bagNummeraanduidingId
+      properties:
+        geldverstrekker:
+          type: string
+          description: Ongebruikt voor de meeste client typen op dit moment. Deze informatie komt uit de credentials. Als dit veld wel verplicht is dan is dit gecommuniceerd.
+        hypotheekwaarde:
+          type: integer
+          format: int32
+          description: |-
+            Verplicht voor de producttypen `modelwaardeDesktopTaxatie` en `desktopTaxatie`.
+            Voor het aanvraagdoel `hypotheekOphogen` is dit de som van de huidige hypotheeksom en de ophoging.
+            In hele euros.
+        aanvraagdoel:
+          allOf:
+            - $ref: '#/components/schemas/Aanvraagdoel'
+          default: onbekend
+        klantwaarde:
+          type: integer
+          format: int32
+          description: |-
+            Verplicht voor de producttypen `modelwaardeDesktopTaxatie` en `desktopTaxatie`.
+            In hele euros. De waarde zoals bekend bij de klant met bijbehorende KlantwaardeType.
+        klantwaardeType:
+          allOf:
+            - $ref: '#/components/schemas/KlantwaardeType'
+          default: onbekend
+        isBestaandeWoning:
+          type: boolean
+          description: |-
+            Verplicht voor de producttypen `modelwaardeDesktopTaxatie` en `desktopTaxatie`.
+            Geeft aan of het te waarderen object een bestaande koopwoning is.
+        bagNummeraanduidingId:
+          type: integer
+          format: int64
+          description: |-
+            Verplicht voor alle producttypen.
+            Het BAG (Basisregistratie Adressen en Gebouwen) nummeraanduiding id.
+        isNhg:
+          type: boolean
+          description: |-
+            Verplicht voor de producttypen `modelwaardeDesktopTaxatie` en `desktopTaxatie`.
+            Geeft aan of er gebruikt gemaakt wordt van de Nationale Hypotheekgarantie.
+        isBestaandeNhgHypotheek:
+          type: boolean
+          description: |-
+            Verplicht te gebruiken voor de combinatie van de producttypen `modelwaardeDesktopTaxatie` en `desktopTaxatie`, als er gebruikt gemaakt wordt van de Nationale Hypotheekgarantie (`isNhg`) en het aanvraagdoel niet `aankoopNieuweWoning` is.
+            Geeft aan of er bij de eventuele bestaande hypotheek gebruik is gemaakt van de Nationale Hypotheekgarantie.
+        benodigdeOverbrugging:
+          type: integer
+          format: int32
+          description: |-
+            Verplicht voor de combinatie van de producttypen `modelwaardeDesktopTaxatie`, `desktopTaxatie` en `desktopTaxatiePlus` en het aanvraagdoel `overbruggingsfinanciering`.
+            In hele euros.
+        peildatum:
+          type: string
+          format: date
+          nullable: true
+          description: |-
+            Optioneel te gebruiken voor de producttypen `modelwaardeRisico`.
+            Peildatum voor de aanvraag. Standaard de datum van vandaag.
+            Supports yyyy-MM-dd or optionally yyyy-MM-ddTHH:mm:ssZ (ISO) with the time stamp assumed to be in UTC and the time is dropped before using the value.
+          example: '2021-04-28'
+        isErfpacht:
+          type: boolean
+          nullable: true
+          description: Potentieel verplicht voor de producttypen `modelwaardeDesktopTaxatie`, `desktopTaxatie` en `desktopTaxatiePlus` afhankelijk van de geldverstrekker- en accountconfiguratie.
+        klantkenmerk:
+          type: string
+          minLength: 0
+          maxLength: 100
+          description: Vrij veld voor het opslaan van een klantkenmerk, zoals bijvoorbeeld een dossiernummer of andere interne referentie. Dit veld komt later weer terug in het `origineleInput` veld in het `waardering` object.
+        heeftAflossingsvrijDeel:
+          type: boolean
+          nullable: true
+          description: True als de lening een aflossingsvrij deel heeft. Potentieel verplicht voor de producttypen `modelwaardeDesktopTaxatie`, `desktopTaxatie` en `desktopTaxatiePlus` afhankelijk van de geldverstrekker- en accountconfiguratie.
+        aflossingsvrijDeel:
+          type: integer
+          format: int32
+          nullable: true
+          description: |-
+            De hoogte van het aflossingsvrije deel van het veld `hypotheekwaarde` van de lening. Alleen relevant als `heeftAflossingsvrijDeel` true is. Potentieel verplicht voor de producttypen `modelwaardeDesktopTaxatie`, `desktopTaxatie` en `desktopTaxatiePlus` afhankelijk van de geldverstrekker- en accountconfiguratie.
+            In hele euros.
+        verdieping:
+          type: integer
+          format: int32
+          nullable: true
+          description: Dit is de verdieping waarop de woning gelegen is (bel-etage), voor een eengezinswoning is dit de begane grond (=0). In de toekomst verplicht voor de producttypen `desktopTaxatie` en `desktopTaxatiePlus`.
+        woonadresInBuitenland:
+          type: boolean
+          nullable: true
+          description: Geeft aan of het woonadres van de aanvrager in het buitenland ligt. In de toekomst verplicht voor de producttypen `desktopTaxatie` en `desktopTaxatiePlus`.
+        woonadresBagNummeraanduidingId:
+          type: integer
+          format: int64
+          nullable: true
+          description: Het BAG Id van het woonadres van de aanvrager. Alleen als woonadresInBuitenland false is. In de toekomst verplicht voor de producttypen `desktopTaxatie` en `desktopTaxatiePlus`.
+        opdrachtgever:
+          type: string
+          nullable: true
+          description: De volledige naam van de opdrachtgever. In de toekomst verplicht voor de producttypen `desktopTaxatie` en `desktopTaxatiePlus`.
+    ProductType:
+      type: string
+      enum:
+        - onbekend
+        - modelwaardeCalcasa
+        - modelwaardeRisico
+        - modelwaardeDesktopTaxatie
+        - desktopTaxatie
+        - desktopTaxatieHerwaardering
+        - desktopTaxatiePlus
+      description: |-
+        Het producttype voor een waardering. Deze moeten handmatig aangezet worden voor de gebruikte credentials.
+        | Waarde | Omschrijving |
+        | --- | --- |
+        | `onbekend` | Geen geldige invoer. Onbekend product type. |
+        | `modelwaardeCalcasa` | Niet beschikbaar op dit moment.<br>            Modelwaarde aanvraag met Calcasa Waardebepalingrapport. |
+        | `modelwaardeRisico` | Modelwaarde aanvraag met risicorapport. |
+        | `modelwaardeDesktopTaxatie` | Modelwaarde aanvraag met Desktop Taxatie Beknoptwaarderapport. |
+        | `desktopTaxatie` | Desktop taxatie aanvraag met Desktop Taxatie rapport. |
+        | `desktopTaxatieHerwaardering` | Desktop taxatie aanvraag met Desktop Taxatie rapport voor herwaarderingen. |
+        | `desktopTaxatiePlus` | Desktop taxatie plus aanvraag met Desktop Taxatie Plus rapport. |
+      x-zero-based-enum: true
+    Rapport:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Het rapport Id.
+    Referentieobject:
+      type: object
+      properties:
+        afstand:
+          type: integer
+          format: int32
+          description: Afstand tot het waarderingsobject in meters.
+        verkoopprijs:
+          type: integer
+          format: int32
+          description: In hele euros.
+        gecorrigeerdeVerkoopprijs:
+          type: integer
+          format: int32
+          description: In hele euros.
+        geindexeerdeVerkoopprijs:
+          type: integer
+          format: int32
+          description: In hele euros.
+        vierkantemeterprijs:
+          type: integer
+          format: int32
+          description: In hele euros per vierkante meters.
+        gecorrigeerdeVierkantemeterprijs:
+          type: integer
+          format: int32
+          description: In hele euros per vierkante meters.
+        geindexeerdeVierkantemeterprijs:
+          type: integer
+          format: int32
+          description: In hele euros per vierkante meters.
+        verkoopdatum:
+          type: string
+          format: date
+          description: In UTC.
+          example: '2021-04-28'
+        adres:
+          $ref: '#/components/schemas/Adres'
+        object:
+          $ref: '#/components/schemas/Objectdata'
+        cbsIndeling:
+          $ref: '#/components/schemas/CbsIndeling'
+        fotos:
+          type: array
+          items:
+            $ref: '#/components/schemas/Foto'
+          description: Fotos van het referentieobject.
+        bijzonderheden:
+          type: array
+          items:
+            $ref: '#/components/schemas/VerkoopBijzonderheden'
+          description: Eventuele bijzonderheden van de transactie.
+    ResourceExhaustedProblemDetails:
+      type: object
+      properties:
+        resource:
+          type: string
+          example: entity:1234123
+        type:
+          type: string
+          nullable: true
+          description: A URI reference [RFC3986] that identifies the problem type.
+        title:
+          type: string
+          nullable: true
+          description: A short, human-readable summary of the problem type.
+        status:
+          type: integer
+          format: int32
+          nullable: true
+          description: The HTTP status code for this occurrence of the problem.
+        detail:
+          type: string
+          nullable: true
+          description: A human-readable explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          nullable: true
+          description: A URI reference that identifies the specific occurrence of the problem.
+      description: Resource exhausted.
+    Taxatiedata:
+      type: object
+      properties:
+        taxatieorganisatie:
+          type: string
+          description: De interne naam van de taxatieorganisatie. Deze wijzigt niet.
+        taxatieorganisatieWeergave:
+          type: string
+          description: De externe of rapport naam van de taxatieorganisatie.
+        taxateurnaam:
+          type: string
+          description: De naam van de taxateur die de waardering heeft behandeld.
+        status:
+          $ref: '#/components/schemas/Taxatiestatus'
+        taxatiedatum:
+          type: string
+          format: date-time
+          description: De datum/tijd waarop de waardering getaxeerd is, in UTC.
+          example: '2021-04-28T12:34:45Z'
+    Taxatiestatus:
+      type: string
+      enum:
+        - nietGecontroleerd
+        - goedgekeurd
+        - afgekeurd
+      description: |-
+        | Waarde | Omschrijving |
+        | --- | --- |
+        | `nietGecontroleerd` | Status is onbekend of niet van toepassing. |
+        | `goedgekeurd` | De waardering is geaccepteerd door een taxateur. |
+        | `afgekeurd` | De waardering is afgewezen door een taxateur. |
+      x-zero-based-enum: true
+    UnauthorizedProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          nullable: true
+          description: A URI reference [RFC3986] that identifies the problem type.
+        title:
+          type: string
+          nullable: true
+          description: A short, human-readable summary of the problem type.
+        status:
+          type: integer
+          format: int32
+          nullable: true
+          description: The HTTP status code for this occurrence of the problem.
+        detail:
+          type: string
+          nullable: true
+          description: A human-readable explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          nullable: true
+          description: A URI reference that identifies the specific occurrence of the problem.
+    ValidationProblemDetails:
+      type: object
+      properties:
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+        type:
+          type: string
+          nullable: true
+          description: A URI reference [RFC3986] that identifies the problem type.
+        title:
+          type: string
+          nullable: true
+          description: A short, human-readable summary of the problem type.
+        status:
+          type: integer
+          format: int32
+          nullable: true
+          description: The HTTP status code for this occurrence of the problem.
+        detail:
+          type: string
+          nullable: true
+          description: A human-readable explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          nullable: true
+          description: A URI reference that identifies the specific occurrence of the problem.
+    VerkoopBijzonderheden:
+      type: string
+      enum:
+        - onbekend
+        - executieverkoop
+        - familieverkoop
+        - meerOnroerendGoed
+        - zittendeHuurder
+        - verkoperNietNatuurlijk
+        - koperNietNatuurlijk
+        - nietWoning
+        - erfdienstbaarheid
+      description: |-
+        | Waarde | Omschrijving |
+        | --- | --- |
+        | `onbekend` | Bijzonderheden onbekend. |
+        | `executieverkoop` | Een indicatie dat het object is verkocht via een executieveiling. |
+        | `familieverkoop` | Een indicatie dat de transactie is geregistreerd als familieverkoop. |
+        | `meerOnroerendGoed` | Een indicatie dat de transactie meerdere percelen bevat. |
+        | `zittendeHuurder` | Een indicatie dat de transactie is geregistreerd als verkoop aan de zittende huurder. |
+        | `verkoperNietNatuurlijk` | Een indicatie dat de verkoper een niet-natuurlijke persoon is. |
+        | `koperNietNatuurlijk` | Een indicatie dat de koper een niet-natuurlijke persoon is. |
+        | `nietWoning` | Een indicatie dat het object geregistreerd is als niet-woning. |
+        | `erfdienstbaarheid` | Een indicatie dat er een erfdienstbaarheid op het object gevestigd is. |
+      x-zero-based-enum: true
+    VersionNames:
+      type: string
+      enum:
+        - v1
+    VorigeVerkoop:
+      type: object
+      properties:
+        verkoopprijs:
+          type: integer
+          format: int32
+          description: In hele euros.
+        geindexeerdeVerkoopprijs:
+          type: integer
+          format: int32
+          description: In hele euros.
+        vierkantemeterprijs:
+          type: integer
+          format: int32
+          description: In hele euros per vierkante meter.
+        geindexeerdeVierkantemeterprijs:
+          type: integer
+          format: int32
+          description: In hele euros per vierkante meter.
+        verkoopdatum:
+          type: string
+          format: date
+          description: In UTC.
+          example: '2021-04-28'
+        perceeloppervlak:
+          type: integer
+          format: int32
+          description: Het perceeloppervlak in hele vierkante meters.
+        bijzonderheden:
+          type: array
+          items:
+            $ref: '#/components/schemas/VerkoopBijzonderheden'
+          description: Eventuele bijzonderheden van de transactie.
+    Waardering:
+      type: object
+      required:
+        - id
+        - aangemaakt
+        - status
+        - origineleInput
+        - adres
+      properties:
+        id:
+          type: string
+          format: uuid
+        aangemaakt:
+          type: string
+          format: date-time
+          description: Het tijdsstempel van wanneer de waardering aangemaakt is.
+          example: '2021-04-28T12:34:45Z'
+        status:
+          $ref: '#/components/schemas/WaarderingStatus'
+        origineleInput:
+          $ref: '#/components/schemas/WaarderingInputParameters'
+        adres:
+          $ref: '#/components/schemas/Adres'
+        model:
+          $ref: '#/components/schemas/Modeldata'
+        taxatie:
+          $ref: '#/components/schemas/Taxatiedata'
+        object:
+          $ref: '#/components/schemas/Objectdata'
+        opname:
+          $ref: '#/components/schemas/Opnamedata'
+        cbsIndeling:
+          $ref: '#/components/schemas/CbsIndeling'
+        fotos:
+          type: array
+          items:
+            $ref: '#/components/schemas/Foto'
+          nullable: true
+        referenties:
+          type: array
+          items:
+            $ref: '#/components/schemas/Referentieobject'
+          nullable: true
+        vorigeVerkopen:
+          type: array
+          items:
+            $ref: '#/components/schemas/VorigeVerkoop'
+          nullable: true
+        rapport:
+          $ref: '#/components/schemas/Rapport'
+        factuur:
+          $ref: '#/components/schemas/Factuur'
+        fundering:
+          $ref: '#/components/schemas/Funderingdata'
+    WaarderingInputParameters:
+      type: object
+      required:
+        - productType
+        - bagNummeraanduidingId
+      properties:
+        productType:
+          $ref: '#/components/schemas/ProductType'
+        geldverstrekker:
+          type: string
+          description: Ongebruikt voor de meeste client typen op dit moment. Deze informatie komt uit de credentials. Als dit veld wel verplicht is dan is dit gecommuniceerd.
+        hypotheekwaarde:
+          type: integer
+          format: int32
+          description: |-
+            Verplicht voor de producttypen `modelwaardeDesktopTaxatie` en `desktopTaxatie`.
+            Voor het aanvraagdoel `hypotheekOphogen` is dit de som van de huidige hypotheeksom en de ophoging.
+            In hele euros.
+        aanvraagdoel:
+          allOf:
+            - $ref: '#/components/schemas/Aanvraagdoel'
+          default: onbekend
+        klantwaarde:
+          type: integer
+          format: int32
+          description: |-
+            Verplicht voor de producttypen `modelwaardeDesktopTaxatie` en `desktopTaxatie`.
+            In hele euros. De waarde zoals bekend bij de klant met bijbehorende KlantwaardeType.
+        klantwaardeType:
+          allOf:
+            - $ref: '#/components/schemas/KlantwaardeType'
+          default: onbekend
+        isBestaandeWoning:
+          type: boolean
+          description: |-
+            Verplicht voor de producttypen `modelwaardeDesktopTaxatie` en `desktopTaxatie`.
+            Geeft aan of het te waarderen object een bestaande koopwoning is.
+        bagNummeraanduidingId:
+          type: integer
+          format: int64
+          description: |-
+            Verplicht voor alle producttypen.
+            Het BAG (Basisregistratie Adressen en Gebouwen) nummeraanduiding id.
+        isNhg:
+          type: boolean
+          description: |-
+            Verplicht voor de producttypen `modelwaardeDesktopTaxatie` en `desktopTaxatie`.
+            Geeft aan of er gebruikt gemaakt wordt van de Nationale Hypotheekgarantie.
+        isBestaandeNhgHypotheek:
+          type: boolean
+          description: |-
+            Verplicht te gebruiken voor de combinatie van de producttypen `modelwaardeDesktopTaxatie` en `desktopTaxatie`, als er gebruikt gemaakt wordt van de Nationale Hypotheekgarantie (`isNhg`) en het aanvraagdoel niet `aankoopNieuweWoning` is.
+            Geeft aan of er bij de eventuele bestaande hypotheek gebruik is gemaakt van de Nationale Hypotheekgarantie.
+        benodigdeOverbrugging:
+          type: integer
+          format: int32
+          description: |-
+            Verplicht voor de combinatie van de producttypen `modelwaardeDesktopTaxatie`, `desktopTaxatie` en `desktopTaxatiePlus` en het aanvraagdoel `overbruggingsfinanciering`.
+            In hele euros.
+        peildatum:
+          type: string
+          format: date
+          nullable: true
+          description: |-
+            Optioneel te gebruiken voor de producttypen `modelwaardeRisico`.
+            Peildatum voor de aanvraag. Standaard de datum van vandaag.
+            Supports yyyy-MM-dd or optionally yyyy-MM-ddTHH:mm:ssZ (ISO) with the time stamp assumed to be in UTC and the time is dropped before using the value.
+          example: '2021-04-28'
+        isErfpacht:
+          type: boolean
+          nullable: true
+          description: Potentieel verplicht voor de producttypen `modelwaardeDesktopTaxatie`, `desktopTaxatie` en `desktopTaxatiePlus` afhankelijk van de geldverstrekker- en accountconfiguratie.
+        klantkenmerk:
+          type: string
+          minLength: 0
+          maxLength: 100
+          description: Vrij veld voor het opslaan van een klantkenmerk, zoals bijvoorbeeld een dossiernummer of andere interne referentie. Dit veld komt later weer terug in het `origineleInput` veld in het `waardering` object.
+        heeftAflossingsvrijDeel:
+          type: boolean
+          nullable: true
+          description: True als de lening een aflossingsvrij deel heeft. Potentieel verplicht voor de producttypen `modelwaardeDesktopTaxatie`, `desktopTaxatie` en `desktopTaxatiePlus` afhankelijk van de geldverstrekker- en accountconfiguratie.
+        aflossingsvrijDeel:
+          type: integer
+          format: int32
+          nullable: true
+          description: |-
+            De hoogte van het aflossingsvrije deel van het veld `hypotheekwaarde` van de lening. Alleen relevant als `heeftAflossingsvrijDeel` true is. Potentieel verplicht voor de producttypen `modelwaardeDesktopTaxatie`, `desktopTaxatie` en `desktopTaxatiePlus` afhankelijk van de geldverstrekker- en accountconfiguratie.
+            In hele euros.
+        verdieping:
+          type: integer
+          format: int32
+          nullable: true
+          description: Dit is de verdieping waarop de woning gelegen is (bel-etage), voor een eengezinswoning is dit de begane grond (=0). In de toekomst verplicht voor de producttypen `desktopTaxatie` en `desktopTaxatiePlus`.
+        woonadresInBuitenland:
+          type: boolean
+          nullable: true
+          description: Geeft aan of het woonadres van de aanvrager in het buitenland ligt. In de toekomst verplicht voor de producttypen `desktopTaxatie` en `desktopTaxatiePlus`.
+        woonadresBagNummeraanduidingId:
+          type: integer
+          format: int64
+          nullable: true
+          description: Het BAG Id van het woonadres van de aanvrager. Alleen als woonadresInBuitenland false is. In de toekomst verplicht voor de producttypen `desktopTaxatie` en `desktopTaxatiePlus`.
+        opdrachtgever:
+          type: string
+          nullable: true
+          description: De volledige naam van de opdrachtgever. In de toekomst verplicht voor de producttypen `desktopTaxatie` en `desktopTaxatiePlus`.
+    WaarderingOntwikkeling:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Id van de waardering.
+        objectPrijsOntwikkeling:
+          type: array
+          items:
+            $ref: '#/components/schemas/WaarderingOntwikkelingKwartaal'
+          description: De prijsontwikkeling van het gewaardeerde object.
+        objectPrijsOntwikkelingPerVierkantemeter:
+          type: array
+          items:
+            $ref: '#/components/schemas/WaarderingOntwikkelingKwartaal'
+          description: De prijsontwikkeling van het gewaardeerde object per vierkantemeter.
+        buurtPrijsOntwikkeling:
+          type: array
+          items:
+            $ref: '#/components/schemas/WaarderingOntwikkelingKwartaal'
+          description: De prijsontwikkeling van de buurt van het gewaardeerde object.
+        buurtPrijsOntwikkelingPerVierkantemeter:
+          type: array
+          items:
+            $ref: '#/components/schemas/WaarderingOntwikkelingKwartaal'
+          description: De prijsontwikkeling van de buurt van het gewaardeerde object per vierkantemeter.
+        wijkPrijsOntwikkeling:
+          type: array
+          items:
+            $ref: '#/components/schemas/WaarderingOntwikkelingKwartaal'
+          description: De prijsontwikkeling van de wijk van het gewaardeerde object.
+        wijkPrijsOntwikkelingPerVierkantemeter:
+          type: array
+          items:
+            $ref: '#/components/schemas/WaarderingOntwikkelingKwartaal'
+          description: De prijsontwikkeling van de wijk van het gewaardeerde object per vierkantemeter.
+        gemeentePrijsOntwikkeling:
+          type: array
+          items:
+            $ref: '#/components/schemas/WaarderingOntwikkelingKwartaal'
+          description: De prijsontwikkeling van de gemeente van het gewaardeerde object.
+        gemeentePrijsOntwikkelingPerVierkantemeter:
+          type: array
+          items:
+            $ref: '#/components/schemas/WaarderingOntwikkelingKwartaal'
+          description: De prijsontwikkeling van de gemeente van het gewaardeerde object per vierkantemeter.
+    WaarderingOntwikkelingKwartaal:
+      type: object
+      properties:
+        kwartaal:
+          $ref: '#/components/schemas/Kwartaal'
+        waarde:
+          type: integer
+          format: int32
+          description: In hele euros.
+    WaarderingStatus:
+      type: string
+      enum:
+        - onbekend
+        - initialiseren
+        - open
+        - voltooid
+        - opgewaardeerd
+        - ongeldig
+        - verlopen
+        - error
+        - inBehandeling
+      description: |-
+        | Waarde | Omschrijving |
+        | --- | --- |
+        | `onbekend` | Status onbekend. |
+        | `initialiseren` | Deze waardering is geinitialiseerd maar moet nog bevestigd worden. |
+        | `open` | Deze waardering is bevestigd maar moet nog uitgevoerd worden. |
+        | `voltooid` | Deze waardering is voltooid. |
+        | `opgewaardeerd` | Deze waardering is geupgrade naar een ander waardering type. |
+        | `ongeldig` | Deze waardering is niet geldig, bijvoorbeeld omdat hij niet door de business rules is gekomen. |
+        | `verlopen` | Deze waardering is verlopen omdat hij niet op tijd bevestigd is. |
+        | `error` | Er is iets mis gegaan voor deze waardering. |
+        | `inBehandeling` | Deze waardering is in behandeling door het systeem. |
+      x-zero-based-enum: true
+    WaarderingWebhookPayload:
+      type: object
+      required:
+        - callbackName
+        - eventId
+        - timestamp
+      properties:
+        callbackName:
+          type: string
+          readOnly: true
+        eventId:
+          type: string
+          format: uuid
+          description: Uniek Id voor deze callback.
+        timestamp:
+          type: string
+          format: date-time
+          description: Het tijdstip van het event, in UTC.
+          example: '2021-04-28T12:34:45Z'
+        waarderingId:
+          type: string
+          format: uuid
+          description: Het Id van de waardering waarop deze callback betrekking heeft.
+        oldStatus:
+          $ref: '#/components/schemas/WaarderingStatus'
+        newStatus:
+          $ref: '#/components/schemas/WaarderingStatus'
+        isTest:
+          type: boolean
+          description: Geeft aan of de betreffende waardering aangevraagd is met een test token.
+        externeReferentie:
+          type: string
+          nullable: true
+          description: Dit is de externe referentie opgegeven bij de callback inschrijving of als dit een normale API waardering is waarvoor geen callback inschrijving was dit veld null.
+      description: De payload van de webhooks voor de waarderingen.
+    WaarderingZoekParameters:
+      type: object
+      required:
+        - productType
+        - bagNummeraanduidingId
+      properties:
+        aangemaakt:
+          type: string
+          format: date-time
+          nullable: true
+          description: De datum/tijd waarop de waardering is aangemaakt, in UTC.
+          example: '2021-04-28T12:34:45Z'
+        geldverstrekker:
+          type: string
+          nullable: true
+          description: De naam van de geldverstrekker voor de waardering.
+        productType:
+          $ref: '#/components/schemas/ProductType'
+        aanvraagdoel:
+          allOf:
+            - $ref: '#/components/schemas/Aanvraagdoel'
+          nullable: true
+        waarderingStatus:
+          allOf:
+            - $ref: '#/components/schemas/WaarderingStatus'
+          nullable: true
+        bagNummeraanduidingId:
+          type: integer
+          format: int64
+          description: Verplicht.
+    WebhookPayload:
+      type: object
+      required:
+        - callbackName
+        - eventId
+        - timestamp
+      properties:
+        callbackName:
+          type: string
+          readOnly: true
+        eventId:
+          type: string
+          format: uuid
+          description: Uniek Id voor deze callback.
+        timestamp:
+          type: string
+          format: date-time
+          description: Het tijdstip van het event, in UTC.
+          example: '2021-04-28T12:34:45Z'
+      description: De base payload van de webhooks die verstuurd worden voor verschillende events.
+    WoningType:
+      type: string
+      enum:
+        - onbekend
+        - vrijstaand
+        - halfVrijstaand
+        - hoekwoning
+        - tussenwoning
+        - galerijflat
+        - portiekflat
+        - maisonnette
+        - bovenwoning
+        - benedenwoning
+      description: |-
+        Woningtypes zoals gedefinieerd in het Calcasa-model.
+        | Waarde | Omschrijving |
+        | --- | --- |
+        | `onbekend` | Onbekend woning type. |
+        | `vrijstaand` | Vrijstaande woning. |
+        | `halfVrijstaand` | Half-vrijstaande woning / twee-onder-een-kap. |
+        | `hoekwoning` | Hoekwoning. |
+        | `tussenwoning` | Tussenwoning. |
+        | `galerijflat` | Galerijflat. |
+        | `portiekflat` | Portiekflat. |
+        | `maisonnette` | Maisonette. |
+        | `bovenwoning` | Bovenwoning. |
+        | `benedenwoning` | Benedenwoning. |
+      x-zero-based-enum: true
+  securitySchemes:
+    oauth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://authentication.calcasa.nl/oauth2/v2.0/token
+          scopes:
+            api:adressen:read: ''
+            api:bestemmingsplannen:read: ''
+            api:bodem:read: ''
+            api:buurt:read: ''
+            api:callback:read: ''
+            api:callback:write: ''
+            api:configuratie:read: ''
+            api:configuratie:write: ''
+            api:facturen:read: ''
+            api:fotos:read: ''
+            api:funderingen:read: ''
+            api:geldverstrekkers:read: ''
+            api:rapporten:read: ''
+            api:waarderingen:read: ''
+            api:waarderingen:patch: ''
+            api:waarderingen:ontwikkeling: ''
+            api:waarderingen:create: ''
+            api:file-set:inbound:read: ''
+            api:file-set:inbound:write: ''
+            api:file-set:outbound:read: ''
+            api:file-set:outbound:write: ''
+servers:
+  - url: https://api.calcasa.nl/api/{apiVersion}
+    description: Production
+    variables:
+      apiVersion:
+        default: v1
+        enum:
+          - v1
+  - url: https://api.staging.calcasa.nl/api/{apiVersion}
+    description: Staging
+    variables:
+      apiVersion:
+        default: v1
+        enum:
+          - v1

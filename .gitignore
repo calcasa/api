@@ -565,8 +565,6 @@ FodyWeavers.xsd
 # End of https://www.toptal.com/developers/gitignore/api/composer,visualstudio,visualstudiocode,dotnetcore,python
 generated/
 examples/php/vendor
-openapi.yaml
-versions.yaml
 examples/php/composer.lock
 bu
 tsp-output

@@ -1,7 +1,17 @@
 # Changelog
 
+## 2026-07-06 (v1.6.0-beta4)
+- Add model `CreateInboundFileSetRequest` for the `POST /v1/file-sets/inbound` endpoint with a subset of fields.
+- Updated `openapi-generator` to take advantage of newer templates, some changes include:
+    - .NET client now supports .NET 10, switches from using the `Collection<T>` type to the `List<T>` type
+    - Python client now handles UUIDs automatically, includes a `py.typed` file, requires 3.10+ and uses pydantic
+    - PHP client now requires 8.1
+- Added `GET /v1/file-sets/limits` and the supporting `FileSetLimits` model to expose inbound and outbound file set limits.
+- Added file set upload error responses for missing content length and oversized content: `LengthRequiredProblemDetails` and `ContentTooLargeProblemDetails`.
+- Made file set response fields more explicit by allowing `FileSet.files` and `InboundFileSet.warnings` to be omitted or null.
+
 ## 2026-07-03 (v1.6.0-beta3)
-- Added `InvalidArgumentProblemDetails` as return type to `POST /v0/waarderingen/zoeken`.
+- Added `InvalidArgumentProblemDetails` as return type to `POST /v1/waarderingen/zoeken`.
 - Renamed hash fields for consistency:
     - `FileInfo.sha256hash` → `contentHash`
     - `FileError.expectedSha256hash` → `expectedContentHash`

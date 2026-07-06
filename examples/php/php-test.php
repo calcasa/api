@@ -6,9 +6,17 @@ require_once("OAuthConfiguration.php");
 use GuzzleHttp\Client;
 use Calcasa\Api;
 
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/../");
+$dotenv->safeLoad();
+
+if(!isset($_ENV['CALCASA_CLIENT_ID']) || !isset($_ENV['CALCASA_CLIENT_SECRET'])){
+    echo "Please set CALCASA_CLIENT_ID and CALCASA_CLIENT_SECRET in the .env file.".PHP_EOL;
+    exit(1);
+}
+
 $conf = new OAuthConfiguration(
-    client_id:'<client_id>',
-    client_secret:'<client_secret>',
+    client_id: $_ENV['CALCASA_CLIENT_ID'],
+    client_secret: $_ENV['CALCASA_CLIENT_SECRET'],
     base_path: "https://api.staging.calcasa.nl/api/v1",
     token_url: "https://authentication.01.staging.calcasa.nl/oauth2/v2.0/token");
 
@@ -77,7 +85,8 @@ $waarderingInput = new Api\Model\WaarderingInputParameters(array(
 'isBestaandeWoning'=> true,
 'bagNummeraanduidingId'=> $adresinfo->getBagNummeraanduidingId(),
 'isNhg'=> false,
-'isErfpacht'=> false
+'isErfpacht'=> false,
+'heeftAflossingsvrijDeel'=> false
 ));
 
 $waarderingOutput = $wa->createWaarderingAsync($waarderingInput)->wait();

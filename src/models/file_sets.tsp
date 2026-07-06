@@ -58,7 +58,7 @@ model FileSet {
     /**
      * The files associated with the file set.
      */
-    files: FileInfo[];
+    files?: FileInfo[] | null;
 
     @visibility(Lifecycle.Read)
     @example(utcDateTime.fromISO("2021-04-28T12:34:45Z"))
@@ -77,6 +77,33 @@ model FileSet {
     @example(utcDateTime.fromISO("2021-04-28T12:34:45Z"))
     @encode(DateTimeKnownEncoding.rfc3339)
     modifiedOn: utcDateTime;
+
+    /**
+     * The type of the file set.
+     * This value should be constant for a given type of file set and should be agreed upon with Calcasa before use. It is used to ensure that the correct processing logic is applied to the file set based on its intended purpose.  The tuple type, revision and period should always be unique.
+     */
+    type: string;
+
+    /**
+     * A revision number for the file set that is incremented for every retry or redelivery. The tuple type, revision and period should always be unique.
+     */
+    revision: int32;
+
+    /**
+     * The period of the inbound file set. This is a string that represents the time period for which the file set is relevant. It is used to categorize and identify the time frame of the data contained in the file set.
+     * The first day of the period is used when the period is a year, quarter or month. For example use the first of April for Q2. The period is represented in the format YYYY-MM-DD, where YYYY is the year, MM is the month, and DD is the day.
+     * If the period is not applicable, it can be set to null, only do this after consulting with Calcasa.
+     * The tuple type, revision and period should always be unique.
+     */
+    @example(plainDate.fromISO("2021-04-28"))
+    period?: plainDate | null;
+}
+
+model CreateInboundFileSetRequest {
+    /**
+     * The files associated with the file set.
+     */
+    files?: FileInfo[] | null;
 
     /**
      * The type of the file set.
@@ -129,7 +156,7 @@ model InboundFileSet {
      * Warnings that occurred during the processing of the inbound file set. This is an array of FileWarning objects that provide details about each warning, including the index of the file within the file set, the name of the file.
      */
     @visibility(Lifecycle.Read)
-    warnings?: FileWarning[];
+    warnings?: FileWarning[] | null;
 }
 
 /**
@@ -160,4 +187,31 @@ model OutboundFileSetWebhookPayload {
 
     oldStatus?: OutboundFileSetState;
     newStatus?: OutboundFileSetState;
+}
+
+model FileSetLimits {
+    /**
+     * The maximum total size of all files in an inbound file set, in kilobytes (1000 bytes). This limit ensures that the combined size of all files within a file set does not exceed a certain threshold, which helps manage storage and processing resources.
+     */
+    inboundMaxTotalSizeInKiloBytes: int64;
+    /**
+     * The maximum size of a single file in an inbound file set, in kilobytes (1000 bytes). This limit ensures that individual files do not exceed a certain size, which helps manage storage and processing resources.
+     */
+    inboundMaxFileSizeInKiloBytes: int64;
+    /**
+     * The maximum size of a compressed chunk in an inbound file set, in kilobytes (1000 bytes). This limit ensures that individual compressed chunks do not exceed a certain size, which helps manage storage and processing resources.
+     */
+    inboundMaxCompressedChunkSizeInKiloBytes: int64;
+    /**
+     * The maximum number of files in an inbound file set. This limit ensures that the number of files within a file set does not exceed a certain threshold, which helps manage storage and processing resources.
+     */
+    inboundMaxTotalFiles: int32;
+    /**
+     * The time-to-live (TTL) for inbound file sets, in seconds. This value indicates how long an inbound file set will remain valid before it expires and is deleted if it is not confirmed. It helps manage the lifecycle of inbound file sets and ensures that they are processed within a certain timeframe.
+     */
+    inboundTtlInSeconds: int32;
+    /**
+     * The time-to-live (TTL) for outbound file sets, in seconds. This value indicates how long an outbound file set will remain valid before it expires and is deleted if it is not downloaded. It helps manage the lifecycle of outbound file sets and ensures that they are processed within a certain timeframe.
+     */
+    outboundTtlInSeconds: int32;
 }

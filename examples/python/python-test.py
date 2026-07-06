@@ -1,8 +1,10 @@
 from datetime import datetime
+import os
 from uuid import uuid4
 from calcasa.api.configuration import Configuration
 from calcasa.api.api_client import ApiClient
 
+from dotenv import load_dotenv
 from oauthlib.oauth2 import BackendApplicationClient
 from requests_oauthlib import OAuth2Session
 import time
@@ -26,6 +28,8 @@ from calcasa.api.models.waardering_input_parameters import WaarderingInputParame
 from calcasa.api.models.waardering_status import WaarderingStatus
 from calcasa.api.models.waardering_webhook_payload import WaarderingWebhookPayload
 from calcasa.api.models.waardering_zoek_parameters import WaarderingZoekParameters
+
+load_dotenv(os.path.join(os.path.dirname(__file__), "../.env"))
 
 
 def handleAndPersistValuation(
@@ -108,10 +112,14 @@ class OauthConfiguration(Configuration):
         )
         return token
 
+if "CALCASA_CLIENT_ID" not in os.environ or "CALCASA_CLIENT_SECRET" not in os.environ:
+    raise Exception(
+        "Please set the CALCASA_CLIENT_ID and CALCASA_CLIENT_SECRET environment variables, or use a .env file with the correct values."
+    )
 
 conf = OauthConfiguration(
-    client_id="<client_id>",
-    client_secret="<client_secret>",
+    client_id=os.environ["CALCASA_CLIENT_ID"],
+    client_secret=os.environ["CALCASA_CLIENT_SECRET"],
     token_url="https://authentication.01.staging.calcasa.nl/oauth2/v2.0/token",
     host="https://api.staging.calcasa.nl/api/v1",  # NO TRAILING SLASH ON HOST!
 )
@@ -181,6 +189,7 @@ waarderingInput = WaarderingInputParameters(
     bagNummeraanduidingId=adresInfo.bag_nummeraanduiding_id,
     isNhg=False,
     isErfpacht=False,
+    heeftAflossingsvrijDeel=False
 )
 
 waarderingOutput = wa.create_waardering(waardering_input_parameters=waarderingInput)

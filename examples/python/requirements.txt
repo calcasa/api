@@ -1,5 +1,6 @@
 requests
 oauthlib
 requests-oauthlib
+python-dotenv
 file:./../../libraries/api-python
 #calcasa-api==1.3.1

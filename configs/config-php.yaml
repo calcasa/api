@@ -10,14 +10,14 @@ composerPackageName: calcasa/api
 variableNamingConvention: camelCase
 disallowAdditionalPropertiesIfNotPresent: false
 legacyDiscriminatorBehavior: false
-licenseId: Apache-2.0
-packageVersion: 1.6.0-beta3
-packageCopyright: Copyright 2025 Calcasa B.V.
-packageDescription: API client for the Calcasa Public API.
-packageCompany: Calcasa
+licenseName: Apache-2.0
+artifactUrl: https://github.com/calcasa/api-php
+artifactVersion: 1.6.0-beta4
+packageCopyright: Copyright 2026 Calcasa B.V.
+developerOrganization: Calcasa
+developerOrganizationUrl: https://calcasa.nl
 packageAuthors: Calcasa
 packageTitle: Calcasa API Client
 packageUrl: https://github.com/calcasa/api-php
-homepage: https://calcasa.nl
 excludeTests: true
-httpUserAgent: Calcasa PHP Api Client/1.6.0-beta3
+httpUserAgent: Calcasa PHP Api Client/1.6.0-beta4

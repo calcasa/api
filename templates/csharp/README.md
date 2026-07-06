@@ -10,26 +10,3 @@ Adds the copyright info
 
 Modifies all the dependencies
 
-# api
-
-Add better support for File responses.
-properly support multiple accept header values.
-Do not dispose `HttpResponseMessage` and add it to the ApiResponse so the streams can be read for files.
-
-# ClientUtils
-
-Add function to support multiple accept header values
-
-# TokenBase, TokenProvider\`1 and RateLimitProvider\`1
-
-Make GetAsync as public and make these suitable for JIT tokens based on OAuth secrets.
-Remove required container to beeter support JIT retrieval of tokens.
-
-# DateOnlyJsonConverter and DateOnlyNullableJsonConverter
-
-Removed unsupported `DateTimeStyles` from `TryParseExact` call.
-
-# AsModel, ApiException, ApiResposne\`1 and 
-
-Add proper support for the file results so returning the stream works.
-Add RawResponse and ContentHeaders property to better support file downloads.

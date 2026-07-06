@@ -69,3 +69,21 @@ model InboundFileSetAlreadyExistsProblemDetails {
     @statusCode statusCode: 409;
     ...ProblemDetails;
 }
+
+@error
+model LengthRequiredProblemDetails {
+    @statusCode statusCode: 411;
+    ...ProblemDetails;
+}
+
+@error
+model ContentTooLargeProblemDetails {
+    @statusCode statusCode: 413;
+
+    /**
+     * If known the remaining content length in bytes that can be sent to the server. If not known, this property will be null.
+     */
+    maxContentLength?: int64 | null;
+
+    ...ProblemDetails;
+}

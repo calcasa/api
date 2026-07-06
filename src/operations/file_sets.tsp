@@ -13,8 +13,18 @@ namespace CalcasaPublicApi;
 @tag("FileSets")
 @route("/file-sets")
 namespace FileSets {
+    @useAuth(oauth<["api:file-set:inbound:read"]>)
+    @route("/limits")
+    @get
+    @summary("Get file set limits.")
+    @operationId("GetFileSetLimits")
+    op GetFileSetLimits():
+        | FileSetLimits
+        | UnauthorizedProblemDetails
+        | ProblemDetails;
+
     /**
-        * Create a new inbound file set and all its included files. If the type, period, and revision combination already exists, an InboundFileSetAlreadyExistsProblemDetails will be returned. If the file set is not confirmed within 24 hours, it will expire and all its uploaded contents will be deleted.
+     * Create a new inbound file set and all its included files. If the type, period, and revision combination already exists, an InboundFileSetAlreadyExistsProblemDetails will be returned. If the file set is not confirmed within 24 hours, it will expire and all its uploaded contents will be deleted.
      *
      * ### Callbacks
      * | Name | Url | Schema |
@@ -28,20 +38,25 @@ namespace FileSets {
     @post
     @summary("Create a new inbound file set.")
     @operationId("CreateInboundFileSet")
-    op CreateInboundFileSet(@bodyRoot body: InboundFileSet):
+    op CreateInboundFileSet(@bodyRoot body: CreateInboundFileSetRequest):
         | InboundFileSet
         | InboundFileSetAlreadyExistsProblemDetails
         | InvalidArgumentProblemDetails
         | UnauthorizedProblemDetails
         | ProblemDetails;
 
+    /**
+     * This will not include the file details, only the metadata of the file set. Use the GetInboundFileSetById operation to get the details of a specific file set.
+     */
     @useAuth(oauth<["api:file-set:inbound:read"]>)
     @route("/inbound")
     @get
     @summary("Get all inbound file sets.")
     @operationId("GetInboundFileSets")
-    op GetInboundFileSets(
-    ): InboundFileSet[] | UnauthorizedProblemDetails | ProblemDetails;
+    op GetInboundFileSets():
+        | InboundFileSet[]
+        | UnauthorizedProblemDetails
+        | ProblemDetails;
 
     @useAuth(oauth<["api:file-set:inbound:read"]>)
     @route("/inbound/{inboundFileSetId}")
@@ -70,12 +85,14 @@ namespace FileSets {
     ):
         | NoContentResponse
         | InvalidArgumentProblemDetails
+        | LengthRequiredProblemDetails
+        | ContentTooLargeProblemDetails
         | NotFoundProblemDetails
         | UnauthorizedProblemDetails
         | ProblemDetails;
 
     /**
-        * Confirm an inbound file set after it has been fully uploaded. This will start verification of the file set. When the status is updated, the callback will be triggered with the new status. When validation fails, a new file set must be created. If the file set is not confirmed within 24 hours, it will expire and all its uploaded contents will be deleted.
+     * Confirm an inbound file set after it has been fully uploaded. This will start verification of the file set. When the status is updated, the callback will be triggered with the new status. When validation fails, a new file set must be created. If the file set is not confirmed within 24 hours, it will expire and all its uploaded contents will be deleted.
      *
      * ### Callbacks
      * | Name | Url | Schema |
@@ -96,13 +113,18 @@ namespace FileSets {
         | UnauthorizedProblemDetails
         | ProblemDetails;
 
+    /**
+     * This will not include the file details, only the metadata of the file set. Use the GetOutboundFileSetById operation to get the details of a specific file set.
+     */
     @route("/outbound")
     @get
     @summary("Get all outbound file sets.")
     @useAuth(oauth<["api:file-set:outbound:read"]>)
     @operationId("GetOutboundFileSets")
-    op GetOutboundFileSets(
-    ): OutboundFileSet[] | UnauthorizedProblemDetails | ProblemDetails;
+    op GetOutboundFileSets():
+        | OutboundFileSet[]
+        | UnauthorizedProblemDetails
+        | ProblemDetails;
 
     @route("/outbound/{outboundFileSetId}")
     @get
@@ -133,9 +155,9 @@ namespace FileSets {
         | NotFoundProblemDetails
         | UnauthorizedProblemDetails
         | ProblemDetails;
-    
+
     /**
-        * Delete an outbound file set after it has been correctly received. If an outbound file set is not downloaded and deleted within 48 hours, it will expire and all its contents will be deleted automatically.
+     * Delete an outbound file set after it has been correctly received. If an outbound file set is not downloaded and deleted within 48 hours, it will expire and all its contents will be deleted automatically.
      */
     @route("/outbound/{outboundFileSetId}")
     @delete

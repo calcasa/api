@@ -1,16 +1,10 @@
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using ApiTest.Shared;
 using Calcasa.Api;
 using Calcasa.Api.Client;
 using Duende.IdentityModel.Client;
 using Microsoft.Extensions.Options;
 
-namespace ApiTest.New;
+namespace ApiTest.Shared;
 
 public class ServiceOAuthTokenProvider : TokenProvider<OAuthToken>
 {

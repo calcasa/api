@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="../../libraries/api-csharp/src/Calcasa.Api/Calcasa.Api.csproj" />
+  <Project Path="ApiTest.Valuations/ApiTest.Valuations.csproj" />
+  <Project Path="ApiTest.FileSets/ApiTest.FileSets.csproj" />
+  <Project Path="ApiTest.Shared/ApiTest.Shared.csproj" />
+</Solution>
