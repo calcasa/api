@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-07-07 (v1.6.0-beta5)
+- Changed the inbound file set confirmation error to `InboundFileSetInvalidStateProblemDetails` with HTTP 422 and a `state` field.
+- Made inbound file set upload request bodies explicit `application/octet-stream`.
+
 ## 2026-07-06 (v1.6.0-beta4)
 - Add model `CreateInboundFileSetRequest` for the `POST /v1/file-sets/inbound` endpoint with a subset of fields.
 - Updated `openapi-generator` to take advantage of newer templates, some changes include:

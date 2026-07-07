@@ -81,7 +81,7 @@ namespace FileSets {
         @format("uuid") inboundFileSetId: string,
         fileIndex: int32,
         @header contentEncoding?: "br" | "gzip" | "deflate" | "identity",
-        @bodyRoot file: File,
+        @bodyRoot file: File<"application/octet-stream", Contents = bytes>
     ):
         | NoContentResponse
         | InvalidArgumentProblemDetails
@@ -108,7 +108,7 @@ namespace FileSets {
     @operationId("ConfirmInboundFileSetById")
     op ConfirmInboundFileSetById(@format("uuid") inboundFileSetId: string):
         | InboundFileSet
-        | InboundFileSetAlreadyConfirmedProblemDetails
+        | InboundFileSetInvalidStateProblemDetails
         | NotFoundProblemDetails
         | UnauthorizedProblemDetails
         | ProblemDetails;

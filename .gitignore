@@ -568,3 +568,4 @@ examples/php/vendor
 examples/php/composer.lock
 bu
 tsp-output
+examples/test_file_set

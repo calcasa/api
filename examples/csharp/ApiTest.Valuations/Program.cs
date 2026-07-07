@@ -6,40 +6,20 @@ using System.Threading.Tasks;
 using ApiTest.Shared;
 using Calcasa.Api.Api;
 using Calcasa.Api.Client;
-using Calcasa.Api.Extensions;
 using Calcasa.Api.Model;
-using dotenv.net;
 using Microsoft.AspNetCore.JsonPatch.Operations;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
-DotEnv.Load(new DotEnvOptions(probeForEnv: true, probeLevelsToSearch: 5)); // 5 levels so when run in VS it works.
+// Shared bootstrap: loads .env values and configures OAuth + API host.
+var host = ExamplesConfiguration.CreateApiHost(args);
 
-if (Environment.GetEnvironmentVariable("CALCASA_CLIENT_ID") == null || Environment.GetEnvironmentVariable("CALCASA_CLIENT_SECRET") == null)
-{
-    throw new ArgumentException("Set the CALCASA_CLIENT_ID and CALCASA_CLIENT_SECRET enviroment variables or set them in the .env file.");
-}
-
-var host = Host.CreateDefaultBuilder(args).ConfigureApi(static (context, services, options) =>
-{
-    options.AddApiHttpClients(c => c.BaseAddress = new Uri("https://api.staging.calcasa.nl/api/v1"));
-    services.Configure<CalcasaApiOptions>(o =>
-    {
-        o.ClientId = Environment.GetEnvironmentVariable("CALCASA_CLIENT_ID");
-        o.ClientSecret = Environment.GetEnvironmentVariable("CALCASA_CLIENT_SECRET");
-        o.TokenUrl = "https://authentication.01.staging.calcasa.nl/oauth2/v2.0/token";
-    });
-    options.UseProvider<ServiceOAuthTokenProvider, OAuthToken>();
-}).Build();
-
-var logger = host.Services.GetRequiredService<ILogger<Program>>();
 var aa = host.Services.GetRequiredService<IAdressenApi>();
 var ca = host.Services.GetRequiredService<IConfiguratieApi>();
 var wa = host.Services.GetRequiredService<IWaarderingenApi>();
 var ra = host.Services.GetRequiredService<IRapportenApi>();
 var fa = host.Services.GetRequiredService<IFacturenApi>();
 var pa = host.Services.GetRequiredService<IFotosApi>();
+// Resolve typed API clients from dependency injection.
 
 /* --------------- *
 * Adres endpoints *

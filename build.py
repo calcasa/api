@@ -70,7 +70,7 @@ CSHARP_SCHEMA_MAPPINGS_SERVER = {
     "BusinessRulesProblemDetails": "Calcasa.Api.Exceptions.Details.BusinessRulesProblemDetails",
     "ExpiredValuationProblemDetails": "Calcasa.Api.Exceptions.Details.ExpiredValuationProblemDetails",
     "UnauthorizedProblemDetails": "Microsoft.AspNetCore.Mvc.ProblemDetails",  # TODO verify
-    "InboundFileSetAlreadyConfirmedProblemDetails": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+    "InboundFileSetInvalidStateProblemDetails": "Calcasa.Api.Exceptions.Details.InboundFileSetInvalidStateProblemDetails",
     "InboundFileSetAlreadyExistsProblemDetails": "Microsoft.AspNetCore.Mvc.ProblemDetails",
     "LengthRequiredProblemDetails": "Microsoft.AspNetCore.Mvc.ProblemDetails",
     "ContentTooLargeProblemDetails": "Calcasa.Api.Exceptions.Details.ContentTooLargeProblemDetails",

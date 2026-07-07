@@ -12,7 +12,7 @@ All examples use OAuth2 client credentials and are configured for the staging en
 
 - `csharp/`: C# examples (`ApiTest.Valuations` and `ApiTest.FileSets`)
 - `php/`: PHP example (`php-test.php`)
-- `python/`: Python example (`python-test.py`)
+- `python/`: Python examples (`valuation-test.py` and `file-set-test.py`)
 - `.env.example`: template for required credentials
 
 ## Prerequisites
@@ -20,6 +20,9 @@ All examples use OAuth2 client credentials and are configured for the staging en
 - Valid Calcasa API OAuth client credentials:
 	- `CALCASA_CLIENT_ID`
 	- `CALCASA_CLIENT_SECRET`
+- API/token endpoints for the target environment:
+	- `CALCASA_TOKEN_ENDPOINT`
+	- `CALCASA_API_BASE_URL`
 - Access to the staging API endpoints used by these examples
 
 Language-specific prerequisites:
@@ -49,6 +52,10 @@ Copy-Item .env.example .env
 ```dotenv
 CALCASA_CLIENT_ID=your-client-id
 CALCASA_CLIENT_SECRET=your-client-secret
+CALCASA_TOKEN_ENDPOINT=https://authentication.01.staging.calcasa.nl/oauth2/v2.0/token
+CALCASA_API_BASE_URL=https://api.staging.calcasa.nl/api/v1
+# Only needed for file-set examples:
+CALCASA_TEST_FILE_SET_PATH=C:/path/to/test/files
 ```
 
 3. Install dependencies and run one of the language examples from the sections below.
@@ -93,12 +100,15 @@ dotnet run --project ApiTest.FileSets/ApiTest.FileSets.csproj
 
 ### Options You Can Change
 
-In both `ApiTest.Valuations/Program.cs` and `ApiTest.FileSets/Program.cs`:
+In `ApiTest.Shared/ExampleConfiguration.cs` (shared by both C# samples):
 
 - API base URL:
-	- default: `https://api.staging.calcasa.nl/api/v1`
+	- read from `CALCASA_API_BASE_URL` in `.env`
 - Token URL:
-	- default: `https://authentication.01.staging.calcasa.nl/oauth2/v2.0/token`
+	- read from `CALCASA_TOKEN_ENDPOINT` in `.env`
+
+In `ApiTest.Valuations/Program.cs`:
+
 - Callback URL in configuration example:
 	- default: `https://test.calcasa.nl/callback/`
 - User Agent string (`set via API client settings`)
@@ -106,6 +116,13 @@ In both `ApiTest.Valuations/Program.cs` and `ApiTest.FileSets/Program.cs`:
 	- address/postcode/huisnummer
 	- product type
 	- hypotheekwaarde, klantwaarde, NHG/erfpacht flags
+
+In `ApiTest.FileSets/Program.cs`:
+
+- Required file-set path:
+	- `CALCASA_TEST_FILE_SET_PATH`
+- Optional file-set revision override:
+	- `CALCASA_TEST_FILE_SET_REVISION` (defaults to current UTC Unix timestamp)
 
 ## PHP Example
 
@@ -151,9 +168,10 @@ In `php-test.php` and `OAuthConfiguration.php`:
 
 Folder: `python/`
 
-Entry script:
+Entry scripts:
 
-- `python-test.py`
+- `valuation-test.py`
+- `file-set-test.py`
 
 ### Install Dependencies
 
@@ -193,17 +211,26 @@ Notes:
 From `examples/python/`:
 
 ```bash
-python python-test.py
+python valuation-test.py
+```
+
+Run the file-set sample:
+
+```bash
+python file-set-test.py
 ```
 
 ### Options You Can Change
 
-In `python-test.py`:
+In `common.py`, `oauth.py`, and both Python entry scripts:
 
 - API host:
-	- default: `https://api.staging.calcasa.nl/api/v1`
+	- read from `CALCASA_API_BASE_URL` in `.env`
 - Token URL:
-	- default: `https://authentication.01.staging.calcasa.nl/oauth2/v2.0/token`
+	- read from `CALCASA_TOKEN_ENDPOINT` in `.env`
+
+In `valuation-test.py`:
+
 - Callback URL used in configuration example
 - User Agent string:
 	- default: `Python Application Name/0.0.1`
@@ -211,6 +238,13 @@ In `python-test.py`:
 	- address inputs
 	- valuation input parameters
 	- search parameters
+
+In `file-set-test.py`:
+
+- Required file-set path:
+	- `CALCASA_TEST_FILE_SET_PATH`
+- Optional file-set revision override:
+	- `CALCASA_TEST_FILE_SET_REVISION` (defaults to current UTC Unix timestamp)
 
 ## What the Examples Do
 
@@ -222,6 +256,8 @@ The current scripts demonstrate a broad workflow:
 - Poll/wait simulation and webhook payload handling
 - Download and persist report, invoice, and photo files when available
 - Search valuations by parameters
+- Inbound file-set creation
+- Chunked file upload and confirmation
 
 Generated output files may be written to the current working directory, for example:
 
@@ -235,12 +271,14 @@ Generated output files may be written to the current working directory, for exam
 
 Symptom:
 
-- script exits with message about missing `CALCASA_CLIENT_ID`/`CALCASA_CLIENT_SECRET`
+- script exits with message about missing required environment variables
 
 Fix:
 
 - ensure `.env` exists in `examples/`
 - verify keys are present and non-empty
+- for all examples: `CALCASA_CLIENT_ID`, `CALCASA_CLIENT_SECRET`, `CALCASA_TOKEN_ENDPOINT`, `CALCASA_API_BASE_URL`
+- for file-set examples: `CALCASA_TEST_FILE_SET_PATH`
 - restart the process after updating the file
 
 ### OAuth/token errors

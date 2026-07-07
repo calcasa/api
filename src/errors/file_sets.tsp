@@ -59,8 +59,11 @@ model FileWarning {
 }
 
 @error
-model InboundFileSetAlreadyConfirmedProblemDetails {
-    @statusCode statusCode: 409;
+model InboundFileSetInvalidStateProblemDetails {
+    @statusCode statusCode: 422;
+
+    state: InboundFileSetState;
+
     ...ProblemDetails;
 }
 

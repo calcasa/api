@@ -11,7 +11,7 @@ info:
   description: |-
     The Calcasa API is used to connect to Calcasa provided services.
     For more information, please visit [Documentation](https://docs.calcasa.nl) or [GitHub](https://github.com/calcasa/api).
-  version: 1.6.0-beta4
+  version: 1.6.0-beta5
 tags:
   - name: Adressen
   - name: Bestemmingsplannen
@@ -925,12 +925,12 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/NotFoundProblemDetails'
-        '409':
-          description: The request conflicts with the current state of the server.
+        '422':
+          description: Client error
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/InboundFileSetAlreadyConfirmedProblemDetails'
+                $ref: '#/components/schemas/InboundFileSetInvalidStateProblemDetails'
         default:
           description: An unexpected error response.
           content:
@@ -1014,7 +1014,7 @@ paths:
       requestBody:
         required: true
         content:
-          '*/*':
+          application/octet-stream:
             schema:
               type: string
               format: binary
@@ -2806,7 +2806,7 @@ components:
           nullable: true
           description: Warnings that occurred during the processing of the inbound file set. This is an array of FileWarning objects that provide details about each warning, including the index of the file within the file set, the name of the file.
           readOnly: true
-    InboundFileSetAlreadyConfirmedProblemDetails:
+    InboundFileSetAlreadyExistsProblemDetails:
       type: object
       properties:
         type:
@@ -2830,9 +2830,13 @@ components:
           type: string
           nullable: true
           description: A URI reference that identifies the specific occurrence of the problem.
-    InboundFileSetAlreadyExistsProblemDetails:
+    InboundFileSetInvalidStateProblemDetails:
       type: object
+      required:
+        - state
       properties:
+        state:
+          $ref: '#/components/schemas/InboundFileSetState'
         type:
           type: string
           nullable: true
