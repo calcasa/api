@@ -34,3 +34,4 @@ View changelog [here](CHANGELOG.md)
 ## Authentication
 
 Authentication is done via [OAuth2](https://oauth.net/2/) and the [client credentials](https://oauth.net/2/grant-types/client-credentials/) or [authorization code](https://oauth.net/2/grant-types/authorization-code/) grant types.
+

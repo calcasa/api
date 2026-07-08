@@ -11,3 +11,8 @@ options:
     new-line: lf
     seal-object-schemas: false
     omit-unreachable-types: false
+    openapi-versions:
+      - 3.0.0
+    file-type:
+      - yaml
+      - json

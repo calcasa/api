@@ -10,10 +10,9 @@ import "./operations/buurt.tsp";
 import "./operations/callbacks.tsp";
 import "./operations/configuratie.tsp";
 import "./operations/facturen.tsp";
+import "./operations/file_sets.tsp";
 import "./operations/fotos.tsp";
 import "./operations/funderingen.tsp";
 import "./operations/geldverstrekkers.tsp";
 import "./operations/rapporten.tsp";
 import "./operations/waarderingen.tsp";
-
-import "./operations/file_sets.tsp";

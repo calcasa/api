@@ -11,7 +11,7 @@ info:
   description: |-
     The Calcasa API is used to connect to Calcasa provided services.
     For more information, please visit [Documentation](https://docs.calcasa.nl) or [GitHub](https://github.com/calcasa/api).
-  version: 1.6.0-beta6
+  version: 1.6.0-beta7
 tags:
   - name: Adressen
   - name: Bestemmingsplannen
@@ -20,12 +20,12 @@ tags:
   - name: Callbacks
   - name: Configuratie
   - name: Facturen
+  - name: FileSets
   - name: Fotos
   - name: Funderingen
   - name: Geldverstrekkers
   - name: Rapporten
   - name: Waarderingen
-  - name: FileSets
 paths:
   /adressen/zoeken:
     post:
@@ -892,7 +892,7 @@ paths:
       operationId: ConfirmInboundFileSetById
       summary: Confirm an inbound file set after it has been fully uploaded.
       description: |-
-        Confirm an inbound file set after it has been fully uploaded. This will start verification of the file set. When the status is updated, the callback will be triggered with the new status. When validation fails, a new file set must be created. If the file set is not confirmed within 24 hours, it will expire and all its uploaded contents will be deleted.
+        Confirm an inbound file set after it has been fully uploaded. This will start verification of the file set. When the state is updated, the callback will be triggered with the new state. When validation fails, a new file set must be created. If the file set is not confirmed within 24 hours, it will expire and all its uploaded contents will be deleted.
 
         ### Callbacks
         | Name | Url | Schema |
@@ -1204,6 +1204,12 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/NotFoundProblemDetails'
+        '422':
+          description: Client error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/OutboundFileSetInvalidStateProblemDetails'
         default:
           description: An unexpected error response.
           content:
@@ -2308,7 +2314,7 @@ components:
         factuurnummer:
           type: string
           description: Het factuurnummer van de factuur.
-    FileError:
+    FileContentError:
       type: object
       required:
         - index
@@ -2376,6 +2382,26 @@ components:
           description: |-
             The content type of the file, which indicates the media type of the file contents. This is used to determine how to handle and process the file. For example, "application/pdf" for PDF files, "image/jpeg" for JPEG images, etc.
             Refer to [IANA Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml) for possible values.
+    FileNotice:
+      type: object
+      required:
+        - index
+        - name
+        - type
+        - description
+      properties:
+        index:
+          type: integer
+          format: int32
+        name:
+          type: string
+          example: data.csv
+        type:
+          type: string
+          description: The type of the warning. Short mostly stable strings that can be used to identify the warning type.
+        description:
+          type: string
+          description: A description of the warning to be presented to the user.
     FileSet:
       type: object
       required:
@@ -2462,26 +2488,6 @@ components:
           type: integer
           format: int32
           description: The time-to-live (TTL) for outbound file sets, in seconds. This value indicates how long an outbound file set will remain valid before it expires and is deleted if it is not downloaded. It helps manage the lifecycle of outbound file sets and ensures that they are processed within a certain timeframe.
-    FileWarning:
-      type: object
-      required:
-        - index
-        - name
-        - type
-        - description
-      properties:
-        index:
-          type: integer
-          format: int32
-        name:
-          type: string
-          example: data.csv
-        type:
-          type: string
-          description: The type of the warning. Short mostly stable strings that can be used to identify the warning type.
-        description:
-          type: string
-          description: A description of the warning to be presented to the user.
     Foto:
       type: object
       properties:
@@ -2835,20 +2841,27 @@ components:
         state:
           allOf:
             - $ref: '#/components/schemas/InboundFileSetState'
-          description: The current state of the inbound file set. This indicates the processing status of the file set.
+          description: The current state of the inbound file set. This indicates the processing state of the file set.
+          readOnly: true
+        contentErrors:
+          type: array
+          items:
+            $ref: '#/components/schemas/FileContentError'
+          description: Errors that occurred during the initial processing of the inbound file set. This is an array of FileContentError objects that provide details about each error, including the index of the file within the file set, the name of the file, the expected and actual SHA256 hash values, and the expected and actual file sizes.
           readOnly: true
         errors:
           type: array
           items:
-            $ref: '#/components/schemas/FileError'
-          description: Errors that occurred during the processing of the inbound file set. This is an array of FileError objects that provide details about each error, including the index of the file within the file set, the name of the file, the expected and actual SHA256 hash values, and the expected and actual file sizes.
+            $ref: '#/components/schemas/FileNotice'
+          nullable: true
+          description: Warnings that occurred during the processing of the inbound file set. This is an array of FileNotice objects that provide details about each warning, including the index of the file within the file set, the name of the file.
           readOnly: true
         warnings:
           type: array
           items:
-            $ref: '#/components/schemas/FileWarning'
+            $ref: '#/components/schemas/FileNotice'
           nullable: true
-          description: Warnings that occurred during the processing of the inbound file set. This is an array of FileWarning objects that provide details about each warning, including the index of the file within the file set, the name of the file.
+          description: Warnings that occurred during the processing of the inbound file set. This is an array of FileNotice objects that provide details about each warning, including the index of the file within the file set, the name of the file.
           readOnly: true
     InboundFileSetAlreadyExistsProblemDetails:
       type: object
@@ -2948,9 +2961,9 @@ components:
           type: string
           format: uuid
           description: The ID of the file set to which this callback pertains.
-        oldStatus:
+        oldState:
           $ref: '#/components/schemas/InboundFileSetState'
-        newStatus:
+        newState:
           $ref: '#/components/schemas/InboundFileSetState'
       description: The payload for the webhooks for the inbound file sets.
     InvalidArgumentProblemDetails:
@@ -3272,6 +3285,34 @@ components:
           description: The id of the inbound file set from which this outbound file set originated. This is used to track the relationship between inbound and outbound file sets. The tuple inboundFileSetId, type, revision and period should always be unique.
         state:
           $ref: '#/components/schemas/OutboundFileSetState'
+    OutboundFileSetInvalidStateProblemDetails:
+      type: object
+      required:
+        - state
+      properties:
+        state:
+          $ref: '#/components/schemas/OutboundFileSetState'
+        type:
+          type: string
+          nullable: true
+          description: A URI reference [RFC3986] that identifies the problem type.
+        title:
+          type: string
+          nullable: true
+          description: A short, human-readable summary of the problem type.
+        status:
+          type: integer
+          format: int32
+          nullable: true
+          description: The HTTP status code for this occurrence of the problem.
+        detail:
+          type: string
+          nullable: true
+          description: A human-readable explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          nullable: true
+          description: A URI reference that identifies the specific occurrence of the problem.
     OutboundFileSetState:
       type: string
       enum:
@@ -3312,9 +3353,9 @@ components:
           type: string
           format: uuid
           description: The ID of the file set to which this callback pertains.
-        oldStatus:
+        oldState:
           $ref: '#/components/schemas/OutboundFileSetState'
-        newStatus:
+        newState:
           $ref: '#/components/schemas/OutboundFileSetState'
       description: The payload for the webhooks for the outbound file sets.
     PermissionsDeniedProblemDetails:
@@ -4136,6 +4177,10 @@ components:
             api:configuratie:read: ''
             api:configuratie:write: ''
             api:facturen:read: ''
+            api:file-set:inbound:read: ''
+            api:file-set:inbound:write: ''
+            api:file-set:outbound:read: ''
+            api:file-set:outbound:write: ''
             api:fotos:read: ''
             api:funderingen:read: ''
             api:geldverstrekkers:read: ''
@@ -4144,10 +4189,6 @@ components:
             api:waarderingen:patch: ''
             api:waarderingen:ontwikkeling: ''
             api:waarderingen:create: ''
-            api:file-set:inbound:read: ''
-            api:file-set:inbound:write: ''
-            api:file-set:outbound:read: ''
-            api:file-set:outbound:write: ''
 servers:
   - url: https://api.calcasa.nl/api/{apiVersion}
     description: Production

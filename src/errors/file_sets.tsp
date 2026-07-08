@@ -8,7 +8,7 @@ import "../enums/file_sets.tsp";
 using Http;
 using OpenAPI;
 
-model FileError {
+model FileContentError {
     @key index: int32;
 
     @example("data.csv")
@@ -41,7 +41,7 @@ model FileError {
     actualFileSize: int64;
 }
 
-model FileWarning {
+model FileNotice {
     @key index: int32;
 
     @example("data.csv")
@@ -63,6 +63,15 @@ model InboundFileSetInvalidStateProblemDetails {
     @statusCode statusCode: 422;
 
     state: InboundFileSetState;
+
+    ...ProblemDetails;
+}
+
+@error
+model OutboundFileSetInvalidStateProblemDetails {
+    @statusCode statusCode: 422;
+
+    state: OutboundFileSetState;
 
     ...ProblemDetails;
 }

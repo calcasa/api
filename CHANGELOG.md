@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-07-08 (v1.6.0-beta7)
+- Renamed all `*FileSetWebhookPayload.*Status` to `*FileSetWebhookPayload.*State`.
+- Added `OutboundFileSetInvalidStateProblemDetails`.
+- Renamed `FileError` to `FileContentError`.
+- Renamed `FileWarning` to `FileNotice` so it can be used both for errors and warnings.
+- Renamed `InboundFileSet.errors` to `contentErrors` (type `FileContentError`); this field reports content integrity errors such as hash or size mismatches.
+- Added `InboundFileSet.errors` field (type `FileNotice[]`) for processing-level error notices.
+- `InboundFileSet.warnings` now uses `FileNotice` which was renamed from `FileWarning`.
+
 ## 2026-07-08 (v1.6.0-beta6)
 - Updated inbound file chunk upload endpoint to include `chunkIndex` in the route: `PUT /v1/file-sets/inbound/{fileSetId}/{fileIndex}/{chunkIndex}`.
 - Removed the `Content-Encoding` header parameter from inbound chunk uploads; compression is now a application level concern.

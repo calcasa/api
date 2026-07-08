@@ -157,22 +157,28 @@ model InboundFileSet {
     files?: InboundFileInfo[] | null;
 
     /**
-     * The current state of the inbound file set. This indicates the processing status of the file set.
+     * The current state of the inbound file set. This indicates the processing state of the file set.
      */
     @visibility(Lifecycle.Read)
     state: InboundFileSetState;
 
     /**
-     * Errors that occurred during the processing of the inbound file set. This is an array of FileError objects that provide details about each error, including the index of the file within the file set, the name of the file, the expected and actual SHA256 hash values, and the expected and actual file sizes.
+     * Errors that occurred during the initial processing of the inbound file set. This is an array of FileContentError objects that provide details about each error, including the index of the file within the file set, the name of the file, the expected and actual SHA256 hash values, and the expected and actual file sizes.
      */
     @visibility(Lifecycle.Read)
-    errors?: FileError[];
+    contentErrors?: FileContentError[];
 
     /**
-     * Warnings that occurred during the processing of the inbound file set. This is an array of FileWarning objects that provide details about each warning, including the index of the file within the file set, the name of the file.
+     * Warnings that occurred during the processing of the inbound file set. This is an array of FileNotice objects that provide details about each warning, including the index of the file within the file set, the name of the file.
      */
     @visibility(Lifecycle.Read)
-    warnings?: FileWarning[] | null;
+    errors?: FileNotice[] | null;
+
+    /**
+     * Warnings that occurred during the processing of the inbound file set. This is an array of FileNotice objects that provide details about each warning, including the index of the file within the file set, the name of the file.
+     */
+    @visibility(Lifecycle.Read)
+    warnings?: FileNotice[] | null;
 }
 
 /**
@@ -186,8 +192,8 @@ model InboundFileSetWebhookPayload {
      */
     @format("uuid") inboundFileSetId?: string;
 
-    oldStatus?: InboundFileSetState;
-    newStatus?: InboundFileSetState;
+    oldState?: InboundFileSetState;
+    newState?: InboundFileSetState;
 }
 
 /**
@@ -201,8 +207,8 @@ model OutboundFileSetWebhookPayload {
      */
     @format("uuid") outboundFileSetId?: string;
 
-    oldStatus?: OutboundFileSetState;
-    newStatus?: OutboundFileSetState;
+    oldState?: OutboundFileSetState;
+    newState?: OutboundFileSetState;
 }
 
 model FileSetLimits {

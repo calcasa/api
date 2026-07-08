@@ -20,6 +20,14 @@ DRY_RUN = True
 
 CLI_DOCKER_CONTAINER_VERSION = "openapitools/openapi-generator-cli:v7.23.0"
 
+# Order matters
+WEBHOOKS = {
+    "DeelWaarderingWebhookPayload": "deel-waardering",
+    "InboundFileSetWebhookPayload": "inbound-file-set",
+    "OutboundFileSetWebhookPayload": "outbound-file-set",
+    "WaarderingWebhookPayload": "waardering",
+}
+
 MAIN_DIR = Path(".")
 TEMPLATE_PATH = Path("templates")
 CONFIG_PATH = Path("configs")
@@ -69,8 +77,9 @@ CSHARP_SCHEMA_MAPPINGS_SERVER = {
     "ValuationStateImpossibleProblemDetail": "Calcasa.Protocols.OnlineValuation.Details.ValuationStateImpossibleProblemDetail",
     "BusinessRulesProblemDetails": "Calcasa.Api.Exceptions.Details.BusinessRulesProblemDetails",
     "ExpiredValuationProblemDetails": "Calcasa.Api.Exceptions.Details.ExpiredValuationProblemDetails",
-    "UnauthorizedProblemDetails": "Microsoft.AspNetCore.Mvc.ProblemDetails",  # TODO verify
+    "UnauthorizedProblemDetails": "Microsoft.AspNetCore.Mvc.ProblemDetails",
     "InboundFileSetInvalidStateProblemDetails": "Calcasa.Api.Exceptions.Details.InboundFileSetInvalidStateProblemDetails",
+    "OutboundFileSetInvalidStateProblemDetails": "Calcasa.Api.Exceptions.Details.OutboundFileSetInvalidStateProblemDetails",
     "InboundFileSetAlreadyExistsProblemDetails": "Microsoft.AspNetCore.Mvc.ProblemDetails",
     "LengthRequiredProblemDetails": "Microsoft.AspNetCore.Mvc.ProblemDetails",
     "ContentTooLargeProblemDetails": "Calcasa.Api.Exceptions.Details.ContentTooLargeProblemDetails",
@@ -503,24 +512,18 @@ def postprocess_aspnetcore(dir: Path, dir_format: Path):
             content = content.replace(
                 "public abstract async Task", "public abstract Task"
             )
-        elif "DeelWaarderingWebhookPayload" in content:
-            content = content.replace(
-                "DeelWaarderingWebhookPayload",
-                "DeelWaarderingWebhookPayload : Calcasa.Api.Webhooks.IWebhookPayload",
-            )
-            content = content.replace(
-                '[Required]\n        [DataMember(Name="callbackName", EmitDefaultValue=false)]\n        public string CallbackName { get; set; }',
-                '[DataMember(Name="callbackName", EmitDefaultValue=false)]\n        public string CallbackName => "deel-waardering";',
-            )
-        elif "WaarderingWebhookPayload" in content:
-            content = content.replace(
-                "WaarderingWebhookPayload",
-                "WaarderingWebhookPayload : Calcasa.Api.Webhooks.IWebhookPayload",
-            )
-            content = content.replace(
-                '[Required]\n        [DataMember(Name="callbackName", EmitDefaultValue=false)]\n        public string CallbackName { get; set; }',
-                '[DataMember(Name="callbackName", EmitDefaultValue=false)]\n        public string CallbackName => "waardering";',
-            )
+        else:
+            for webhook_class, callback_name in WEBHOOKS.items():
+                target = f'class {webhook_class}'
+                if target in content:
+                    content = content.replace(
+                        target,
+                        f"{target} : Calcasa.Api.Webhooks.IWebhookPayload",
+                    )
+                    content = content.replace(
+                        '[Required]\n        [DataMember(Name="callbackName", EmitDefaultValue=false)]\n        public string CallbackName { get; set; }',
+                        f'[DataMember(Name="callbackName", EmitDefaultValue=false)]\n        public string CallbackName => "{callback_name}";',
+                    )
         with file.open("w") as f:
             f.write(content)
     cwd = os.getcwd()
@@ -620,6 +623,7 @@ def main():
             break
 
     SPEC_FILE = Path(f"tsp-output/@typespec/openapi3/openapi.{VERSION}.yaml")
+    SPEC_FILE_JSON = Path(f"tsp-output/@typespec/openapi3/openapi.{VERSION}.json")
     print(f"Compiling TypeSpec...")
 
     if tsp_compile(MAIN_DIR / "src"):
@@ -718,11 +722,8 @@ def main():
                             docs_dir,
                             dirs_exist_ok=True,
                             ignore=shutil.ignore_patterns(
-                                ".github",
-                                "git_push.sh",
-                                "appveyor.yml",
-                                "test",
-                                "**/README.md",
+                                ".openapi-generator",
+                                ".openapi-generator-ignore",
                             ),
                         )
                 elif language == "aspnetcore":
@@ -771,14 +772,7 @@ def main():
                         )
                         docs_dir.mkdir(parents=True, exist_ok=True)
                         shutil.copy2(SPEC_FILE, docs_dir / "openapi.yaml")
-                        shutil.copy2(
-                            gen_dir
-                            / "src"
-                            / "Calcasa.Api.V1"
-                            / "wwwroot"
-                            / "openapi-original.json",
-                            docs_dir / "openapi.json",
-                        )
+                        shutil.copy2(SPEC_FILE_JSON, docs_dir / "openapi.json")
                         shutil.copy2(
                             public_api_service_dir / ".editorconfig",
                             calcasa_api_dir.parent / ".editorconfig",

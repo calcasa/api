@@ -92,7 +92,7 @@ namespace FileSets {
         | ProblemDetails;
 
     /**
-     * Confirm an inbound file set after it has been fully uploaded. This will start verification of the file set. When the status is updated, the callback will be triggered with the new status. When validation fails, a new file set must be created. If the file set is not confirmed within 24 hours, it will expire and all its uploaded contents will be deleted.
+     * Confirm an inbound file set after it has been fully uploaded. This will start verification of the file set. When the state is updated, the callback will be triggered with the new state. When validation fails, a new file set must be created. If the file set is not confirmed within 24 hours, it will expire and all its uploaded contents will be deleted.
      *
      * ### Callbacks
      * | Name | Url | Schema |
@@ -152,6 +152,7 @@ namespace FileSets {
         fileIndex: int32,
     ):
         | File<"application/octet-stream", Contents = bytes>
+        | OutboundFileSetInvalidStateProblemDetails
         | NotFoundProblemDetails
         | UnauthorizedProblemDetails
         | ProblemDetails;
