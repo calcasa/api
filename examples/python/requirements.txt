@@ -2,5 +2,7 @@ requests
 oauthlib
 requests-oauthlib
 python-dotenv
+brotli
+brotli-stubs
 file:./../../libraries/api-python
 #calcasa-api==1.3.1

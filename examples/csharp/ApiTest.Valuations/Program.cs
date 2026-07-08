@@ -9,9 +9,11 @@ using Calcasa.Api.Client;
 using Calcasa.Api.Model;
 using Microsoft.AspNetCore.JsonPatch.Operations;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 // Shared bootstrap: loads .env values and configures OAuth + API host.
 var host = ExamplesConfiguration.CreateApiHost(args);
+var logger = host.Services.GetRequiredService<ILoggerFactory>().CreateLogger("ApiTest.Valuations");
 
 var aa = host.Services.GetRequiredService<IAdressenApi>();
 var ca = host.Services.GetRequiredService<IConfiguratieApi>();
@@ -30,13 +32,13 @@ var adresInfoResponse = await aa.SearchAdresAsync(adres); // Check the adres aga
 
 if (!adresInfoResponse.TryOk(out var adresInfo)) adresInfoResponse.HandleErrorResponse();
 
-Console.WriteLine(adresInfo);
+logger.LogInformation("{AdresInfo}", adresInfo);
 
 var officeAddressInfoResponse = await aa.GetAdresAsync(307200000435341); // Get address information based on the BAG Nummeraanduiding ID.
 
 if (!officeAddressInfoResponse.TryOk(out var officeAddressInfo)) officeAddressInfoResponse.HandleErrorResponse();
 
-Console.WriteLine(officeAddressInfo);
+logger.LogInformation("{OfficeAddressInfo}", officeAddressInfo);
 
 /* ----------------------- *
 * Configuration endpoints *
@@ -52,7 +54,7 @@ if (!configsResponse.TryOk(out var configs)) officeAddressInfoResponse.HandleErr
 
 foreach (var config in configs)
 {
-    Console.WriteLine(config);
+    logger.LogInformation("{Config}", config);
 }
 
 //This is a test so we will reset it to an empty value to disable the webhook. If you are not returning HTTP 200, please disable the unused callback to reduce request spam from our infrastructure to the endpoint configured.
@@ -63,7 +65,7 @@ if (!configsResetResponse.TryOk(out var configsReset)) configsResetResponse.Hand
 
 foreach (var config in configsReset)
 {
-    Console.WriteLine(config);
+    logger.LogInformation("{Config}", config);
 }
 
 /* ---------------------- *
@@ -89,7 +91,7 @@ var waarderingOutputResponse = await wa.CreateWaarderingAsync(waarderingInput);
 
 if (!waarderingOutputResponse.TryOk(out var waarderingOutput)) waarderingOutputResponse.HandleErrorResponse();
 
-Console.WriteLine(waarderingOutput);
+logger.LogInformation("{WaarderingOutput}", waarderingOutput);
 
 //Save the Id for future reference.
 var id = waarderingOutput.Id;
@@ -109,7 +111,7 @@ if (!waarderingOutputAfterPatchResponse.TryOk(out var waarderingOutputAfterPatch
 // Now is a good time to persist the Id and the other information to a database.
 
 // Some time later. (Note this sleep simulation only works for test requests, in the real world valuations might be much slower depending on the ProductType.
-Console.WriteLine("Waiting 10 seconds...");
+logger.LogInformation("Waiting 10 seconds...");
 await Task.Delay(10_000);
 
 // The webhook will fire when the status has changed succesfully.
@@ -133,10 +135,10 @@ if (webhookPayload.NewStatus == WaarderingStatus.Voltooid)
 
     if (!completeWaarderingResponse.TryOk(out var completeWaardering)) completeWaarderingResponse.HandleErrorResponse();
 
-    await HandleAndPersistValuation(completeWaardering, ra, fa, pa);
+    await HandleAndPersistValuation(completeWaardering, ra, fa, pa, logger);
 }
 
-Console.WriteLine($"Done with valuation {id}.");
+logger.LogInformation("Done with valuation {WaarderingId}.", id);
 
 
 //If instead you want to find the waarderingen objects and you don't have the Ids this endpoint lets your search for them. The ProductType and BAG Id are required, we can reuse the results from our previous SearchAdres call.
@@ -149,27 +151,27 @@ if (!waarderingenResponse.TryOk(out var waarderingen)) waarderingenResponse.Hand
 foreach (var waardering in waarderingen)
 {
     // This would give you the oppurtunity to grab the lastest one for example or filter further to pick the one you need.
-    Console.WriteLine($"Found: {waardering.Id}");
+    logger.LogInformation("Found: {WaarderingId}", waardering.Id);
 }
 if (waarderingen.Any())
 {
     // This is how you get the latest valuation to for example download the Report.
     var lastValuationForAddress = waarderingen.OrderByDescending(w => w.Aangemaakt).First();
 
-    Console.WriteLine($"Last valuation: {lastValuationForAddress.Id}");
-    await HandleAndPersistValuation(lastValuationForAddress, ra, fa, pa);
+    logger.LogInformation("Last valuation: {WaarderingId}", lastValuationForAddress.Id);
+    await HandleAndPersistValuation(lastValuationForAddress, ra, fa, pa, logger);
 }
 
 
-static async Task HandleAndPersistValuation(Waardering completeWaardering, IRapportenApi ra, IFacturenApi fa, IFotosApi pa)
+static async Task HandleAndPersistValuation(Waardering completeWaardering, IRapportenApi ra, IFacturenApi fa, IFotosApi pa, ILogger logger)
 {
     // For example inspect the Model output and persist it locally. (Remember that every field can be null).
     var marktwaarde = completeWaardering.Model?.Marktwaarde;
-    Console.WriteLine($"Marktwaarde: {marktwaarde}");
+    logger.LogInformation("Marktwaarde: {Marktwaarde}", marktwaarde);
 
     //For select product types the result of the manual valuation is also available.
     var taxatiestatus = completeWaardering.Taxatie?.Status;
-    Console.WriteLine($"Taxatiestatus: {taxatiestatus}");
+    logger.LogInformation("Taxatiestatus: {Taxatiestatus}", taxatiestatus);
 
     // Do we have a photo?
     if (completeWaardering.Rapport != null && completeWaardering.Rapport.Id != Guid.Empty)
@@ -185,7 +187,7 @@ static async Task HandleAndPersistValuation(Waardering completeWaardering, IRapp
             fileName = $"calcasa-report-{reportResponse.ContentHeaders.ContentDisposition.FileName}";
         }
 
-        Console.WriteLine($"Saving {fileName}");
+        logger.LogInformation("Saving {FileName}", fileName);
         //Process the PDF file, for example save it to a file.
         using (var fileStream = File.Create(fileName))
         {
@@ -218,7 +220,7 @@ static async Task HandleAndPersistValuation(Waardering completeWaardering, IRapp
         {
             fileName = $"calcasa-invoice-{invoiceResponse.ContentHeaders.ContentDisposition.FileName}";
         }
-        Console.WriteLine($"Saving {fileName}");
+        logger.LogInformation("Saving {FileName}", fileName);
         //Process the PDF file, for example save it to a file.
         using (var fileStream = File.Create(fileName))
         {
@@ -242,7 +244,7 @@ static async Task HandleAndPersistValuation(Waardering completeWaardering, IRapp
                 fileName = $"calcasa-photo-{photoResponse.ContentHeaders.ContentDisposition.FileName}";
             }
 
-            Console.WriteLine($"Saving {fileName}");
+            logger.LogInformation("Saving {FileName}", fileName);
             //Process the PDF file, for example save it to a file.
             using (var fileStream = File.Create(fileName))
             {

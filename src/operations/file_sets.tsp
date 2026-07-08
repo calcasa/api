@@ -70,18 +70,18 @@ namespace FileSets {
         | ProblemDetails;
 
     /**
-     * Upload a specific file chunk for an inbound file set. All chunks must be uploaded in order, if the file is small enough, it can be uploaded in a single request. Total size must not exceed reported file size in the file set.
+     * Upload a specific file chunk for an inbound file set. All chunks must be uploaded with consecutive chunk indices, if the file is small enough, it can be uploaded in a single request. Total size must not exceed reported file size in the file set.
      */
     @useAuth(oauth<["api:file-set:inbound:write"]>)
-    @route("/inbound/{inboundFileSetId}/{fileIndex}")
+    @route("/inbound/{inboundFileSetId}/{fileIndex}/{chunkIndex}")
     @put
     @summary("Upload a specific file chunk for an inbound file set.")
     @operationId("PutFileChunk")
     op PutFileChunk(
         @format("uuid") inboundFileSetId: string,
         fileIndex: int32,
-        @header contentEncoding?: "br" | "gzip" | "deflate" | "identity",
-        @bodyRoot file: File<"application/octet-stream", Contents = bytes>
+        chunkIndex: int32,
+        @bodyRoot file: File<"application/octet-stream", Contents = bytes>,
     ):
         | NoContentResponse
         | InvalidArgumentProblemDetails

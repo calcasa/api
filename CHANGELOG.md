@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-07-08 (v1.6.0-beta6)
+- Updated inbound file chunk upload endpoint to include `chunkIndex` in the route: `PUT /v1/file-sets/inbound/{fileSetId}/{fileIndex}/{chunkIndex}`.
+- Removed the `Content-Encoding` header parameter from inbound chunk uploads; compression is now a application level concern.
+- Added `CompressionType` enum (`none`, `brotli`, `gzip`) and new `InboundFileInfo` model with optional `compression` (default `none`).
+- Changed inbound file set request/response models to use `InboundFileInfo` instead of `FileInfo`.
+- Made `CreateInboundFileSetRequest.files` required.
+- Moved `files` from base `FileSet` to concrete `InboundFileSet` and `OutboundFileSet` models.
+- Updated C# and Python file set examples to the new chunk upload contract and compression flow.
+
+
 ## 2026-07-07 (v1.6.0-beta5)
 - Changed the inbound file set confirmation error to `InboundFileSetInvalidStateProblemDetails` with HTTP 422 and a `state` field.
 - Made inbound file set upload request bodies explicit `application/octet-stream`.

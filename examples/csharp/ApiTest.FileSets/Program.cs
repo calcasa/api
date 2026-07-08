@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
+using System.IO.Pipelines;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -8,7 +10,9 @@ using ApiTest.Shared;
 using Calcasa.Api.Api;
 using Calcasa.Api.Client;
 using Calcasa.Api.Model;
+using CommunityToolkit.HighPerformance;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using MimeKit;
 using FileInfo = Calcasa.Api.Model.FileInfo;
 
@@ -16,6 +20,7 @@ const string FileSetType = "test-file-set";
 
 // Shared bootstrap: loads .env values and configures OAuth + API host.
 var host = ExamplesConfiguration.CreateApiHost(args);
+var logger = host.Services.GetRequiredService<ILoggerFactory>().CreateLogger("ApiTest.FileSets");
 var fileSetDirectory = ExamplesConfiguration.GetRequiredEnvironmentVariable("CALCASA_TEST_FILE_SET_PATH");
 
 if (!Directory.Exists(fileSetDirectory))
@@ -23,14 +28,14 @@ if (!Directory.Exists(fileSetDirectory))
     throw new DirectoryNotFoundException($"Directory {fileSetDirectory} not found.");
 }
 
-Console.WriteLine($"Found test file set path: {fileSetDirectory}");
+logger.LogInformation("Found test file set path: {FileSetDirectory}", fileSetDirectory);
 
 var fileSetRevision = GetFileSetRevision();
 
 // Build a deterministic local manifest first so file metadata and order are stable.
 var fs = host.Services.GetRequiredService<IFileSetsApi>();
 var manifest = BuildFileManifest(fileSetDirectory);
-PrintManifest(manifest);
+PrintManifest(manifest, logger);
 
 // Read inbound limits and validate before uploading any file data.
 var limitsResponse = await fs.GetFileSetLimitsAsync();
@@ -42,7 +47,7 @@ if (!limitsResponse.TryOk(out var limitsResult) || limitsResult is null)
 
 var limits = limitsResult;
 
-PrintLimits(limits);
+PrintLimits(limits, logger);
 ValidateManifestAgainstLimits(manifest, limits);
 
 var chunkSizeBytesLong = checked(limits.InboundMaxCompressedChunkSizeInKiloBytes * 1000L);
@@ -66,8 +71,9 @@ var createRequest = new CreateInboundFileSetRequest(
     files: manifest.Select(entry => entry.ApiFile).ToList()
 );
 
-Console.WriteLine(
-    $"Using file set identity type={FileSetType}, revision={fileSetRevision}, period={createRequest.Period}."
+logger.LogInformation(
+    "Using file set identity type={FileSetType}, revision={FileSetRevision}, period={Period}.",
+    FileSetType, fileSetRevision, createRequest.Period
 );
 
 var inboundFileSetResponse = await fs.CreateInboundFileSetAsync(createRequest);
@@ -80,10 +86,10 @@ if (!inboundFileSetResponse.TryOk(out var inboundFileSetResult) || inboundFileSe
 var inboundFileSet = inboundFileSetResult;
 
 var inboundFileSetId = inboundFileSet.Id;
-Console.WriteLine($"Created inbound file set {inboundFileSetId} with state {inboundFileSet.State}.");
+logger.LogInformation("Created inbound file set {InboundFileSetId} with state {State}.", inboundFileSetId, inboundFileSet.State);
 
 // Upload all files chunk-by-chunk, then confirm to start server-side verification.
-await UploadManifestAsync(fs, inboundFileSetId, manifest, chunkSizeBytes);
+await UploadManifestAsync(fs, inboundFileSetId, manifest, chunkSizeBytes, logger);
 
 var confirmedFileSetResponse = await fs.ConfirmInboundFileSetByIdAsync(inboundFileSetId);
 if (!confirmedFileSetResponse.TryOk(out var confirmedFileSetResult) || confirmedFileSetResult is null)
@@ -94,7 +100,7 @@ if (!confirmedFileSetResponse.TryOk(out var confirmedFileSetResult) || confirmed
 
 var confirmedFileSet = confirmedFileSetResult;
 
-Console.WriteLine($"Confirmed inbound file set {confirmedFileSet.Id} with state {confirmedFileSet.State}.");
+logger.LogInformation("Confirmed inbound file set {InboundFileSetId} with state {State}.", confirmedFileSet.Id, confirmedFileSet.State);
 
 static int GetFileSetRevision()
 {
@@ -143,12 +149,13 @@ static List<LocalFileEntry> BuildFileManifest(string rootDirectory)
         }
 
         var fileInfo = new System.IO.FileInfo(filePath);
-        var apiFile = new FileInfo(
+        var apiFile = new InboundFileInfo(
             index: index,
             name: relativeName,
             contentHash: CalculateSha256(filePath),
             size: fileInfo.Length,
-            contentType: contentType
+            contentType: contentType,
+            compression: CompressionType.Gzip // Change if appropriate if you use a different compression method.
         );
 
         manifest.Add(new LocalFileEntry(filePath, apiFile));
@@ -164,25 +171,78 @@ static string CalculateSha256(string filePath)
     return Convert.ToHexString(sha256.ComputeHash(stream));
 }
 
-static void PrintManifest(IReadOnlyList<LocalFileEntry> manifest)
+static void PrintManifest(IReadOnlyList<LocalFileEntry> manifest, ILogger logger)
 {
-    Console.WriteLine($"Preparing {manifest.Count} files for upload:");
+    logger.LogInformation("Preparing {FileCount} files for upload:", manifest.Count);
     foreach (var entry in manifest)
     {
-        Console.WriteLine(
-            $"- [{entry.ApiFile.Index}] {entry.ApiFile.Name} ({entry.ApiFile.Size} bytes, {entry.ApiFile.ContentType})"
+        logger.LogInformation(
+            "- [{Index}] {Name} ({Size} bytes, {ContentType})",
+            entry.ApiFile.Index, entry.ApiFile.Name, entry.ApiFile.Size, entry.ApiFile.ContentType
         );
     }
 }
 
-static void PrintLimits(FileSetLimits limits)
+static UploadReadStream CreateUploadReadStream(LocalFileEntry entry)
 {
-     Console.WriteLine(
-        $"Inbound limits: maxFiles={limits.InboundMaxTotalFiles}, " +
-        $"maxFileSize={limits.InboundMaxFileSizeInKiloBytes * 1000L} bytes, " +
-        $"maxTotalSize={limits.InboundMaxTotalSizeInKiloBytes * 1000L} bytes, " +
-        $"maxChunkSize={limits.InboundMaxCompressedChunkSizeInKiloBytes * 1000L} bytes, " +
-        $"ttl={limits.InboundTtlInSeconds} seconds"
+    // Stream compressed data through a pipe so uploads do not buffer full compressed files in memory.
+    var fileStream = File.OpenRead(entry.Path);
+
+    if (entry.ApiFile.Compression != CompressionType.Gzip && entry.ApiFile.Compression != CompressionType.Brotli)
+    {
+        return new UploadReadStream(fileStream, static stream => stream.DisposeAsync());
+    }
+
+    var pipe = new Pipe();
+    var readerStream = pipe.Reader.AsStream();
+
+    var compressionTask = Task.Run(async () =>
+    {
+        try
+        {
+            await using var sourceStream = fileStream;
+            await using var writerStream = pipe.Writer.AsStream(leaveOpen: true);
+
+            if (entry.ApiFile.Compression == CompressionType.Brotli)
+            {
+                await using var compressedStream = new BrotliStream(writerStream, CompressionLevel.Optimal, leaveOpen: true);
+                await sourceStream.CopyToAsync(compressedStream);
+            }
+            else
+            {
+                await using var compressedStream = new GZipStream(writerStream, CompressionLevel.Optimal, leaveOpen: true);
+                await sourceStream.CopyToAsync(compressedStream);
+            }
+
+            await pipe.Writer.CompleteAsync();
+        }
+        catch (Exception ex)
+        {
+            await pipe.Writer.CompleteAsync(ex);
+            throw;
+        }
+    });
+
+    return new UploadReadStream(
+        readerStream,
+        async stream =>
+        {
+            await compressionTask;
+            await stream.DisposeAsync();
+            await pipe.Reader.CompleteAsync();
+        }
+    );
+}
+
+static void PrintLimits(FileSetLimits limits, ILogger logger)
+{
+    logger.LogInformation(
+        "Inbound limits: maxFiles={MaxFiles}, maxFileSize={MaxFileSize} bytes, maxTotalSize={MaxTotalSize} bytes, maxChunkSize={MaxChunkSize} bytes, ttl={Ttl} seconds",
+        limits.InboundMaxTotalFiles,
+        limits.InboundMaxFileSizeInKiloBytes * 1000L,
+        limits.InboundMaxTotalSizeInKiloBytes * 1000L,
+        limits.InboundMaxCompressedChunkSizeInKiloBytes * 1000L,
+        limits.InboundTtlInSeconds
     );
 }
 
@@ -221,33 +281,41 @@ static async Task UploadManifestAsync(
     IFileSetsApi fileSetsApi,
     Guid inboundFileSetId,
     IReadOnlyList<LocalFileEntry> manifest,
-    int chunkSizeBytes)
+    int chunkSizeBytes,
+    ILogger logger)
 {
     // Reuse a single buffer and stream each file in API-sized chunks.
-    var buffer = new byte[chunkSizeBytes];
+    Memory<byte> buffer = new byte[chunkSizeBytes];
 
     foreach (var entry in manifest)
     {
-        Console.WriteLine(
-            $"Uploading file [{entry.ApiFile.Index}] {entry.ApiFile.Name} in chunks of up to {chunkSizeBytes} bytes..."
+        logger.LogInformation(
+            "Uploading file [{Index}] {Name} in chunks of up to {ChunkSizeBytes} bytes...",
+            entry.ApiFile.Index, entry.ApiFile.Name, chunkSizeBytes
         );
 
         long uploadedBytes = 0;
         var chunkCount = 0;
 
-        await using var fileStream = File.OpenRead(entry.Path);
+        await using var uploadReadStream = CreateUploadReadStream(entry);
+
+        int idx = 0;
         int bytesRead;
-        while ((bytesRead = await fileStream.ReadAsync(buffer.AsMemory(0, buffer.Length))) > 0)
+
+        while ((bytesRead = await ReadChunkAsync(uploadReadStream.Stream, buffer)) > 0)
         {
             chunkCount++;
 
-            await using var chunkStream = new MemoryStream(buffer, 0, bytesRead, writable: false);
+            var slice = buffer[..bytesRead];
+
             var uploadResponse = await fileSetsApi.PutFileChunkAsync(
                 inboundFileSetId: inboundFileSetId,
                 fileIndex: entry.ApiFile.Index,
-                body: new FileParameter(chunkStream),
-                contentEncoding: "identity"
+                chunkIndex: idx,
+                body: new FileParameter(slice.AsStream())
             );
+
+            idx += 1;
 
             if (!uploadResponse.IsSuccessStatusCode)
             {
@@ -255,13 +323,40 @@ static async Task UploadManifestAsync(
             }
 
             uploadedBytes += bytesRead;
-            Console.WriteLine(
-                $"  chunk {chunkCount}: sent {bytesRead} bytes ({uploadedBytes}/{entry.ApiFile.Size})"
+            logger.LogInformation(
+                "Chunk {ChunkCount}: sent {BytesRead} bytes ({UploadedBytes}/{TotalSize})",
+                chunkCount, bytesRead, uploadedBytes, entry.ApiFile.Size
             );
         }
 
-        Console.WriteLine($"Completed upload for {entry.ApiFile.Name}.");
+        logger.LogInformation("Completed upload for {Name}.", entry.ApiFile.Name);
     }
 }
 
-sealed record LocalFileEntry(string Path, FileInfo ApiFile);
+static async Task<int> ReadChunkAsync(Stream stream, Memory<byte> buffer)
+{
+    var totalRead = 0;
+
+    while (totalRead < buffer.Length)
+    {
+        var bytesRead = await stream.ReadAsync(buffer[totalRead..]);
+        if (bytesRead == 0)
+        {
+            break;
+        }
+
+        totalRead += bytesRead;
+    }
+
+    return totalRead;
+}
+
+sealed record LocalFileEntry(string Path, InboundFileInfo ApiFile);
+
+sealed class UploadReadStream(Stream stream, Func<Stream, ValueTask> disposeAsync)
+    : IAsyncDisposable
+{
+    public Stream Stream { get; } = stream;
+
+    public ValueTask DisposeAsync() => disposeAsync(Stream);
+}

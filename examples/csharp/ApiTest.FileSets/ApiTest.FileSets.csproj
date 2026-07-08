@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="CommunityToolkit.HighPerformance" Version="8.4.2" />
     <PackageReference Include="MimeKitLite" Version="4.17.0" />
     <ProjectReference Include="..\ApiTest.Shared\ApiTest.Shared.csproj" />
   </ItemGroup>

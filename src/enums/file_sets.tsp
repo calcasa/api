@@ -44,3 +44,18 @@ enum InboundFileSetState {
     rejected,
     expired,
 }
+
+/**
+ * Compression types for file chunks. Use `identity` for no compression.
+ * 
+ * | Value | Description |
+ * | --- | --- |
+ * | `none` | No compression. |
+ * | `brotli` | Brotli compression. |
+ * | `gzip` | Gzip compression. |
+ */
+enum CompressionType {
+    none,
+    brotli,
+    gzip
+}

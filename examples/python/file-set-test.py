@@ -7,12 +7,13 @@ from pathlib import Path
 from typing import Iterator
 from uuid import UUID
 
+from calcasa.api import CompressionType, InboundFileInfo
 from calcasa.api.api.file_sets_api import FileSetsApi
 from calcasa.api.models.create_inbound_file_set_request import CreateInboundFileSetRequest
-from calcasa.api.models.file_info import FileInfo
 from calcasa.api.models.file_set_limits import FileSetLimits
 
-from common import create_api_client, get_required_env, load_example_environment
+from common import BrotliCompressReadStream, GzipCompressReadStream, create_api_client, get_required_env, load_example_environment
+from brotli import MODE_GENERIC, MODE_TEXT
 
 
 FILE_SET_TYPE = "test-file-set"
@@ -25,7 +26,7 @@ FILE_SET_REVISION = int(
 @dataclass(frozen=True)
 class LocalFileEntry:
     path: Path
-    api_file: FileInfo
+    api_file: InboundFileInfo
 
 
 def calculate_sha256(file_path: Path) -> str:
@@ -49,12 +50,13 @@ def build_file_manifest(root_path: Path) -> list[LocalFileEntry]:
 
     for index, file_path in enumerate(files):
         relative_name = file_path.relative_to(root_path).as_posix()
-        api_file = FileInfo(
+        api_file = InboundFileInfo(
             index=index,
             name=relative_name,
             contentHash=calculate_sha256(file_path),
             size=file_path.stat().st_size,
-            contentType=mimetypes.guess_type(file_path)[0] or "application/octet-stream"
+            contentType=mimetypes.guess_type(file_path)[0] or "application/octet-stream",
+            compression=CompressionType.GZIP, # The server will decompress automatically. All chunks are concatenated and then decompressed.
         )
         manifest.append(LocalFileEntry(path=file_path, api_file=api_file))
 
@@ -92,15 +94,27 @@ def validate_manifest_against_limits(
                 f"{limits.inbound_max_file_size_in_kilo_bytes} ({max_file_size_bytes} bytes)."
             )
 
+def is_text_file(content_type: str) -> bool:
+    return content_type.startswith("text/") or "json" in content_type or "yaml" in content_type
 
-def iter_file_chunks(file_path: Path, chunk_size_bytes: int) -> Iterator[bytes]:
-    with file_path.open("rb") as handle:
+def iter_file_chunks(entry: LocalFileEntry, chunk_size_bytes: int) -> Iterator[tuple[int, bytes]]:
+    idx = 0
+    with entry.path.open("rb") as handle:
+        if entry.api_file.compression == CompressionType.GZIP:
+            # You can of course also read already compressed Gzip files from disk and send them as-is to the server. Or you can just run gzip cli to stdout etc.
+            compressed_stream = GzipCompressReadStream(fileobj=handle)
+        elif entry.api_file.compression == CompressionType.BROTLI:
+            # You can of course also read already compressed Brotli files from disk and send them as-is to the server. Or you can just run brotli cli to stdout etc.
+            mode = MODE_TEXT if is_text_file(entry.api_file.content_type) else MODE_GENERIC
+            compressed_stream = BrotliCompressReadStream(fileobj=handle, mode=mode) # compresslevel 2 seems to be most optimal for speed vs compression.
+        else:
+            compressed_stream = handle
         while True:
-            chunk = handle.read(chunk_size_bytes)
+            chunk = compressed_stream.read(chunk_size_bytes)
             if not chunk:
                 break
-
-            yield chunk
+            yield idx, chunk
+            idx += 1
 
 
 def print_manifest(manifest: list[LocalFileEntry]) -> None:
@@ -128,20 +142,18 @@ def upload_manifest(
         uploaded_bytes = 0
         chunk_count = 0
 
-        for chunk in iter_file_chunks(entry.path, chunk_size_bytes):
+        for idx, chunk in iter_file_chunks(entry, chunk_size_bytes):
             chunk_count += 1
             api.put_file_chunk(
                 inbound_file_set_id=inbound_file_set_id,
                 file_index=entry.api_file.index,
-                body=chunk,
-                content_encoding="identity",
-                #_headers={"Content-Type": "application/octet-stream"},
-                #contentType="application/octet-stream" # Always upload as octet-stream, even if the file has a known MIME type when putting the actual chunk. The API client needs this to send the buffer as-is.
+                chunk_index=idx,
+                body=chunk
             )
             uploaded_bytes += len(chunk)
             print(
                 f"  chunk {chunk_count}: sent {len(chunk)} bytes "
-                f"({uploaded_bytes}/{entry.api_file.size})"
+                f"({uploaded_bytes}/{entry.api_file.size}) "
             )
 
         print(f"Completed upload for {entry.api_file.name}.")

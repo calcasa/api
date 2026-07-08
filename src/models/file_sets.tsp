@@ -45,6 +45,17 @@ model FileInfo {
     contentType: string;
 }
 
+model InboundFileInfo {
+    ...FileInfo;
+
+    /** 
+     * The compression algorithm used for the file. This only applied to inboud files.
+     * All chunks will be concatenated and then decompressed. The compression type is used to determine how the file contents are processed and stored. It is important to specify the correct compression type to ensure that the file can be properly decompressed and read.
+     * The compression type is optional and defaults to "none" if not specified.
+     */
+    compression?: CompressionType = CompressionType.none;
+}
+
 model FileSet {
     /**
      * The file set ID, which is a unique identifier for the file set. This ID is used to track and manage the file set throughout its lifecycle.
@@ -54,11 +65,6 @@ model FileSet {
     @key
     @format("uuid")
     id: string;
-
-    /**
-     * The files associated with the file set.
-     */
-    files?: FileInfo[] | null;
 
     @visibility(Lifecycle.Read)
     @example(utcDateTime.fromISO("2021-04-28T12:34:45Z"))
@@ -103,7 +109,7 @@ model CreateInboundFileSetRequest {
     /**
      * The files associated with the file set.
      */
-    files?: FileInfo[] | null;
+    files: InboundFileInfo[];
 
     /**
      * The type of the file set.
@@ -130,6 +136,11 @@ model OutboundFileSet {
     ...FileSet;
 
     /**
+     * The files associated with the file set.
+     */
+    files?: FileInfo[] | null;
+
+    /**
      * The id of the inbound file set from which this outbound file set originated. This is used to track the relationship between inbound and outbound file sets. The tuple inboundFileSetId, type, revision and period should always be unique.
      */
     @format("uuid") inboundFileSetId: string;
@@ -139,6 +150,11 @@ model OutboundFileSet {
 
 model InboundFileSet {
     ...FileSet;
+
+    /**
+     * The files associated with the file set.
+     */
+    files?: InboundFileInfo[] | null;
 
     /**
      * The current state of the inbound file set. This indicates the processing status of the file set.
