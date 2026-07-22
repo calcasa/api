@@ -1314,8 +1314,11 @@ ul.nav-tabs {
       "format" : "int32"
     },
     "name" : {
+      "maxLength" : 128,
+      "minLength" : 1,
+      "pattern" : "^[A-Za-z0-9-_\\.\\[\\]\\{\\}\\(\\)/ ]+$",
       "type" : "string",
-      "description" : "The name of the file, including its extension. This needs to be unique within the file set.",
+      "description" : "The name of the file, including its extension. This needs to be unique within the file set. \nThis can contain '/' as the directory separator, but the file name cannot start or end with a '/' and cannot contain consecutive '/' characters.\nCan contain A-Z, a-z, 0-9, a space and '-./{}[]()' characters. The maximum length is 128 characters.",
       "example" : "data.csv"
     },
     "contentHash" : {
@@ -1567,7 +1570,16 @@ ul.nav-tabs {
       "nullable" : true
     },
     "bron" : {
-      "$ref" : "#/components/schemas/FunderingDataBron"
+      "description" : "De bron van de funderingsdata, dit is eigenlijk altijd `fundermaps` voor nieuwe aanvragen.",
+      "allOf" : [ {
+        "$ref" : "#/components/schemas/FunderingDataBron"
+      } ]
+    },
+    "risicobron" : {
+      "description" : "Een afgeleide waarde van de losse risico bronnen.",
+      "allOf" : [ {
+        "$ref" : "#/components/schemas/FunderingSoortBron"
+      } ]
     },
     "risicolabel" : {
       "$ref" : "#/components/schemas/Funderingsrisico"
@@ -1663,8 +1675,11 @@ ul.nav-tabs {
       "format" : "int32"
     },
     "name" : {
+      "maxLength" : 128,
+      "minLength" : 1,
+      "pattern" : "^[A-Za-z0-9-_\\.\\[\\]\\{\\}\\(\\)/ ]+$",
       "type" : "string",
-      "description" : "The name of the file, including its extension. This needs to be unique within the file set.",
+      "description" : "The name of the file, including its extension. This needs to be unique within the file set. \nThis can contain '/' as the directory separator, but the file name cannot start or end with a '/' and cannot contain consecutive '/' characters.\nCan contain A-Z, a-z, 0-9, a space and '-./{}[]()' characters. The maximum length is 128 characters.",
       "example" : "data.csv"
     },
     "contentHash" : {
@@ -3346,7 +3361,7 @@ ul.nav-tabs {
         <div id="header">
           <div id="api-_">
             <h2 id="welcome-to-apidoc">API and SDK Documentation</h2>
-              <div class="app-desc">Version: 1.6.0-beta7</div>
+              <div class="app-desc">Version: 1.6.0-beta8</div>
             <hr>
             <div id="app-description" class="app-desc">
                 The Calcasa API is used to connect to Calcasa provided services.
@@ -18466,6 +18481,127 @@ pub fn main() {
                                 <input id='responses-FileSets-getOutboundFileByIndex-200-schema-data' type='hidden' value=''></input>
                               </div>
                             </div>
+                            <h3 id="examples-FileSets-getOutboundFileByIndex-title-206"></h3>
+                            <p id="examples-FileSets-getOutboundFileByIndex-description-206" class="marked"></p>
+                            <script>
+                              var responseFileSets206_description = `Successful`;
+                              var responseFileSets206_description_break = responseFileSets206_description.indexOf('\n');
+                              if (responseFileSets206_description_break == -1) {
+                                $("#examples-FileSets-getOutboundFileByIndex-title-206").text("Status: 206 - " + responseFileSets206_description);
+                              } else {
+                                $("#examples-FileSets-getOutboundFileByIndex-title-206").text("Status: 206 - " + responseFileSets206_description.substring(0, responseFileSets206_description_break));
+                                $("#examples-FileSets-getOutboundFileByIndex-description-206").html(responseFileSets206_description.substring(responseFileSets206_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-FileSets-getOutboundFileByIndex-206" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-FileSets-getOutboundFileByIndex-206-schema">Schema</a>
+                                </li>
+
+
+
+                                <li class="">
+                                  <a data-toggle="tab" href="#responses-getOutboundFileByIndex-206-headers">Headers</a>
+                                </li>
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-FileSets-getOutboundFileByIndex-206-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-FileSets-getOutboundFileByIndex-206-schema">
+                                <div id="responses-FileSets-getOutboundFileByIndex-schema-206" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "Successful",
+  "headers" : {
+    "content-range" : {
+      "required" : true,
+      "style" : "simple",
+      "explode" : false,
+      "schema" : {
+        "type" : "string"
+      }
+    },
+    "accept-ranges" : {
+      "required" : false,
+      "style" : "simple",
+      "explode" : false,
+      "schema" : {
+        "type" : "string",
+        "enum" : [ "bytes" ]
+      }
+    }
+  },
+  "content" : {
+    "application/octet-stream" : {
+      "schema" : {
+        "type" : "string",
+        "format" : "binary"
+      }
+    }
+  }
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-FileSets-getOutboundFileByIndex-206-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-FileSets-getOutboundFileByIndex-schema-206');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-FileSets-getOutboundFileByIndex-206-schema-data' type='hidden' value=''></input>
+                              </div>
+                                  <div class="tab-pane" id="responses-getOutboundFileByIndex-206-headers">
+                                      <table>
+                                          <tr>
+                                              <th width="150px">Name</th>
+                                              <th width="100px">Type</th>
+                                              <th width="100px">Format</th>
+                                              <th>Description</th>
+                                          </tr>
+                                              <tr>
+                                                  <td>content-range</td>
+                                                  <td>String</td>
+                                                  <td></td>
+                                                  <td></td>
+                                              </tr>
+                                              <tr>
+                                                  <td>accept-ranges</td>
+                                                  <td>String</td>
+                                                  <td></td>
+                                                  <td></td>
+                                              </tr>
+                                      </table>
+                                  </div>
+                            </div>
                             <h3 id="examples-FileSets-getOutboundFileByIndex-title-401"></h3>
                             <p id="examples-FileSets-getOutboundFileByIndex-description-401" class="marked"></p>
                             <script>
@@ -18616,6 +18752,70 @@ pub fn main() {
                                   </script>
                                 </div>
                                 <input id='responses-FileSets-getOutboundFileByIndex-404-schema-data' type='hidden' value=''></input>
+                              </div>
+                            </div>
+                            <h3 id="examples-FileSets-getOutboundFileByIndex-title-416"></h3>
+                            <p id="examples-FileSets-getOutboundFileByIndex-description-416" class="marked"></p>
+                            <script>
+                              var responseFileSets416_description = `Range request is not satisfiable.`;
+                              var responseFileSets416_description_break = responseFileSets416_description.indexOf('\n');
+                              if (responseFileSets416_description_break == -1) {
+                                $("#examples-FileSets-getOutboundFileByIndex-title-416").text("Status: 416 - " + responseFileSets416_description);
+                              } else {
+                                $("#examples-FileSets-getOutboundFileByIndex-title-416").text("Status: 416 - " + responseFileSets416_description.substring(0, responseFileSets416_description_break));
+                                $("#examples-FileSets-getOutboundFileByIndex-description-416").html(responseFileSets416_description.substring(responseFileSets416_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-FileSets-getOutboundFileByIndex-416" class="nav nav-tabs nav-tabs-examples" >
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-FileSets-getOutboundFileByIndex-416-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-FileSets-getOutboundFileByIndex-416-schema">
+                                <div id="responses-FileSets-getOutboundFileByIndex-schema-416" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "Range request is not satisfiable."
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-FileSets-getOutboundFileByIndex-416-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-FileSets-getOutboundFileByIndex-schema-416');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-FileSets-getOutboundFileByIndex-416-schema-data' type='hidden' value=''></input>
                               </div>
                             </div>
                             <h3 id="examples-FileSets-getOutboundFileByIndex-title-422"></h3>

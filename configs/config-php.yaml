@@ -20,4 +20,4 @@ packageAuthors: Calcasa
 packageTitle: Calcasa API Client
 packageUrl: https://github.com/calcasa/api-php
 excludeTests: true
-httpUserAgent: Calcasa PHP Api Client/1.6.0-beta7
+httpUserAgent: Calcasa PHP Api Client/1.6.0-beta8

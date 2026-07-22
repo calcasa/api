@@ -11,7 +11,7 @@ info:
   description: |-
     The Calcasa API is used to connect to Calcasa provided services.
     For more information, please visit [Documentation](https://docs.calcasa.nl) or [GitHub](https://github.com/calcasa/api).
-  version: 1.6.0-beta7
+  version: 1.6.0-beta8
 tags:
   - name: Adressen
   - name: Bestemmingsplannen
@@ -1192,6 +1192,24 @@ paths:
               schema:
                 type: string
                 format: binary
+        '206':
+          description: Successful
+          headers:
+            content-range:
+              required: true
+              schema:
+                type: string
+            accept-ranges:
+              required: false
+              schema:
+                type: string
+                enum:
+                  - bytes
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
         '401':
           description: Access is unauthorized.
           content:
@@ -1204,6 +1222,8 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/NotFoundProblemDetails'
+        '416':
+          description: Range request is not satisfiable.
         '422':
           description: Client error
           content:
@@ -2365,7 +2385,13 @@ components:
           description: The index of the file within the file set. Zero-based.
         name:
           type: string
-          description: The name of the file, including its extension. This needs to be unique within the file set.
+          minLength: 1
+          maxLength: 128
+          pattern: ^[A-Za-z0-9-_\.\[\]\{\}\(\)/ ]+$
+          description: |-
+            The name of the file, including its extension. This needs to be unique within the file set. 
+            This can contain '/' as the directory separator, but the file name cannot start or end with a '/' and cannot contain consecutive '/' characters.
+            Can contain A-Z, a-z, 0-9, a space and '-./{}[]()' characters. The maximum length is 128 characters.
           example: data.csv
         contentHash:
           type: string
@@ -2667,7 +2693,13 @@ components:
             < 50_000: "afronden op 5000, min: floor, max: ceil"
             else: min: x * 0.9, max: x * 1.1, beiden afgerond op 5000
         bron:
-          $ref: '#/components/schemas/FunderingDataBron'
+          allOf:
+            - $ref: '#/components/schemas/FunderingDataBron'
+          description: De bron van de funderingsdata, dit is eigenlijk altijd `fundermaps` voor nieuwe aanvragen.
+        risicobron:
+          allOf:
+            - $ref: '#/components/schemas/FunderingSoortBron'
+          description: Een afgeleide waarde van de losse risico bronnen.
         risicolabel:
           $ref: '#/components/schemas/Funderingsrisico'
       description: Uitvoer met funderingsinformatie.
@@ -2754,7 +2786,13 @@ components:
           description: The index of the file within the file set. Zero-based.
         name:
           type: string
-          description: The name of the file, including its extension. This needs to be unique within the file set.
+          minLength: 1
+          maxLength: 128
+          pattern: ^[A-Za-z0-9-_\.\[\]\{\}\(\)/ ]+$
+          description: |-
+            The name of the file, including its extension. This needs to be unique within the file set. 
+            This can contain '/' as the directory separator, but the file name cannot start or end with a '/' and cannot contain consecutive '/' characters.
+            Can contain A-Z, a-z, 0-9, a space and '-./{}[]()' characters. The maximum length is 128 characters.
           example: data.csv
         contentHash:
           type: string

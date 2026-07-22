@@ -201,6 +201,10 @@ create_request = CreateInboundFileSetRequest(
     files=[entry.api_file for entry in manifest],
 )
 
+# Validate model types
+CreateInboundFileSetRequest.model_validate(create_request, strict=True)
+
+
 print(
     f"Using file set identity type={FILE_SET_TYPE}, revision={FILE_SET_REVISION}, "
     f"period={create_request.period}."

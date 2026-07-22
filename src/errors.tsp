@@ -60,3 +60,11 @@ model ProblemResponse422 {
   @statusCode statusCode: 422;
   @bodyRoot body: ValidationProblemDetails;
 }
+
+/**
+ * Range request is not satisfiable.
+ */
+@error
+model RangeNotSatisfiableResponse {
+  @statusCode statusCode: 416;
+}

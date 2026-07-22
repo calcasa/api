@@ -544,9 +544,6 @@ def postprocess_python(dir: Path, dir_format: Path):
                 "from calcasa.api.models.list[operation] import list[Operation]",
                 "from calcasa.api.models.operation import Operation",
             )
-            content = content.replace(
-                "CallbackName = callbackName;", 'CallbackName = "deel-waardering";'
-            )
         with file.open("w") as f:
             f.write(content)
     cwd = os.getcwd()

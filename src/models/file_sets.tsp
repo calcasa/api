@@ -20,9 +20,14 @@ model FileInfo {
     @key index: int32;
 
     /**
-     * The name of the file, including its extension. This needs to be unique within the file set.
+     * The name of the file, including its extension. This needs to be unique within the file set. 
+     * This can contain '/' as the directory separator, but the file name cannot start or end with a '/' and cannot contain consecutive '/' characters.
+     * Can contain A-Z, a-z, 0-9, a space and '-./{}[]()' characters. The maximum length is 128 characters.
      */
     @example("data.csv")
+    @pattern("^[A-Za-z0-9-_\\.\\[\\]\\{\\}\\(\\)/ ]+$")
+    @minLength(1)
+    @maxLength(128)
     name: string;
 
     /**
@@ -236,4 +241,16 @@ model FileSetLimits {
      * The time-to-live (TTL) for outbound file sets, in seconds. This value indicates how long an outbound file set will remain valid before it expires and is deleted if it is not downloaded. It helps manage the lifecycle of outbound file sets and ensures that they are processed within a certain timeframe.
      */
     outboundTtlInSeconds: int32;
+}
+
+model GetOutboundFile200Response {
+  @statusCode statusCode: 200;
+  @bodyRoot body: File<"application/octet-stream", Contents = bytes>;
+}
+
+model GetOutboundFile206Response {
+  @statusCode statusCode: 206;
+  @header("content-range") contentRange: string;
+  @header("accept-ranges") acceptRanges?: "bytes";
+  @bodyRoot body: File<"application/octet-stream", Contents = bytes>;
 }

@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-07-22 (v1.6.0-beta8)
+- Properly define the Range based requests for the outbound file set file downloads.
+- Add `risicobron` to `Funderingsdata` model.
+
 ## 2026-07-08 (v1.6.0-beta7)
 - Renamed all `*FileSetWebhookPayload.*Status` to `*FileSetWebhookPayload.*State`.
 - Added `OutboundFileSetInvalidStateProblemDetails`.
@@ -17,7 +21,6 @@
 - Made `CreateInboundFileSetRequest.files` required.
 - Moved `files` from base `FileSet` to concrete `InboundFileSet` and `OutboundFileSet` models.
 - Updated C# and Python file set examples to the new chunk upload contract and compression flow.
-
 
 ## 2026-07-07 (v1.6.0-beta5)
 - Changed the inbound file set confirmation error to `InboundFileSetInvalidStateProblemDetails` with HTTP 422 and a `state` field.

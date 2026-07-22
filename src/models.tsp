@@ -267,7 +267,15 @@ model Funderingdata {
    */
   herstelkosten?: float64 | null;
 
+  /**
+   * De bron van de funderingsdata, dit is eigenlijk altijd `fundermaps` voor nieuwe aanvragen.
+   */
   bron?: FunderingDataBron;
+
+  /**
+   * Een afgeleide waarde van de losse risico bronnen.
+   */
+  risicobron?: FunderingSoortBron;
 
   risicolabel?: Funderingsrisico;
 }

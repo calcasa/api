@@ -151,7 +151,9 @@ namespace FileSets {
         @format("uuid") outboundFileSetId: string,
         fileIndex: int32,
     ):
-        | File<"application/octet-stream", Contents = bytes>
+        | GetOutboundFile200Response
+        | GetOutboundFile206Response
+        | RangeNotSatisfiableResponse
         | OutboundFileSetInvalidStateProblemDetails
         | NotFoundProblemDetails
         | UnauthorizedProblemDetails
