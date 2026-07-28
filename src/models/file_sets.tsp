@@ -97,7 +97,9 @@ model FileSet {
 
     /**
      * A revision number for the file set that is incremented for every retry or redelivery. The tuple type, revision and period should always be unique.
+     * Starts at 1.
      */
+    @minValue(1)
     revision: int32;
 
     /**
@@ -124,7 +126,9 @@ model CreateInboundFileSetRequest {
 
     /**
      * A revision number for the file set that is incremented for every retry or redelivery. The tuple type, revision and period should always be unique.
+     * Starts at 1.
      */
+    @minValue(1)
     revision: int32;
 
     /**

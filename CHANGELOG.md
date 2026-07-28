@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-07-28 (v1.6.0-beta9)
+- Marked `revision` fields in the `FileSet` and `CreateInboundFileSetRequest` models with a minimum value of 1.
+
 ## 2026-07-22 (v1.6.0-beta8)
 - Properly define the Range based requests for the outbound file set file downloads.
 - Add `risicobron` to `Funderingsdata` model.

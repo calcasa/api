@@ -11,7 +11,7 @@ info:
   description: |-
     The Calcasa API is used to connect to Calcasa provided services.
     For more information, please visit [Documentation](https://docs.calcasa.nl) or [GitHub](https://github.com/calcasa/api).
-  version: 1.6.0-beta8
+  version: 1.6.0-beta9
 tags:
   - name: Adressen
   - name: Bestemmingsplannen
@@ -2204,7 +2204,10 @@ components:
         revision:
           type: integer
           format: int32
-          description: A revision number for the file set that is incremented for every retry or redelivery. The tuple type, revision and period should always be unique.
+          minimum: 1
+          description: |-
+            A revision number for the file set that is incremented for every retry or redelivery. The tuple type, revision and period should always be unique.
+            Starts at 1.
         period:
           type: string
           format: date
@@ -2469,7 +2472,10 @@ components:
         revision:
           type: integer
           format: int32
-          description: A revision number for the file set that is incremented for every retry or redelivery. The tuple type, revision and period should always be unique.
+          minimum: 1
+          description: |-
+            A revision number for the file set that is incremented for every retry or redelivery. The tuple type, revision and period should always be unique.
+            Starts at 1.
         period:
           type: string
           format: date
@@ -2859,7 +2865,10 @@ components:
         revision:
           type: integer
           format: int32
-          description: A revision number for the file set that is incremented for every retry or redelivery. The tuple type, revision and period should always be unique.
+          minimum: 1
+          description: |-
+            A revision number for the file set that is incremented for every retry or redelivery. The tuple type, revision and period should always be unique.
+            Starts at 1.
         period:
           type: string
           format: date
@@ -3300,7 +3309,10 @@ components:
         revision:
           type: integer
           format: int32
-          description: A revision number for the file set that is incremented for every retry or redelivery. The tuple type, revision and period should always be unique.
+          minimum: 1
+          description: |-
+            A revision number for the file set that is incremented for every retry or redelivery. The tuple type, revision and period should always be unique.
+            Starts at 1.
         period:
           type: string
           format: date
