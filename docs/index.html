@@ -3365,7 +3365,7 @@ ul.nav-tabs {
         <div id="header">
           <div id="api-_">
             <h2 id="welcome-to-apidoc">API and SDK Documentation</h2>
-              <div class="app-desc">Version: 1.6.0-beta9</div>
+              <div class="app-desc">Version: 1.6.0-rc1</div>
             <hr>
             <div id="app-description" class="app-desc">
                 The Calcasa API is used to connect to Calcasa provided services.
@@ -14287,7 +14287,7 @@ De Id van een waardering.
 | outbound-file-set | {configuredWebhookUrl}outbound-file-set | [OutboundFileSetWebhookPayload](/api/v1/reference/schemas/OutboundFileSetWebhookPayload) |</p>
                         <p></p>
                         <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="put"><code><span class="pln">/file-sets/inbound/{inboundFileSetId}</span></code></pre>
+                        <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/file-sets/inbound/{inboundFileSetId}</span></code></pre>
                         <p>
                           <h3>Usage and SDK Samples</h3>
                         </p>
@@ -14309,7 +14309,7 @@ De Id van een waardering.
 
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-FileSets-confirmInboundFileSetById-0-curl">
-                            <pre class="prettyprint"><code class="language-bsh">curl -X PUT \
+                            <pre class="prettyprint"><code class="language-bsh">curl -X POST \
  \
  -H "Accept: application/json,application/problem+json" \
  "https://api.calcasa.nl/api/v1/file-sets/inbound/{inboundFileSetId}"

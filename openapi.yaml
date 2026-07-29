@@ -11,7 +11,7 @@ info:
   description: |-
     The Calcasa API is used to connect to Calcasa provided services.
     For more information, please visit [Documentation](https://docs.calcasa.nl) or [GitHub](https://github.com/calcasa/api).
-  version: 1.6.0-beta9
+  version: 1.6.0-rc1
 tags:
   - name: Adressen
   - name: Bestemmingsplannen
@@ -888,7 +888,7 @@ paths:
       security:
         - oauth:
             - api:file-set:inbound:read
-    put:
+    post:
       operationId: ConfirmInboundFileSetById
       summary: Confirm an inbound file set after it has been fully uploaded.
       description: |-

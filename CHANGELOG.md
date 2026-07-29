@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-07-29 (v1.6.0-rc1)
+- Changed the `PUT /v1/file-sets/inbound/{inboundFileSetId}` to `POST /v1/file-sets/inbound/{inboundFileSetId}`.
+
 ## 2026-07-28 (v1.6.0-beta9)
 - Marked `revision` fields in the `FileSet` and `CreateInboundFileSetRequest` models with a minimum value of 1.
 

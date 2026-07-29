@@ -102,7 +102,7 @@ namespace FileSets {
      *
      */
     @route("/inbound/{inboundFileSetId}")
-    @put
+    @post
     @useAuth(oauth<["api:file-set:inbound:write"]>)
     @summary("Confirm an inbound file set after it has been fully uploaded.")
     @operationId("ConfirmInboundFileSetById")
