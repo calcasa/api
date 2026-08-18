@@ -16,7 +16,7 @@ import termios
 yaml = ruamel.yaml.YAML()  # defaults to round-trip
 
 NUGET_API_KEY = os.getenv("NUGET_API_KEY")
-DRY_RUN = True
+DRY_RUN = False
 
 CLI_DOCKER_CONTAINER_VERSION = "openapitools/openapi-generator-cli:v7.23.0"
 

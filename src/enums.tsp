@@ -287,6 +287,7 @@ enum OperationType {
  * | --- | --- |
  * | `onbekend` | Geen geldige invoer. Onbekend product type. |
  * | `modelwaardeCalcasa` | Niet beschikbaar op dit moment.<br>            Modelwaarde aanvraag met Calcasa Waardebepalingrapport. |
+ * | `modelwaardeOnePage` | Modelwaarde aanvraag met Calcasa One Page rapport. |
  * | `modelwaardeRisico` | Modelwaarde aanvraag met risicorapport. |
  * | `modelwaardeDesktopTaxatie` | Modelwaarde aanvraag met Desktop Taxatie Beknoptwaarderapport. |
  * | `desktopTaxatie` | Desktop taxatie aanvraag met Desktop Taxatie rapport. |
@@ -298,6 +299,7 @@ enum OperationType {
 enum ProductType {
   onbekend,
   modelwaardeCalcasa,
+  modelwaardeOnePage,
   modelwaardeRisico,
   modelwaardeDesktopTaxatie,
   desktopTaxatie,

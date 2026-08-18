@@ -1,86 +1,12 @@
 # Changelog
 
-## 2026-07-29 (v1.6.0-rc1)
-- Changed the `PUT /v1/file-sets/inbound/{inboundFileSetId}` to `POST /v1/file-sets/inbound/{inboundFileSetId}`.
-
-## 2026-07-28 (v1.6.0-beta9)
-- Marked `revision` fields in the `FileSet` and `CreateInboundFileSetRequest` models with a minimum value of 1.
-
-## 2026-07-22 (v1.6.0-beta8)
-- Properly define the Range based requests for the outbound file set file downloads.
-- Add `risicobron` to `Funderingsdata` model.
-
-## 2026-07-08 (v1.6.0-beta7)
-- Renamed all `*FileSetWebhookPayload.*Status` to `*FileSetWebhookPayload.*State`.
-- Added `OutboundFileSetInvalidStateProblemDetails`.
-- Renamed `FileError` to `FileContentError`.
-- Renamed `FileWarning` to `FileNotice` so it can be used both for errors and warnings.
-- Renamed `InboundFileSet.errors` to `contentErrors` (type `FileContentError`); this field reports content integrity errors such as hash or size mismatches.
-- Added `InboundFileSet.errors` field (type `FileNotice[]`) for processing-level error notices.
-- `InboundFileSet.warnings` now uses `FileNotice` which was renamed from `FileWarning`.
-
-## 2026-07-08 (v1.6.0-beta6)
-- Updated inbound file chunk upload endpoint to include `chunkIndex` in the route: `PUT /v1/file-sets/inbound/{fileSetId}/{fileIndex}/{chunkIndex}`.
-- Removed the `Content-Encoding` header parameter from inbound chunk uploads; compression is now a application level concern.
-- Added `CompressionType` enum (`none`, `brotli`, `gzip`) and new `InboundFileInfo` model with optional `compression` (default `none`).
-- Changed inbound file set request/response models to use `InboundFileInfo` instead of `FileInfo`.
-- Made `CreateInboundFileSetRequest.files` required.
-- Moved `files` from base `FileSet` to concrete `InboundFileSet` and `OutboundFileSet` models.
-- Updated C# and Python file set examples to the new chunk upload contract and compression flow.
-
-## 2026-07-07 (v1.6.0-beta5)
-- Changed the inbound file set confirmation error to `InboundFileSetInvalidStateProblemDetails` with HTTP 422 and a `state` field.
-- Made inbound file set upload request bodies explicit `application/octet-stream`.
-
-## 2026-07-06 (v1.6.0-beta4)
-- Add model `CreateInboundFileSetRequest` for the `POST /v1/file-sets/inbound` endpoint with a subset of fields.
-- Updated `openapi-generator` to take advantage of newer templates, some changes include:
-    - .NET client now supports .NET 10, switches from using the `Collection<T>` type to the `List<T>` type
-    - Python client now handles UUIDs automatically, includes a `py.typed` file, requires 3.10+ and uses pydantic
-    - PHP client now requires 8.1
-- Added `GET /v1/file-sets/limits` and the supporting `FileSetLimits` model to expose inbound and outbound file set limits.
-- Added file set upload error responses for missing content length and oversized content: `LengthRequiredProblemDetails` and `ContentTooLargeProblemDetails`.
-- Made file set response fields more explicit by allowing `FileSet.files` and `InboundFileSet.warnings` to be omitted or null.
-
-## 2026-07-03 (v1.6.0-beta3)
-- Added `InvalidArgumentProblemDetails` as return type to `POST /v1/waarderingen/zoeken`.
-- Renamed hash fields for consistency:
-    - `FileInfo.sha256hash` → `contentHash`
-    - `FileError.expectedSha256hash` → `expectedContentHash`
-    - `FileError.actualSha256hash` → `actualContentHash`
-- Updated OAuth scopes for file set operations:
-    - `api:file-set-inbound:*` → `api:file-set:inbound:*`
-    - `api:file-set-outbound:*` → `api:file-set:outbound:*`
-- Added support for compressed file transfers:
-    - Added `Content-Encoding` header parameter to `PUT /v1/file-sets/inbound/{fileSetId}/{fileIndex}` for specifying compression (br, gzip, deflate, identity).
-    - Added `Accept-Encoding` header parameter to `GET /v1/file-sets/outbound/{fileSetId}/{fileIndex}` for requesting compressed responses.
-
-## 2026-07-03 (v1.6.0-beta2)
-- Added `preparing` value to `OutboundFileSetState` enum, indicating a file set is being prepared for download.
-- Renamed `InboundFileSetAlreadyCompletedProblemDetails` to `InboundFileSetAlreadyConfirmedProblemDetails`.
-- Restructured `FileSet`, `InboundFileSet`, and `OutboundFileSet` models:
-    - Moved `id`, `type`, `revision`, and `period` fields into the base `FileSet` model.
-    - Added `createdOn`, `modifiedOn`, and `expiresAfter` fields to `FileSet`.
-- Changed `FileInfo.fileSize` field to `size`.
-- Added `contentType` field to `FileInfo`.
-- Changed `period` field type from `string` to `plainDate | null`. The first day of the period is used for year, quarter, or month values.
-- Changed integer types from unsigned (`uint32`/`uint64`) to signed (`int32`/`int64`) for `FileInfo.index`, `FileInfo.size`, `FileSet.revision`, `FileError`, `FileWarning`, and `fileIndex` path parameters.
-
-## 2026-07-02 (v1.6.0-beta1)
-- Added `verdieping`, `woonadresInBuitenland`, `woonadresBagNummeraanduidingId`, and `opdrachtgever` to `ProductCheckParameters` and to `WaarderingInputParameters`.
-- Added file sets API with new inbound and outbound operations:
-    - `POST /v1/file-sets/inbound`
-    - `GET /v1/file-sets/inbound`
-    - `GET /v1/file-sets/inbound/{fileSetId}`
-    - `PUT /v1/file-sets/inbound/{fileSetId}/{fileIndex}`
-    - `PUT /v1/file-sets/inbound/{fileSetId}`
-    - `GET /v1/file-sets/outbound`
-    - `GET /v1/file-sets/outbound/{fileSetId}`
-    - `GET /v1/file-sets/outbound/{fileSetId}/{fileIndex}`
-    - `DELETE /v1/file-sets/outbound/{fileSetId}`
-- Added file set models and webhook payloads: `FileInfo`, `FileSet`, `InboundFileSet`, `OutboundFileSet`, `InboundFileSetWebhookPayload`, and `OutboundFileSetWebhookPayload`.
-- Added file set related errors: `InboundFileSetAlreadyCompletedProblemDetails`, and `InboundFileSetAlreadyExistsProblemDetails`.
-- Added file set status enums: `InboundFileSetState` and `OutboundFileSetState`.
+## 2026-08-18 (v1.6.0)
+- Added the `modelwaardeOnePage` product type.
+- Added the file sets API for inbound and outbound file transfer, including chunked uploads, compression, range downloads, limits, webhooks, and related error responses.
+- Added `verdieping`, `woonadresInBuitenland`, `woonadresBagNummeraanduidingId`, and `opdrachtgever` to `ProductCheckParameters` and `WaarderingInputParameters`.
+- Added `risicobron` to `Funderingsdata`.
+- Added `InvalidArgumentProblemDetails` as a response type for `POST /v1/waarderingen/zoeken`.
+- Updated generated clients: .NET supports .NET 10; Python requires 3.10+ and uses Pydantic; PHP requires 8.1.
 
 ## 2026-06-09 (v1.5.5)
 - Added `GET /v1/waarderinen/by-hash/{hash}` operation. This can be used to lookup valuations by report file hash.
