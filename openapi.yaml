@@ -11,7 +11,7 @@ info:
   description: |-
     The Calcasa API is used to connect to Calcasa provided services.
     For more information, please visit [Documentation](https://docs.calcasa.nl) or [GitHub](https://github.com/calcasa/api).
-  version: 1.6.0
+  version: 1.6.1
 tags:
   - name: Adressen
   - name: Bestemmingsplannen

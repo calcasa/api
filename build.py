@@ -12,7 +12,6 @@ import subprocess
 import sys
 import termios
 
-
 yaml = ruamel.yaml.YAML()  # defaults to round-trip
 
 NUGET_API_KEY = os.getenv("NUGET_API_KEY")
@@ -514,7 +513,7 @@ def postprocess_aspnetcore(dir: Path, dir_format: Path):
             )
         else:
             for webhook_class, callback_name in WEBHOOKS.items():
-                target = f'class {webhook_class}'
+                target = f"class {webhook_class}"
                 if target in content:
                     content = content.replace(
                         target,
@@ -549,7 +548,7 @@ def postprocess_python(dir: Path, dir_format: Path):
     cwd = os.getcwd()
     os.chdir(dir_format)
     print("Running black in directory: ", dir_format)
-    res = run_as_fg_process(["python", "-m", "black", '.'])
+    res = run_as_fg_process(["python", "-m", "black", "."])
     os.chdir(cwd)
     return res == 0
 
@@ -641,6 +640,8 @@ def main():
 
                 if "packageVersion" in confobject:
                     confobject["packageVersion"] = VERSION
+                if "artifactVersion" in confobject:
+                    confobject["artifactVersion"] = VERSION
                 if "httpUserAgent" in confobject:
                     confobject["httpUserAgent"] = USERAGENT_REGEX.sub(
                         rf"\1/{VERSION}", confobject["httpUserAgent"]
@@ -675,7 +676,7 @@ def main():
                         empty_dir(lib_dir, [".git"])
                     else:
                         lib_dir.mkdir(parents=True, exist_ok=True)
-                
+
                 if not openapi_generate(language, SPEC_FILE, gen_dir):
                     die(f"Error with openapi_generate for {language}")
 
@@ -778,7 +779,9 @@ def main():
                         print(
                             f"Post-processing {language} in {calcasa_api_dir.parent}..."
                         )
-                        if not postprocess(language, calcasa_api_dir, calcasa_api_dir.parent):
+                        if not postprocess(
+                            language, calcasa_api_dir, calcasa_api_dir.parent
+                        ):
                             die(f"Error with postprocess for {language}")
                         (calcasa_api_dir.parent / ".editorconfig").unlink()
                 else:

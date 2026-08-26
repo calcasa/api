@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-08-18 (v1.6.1)
+- Fix release to Packagist
+
 ## 2026-08-18 (v1.6.0)
 - Added the `modelwaardeOnePage` product type.
 - Added the file sets API for inbound and outbound file transfer, including chunked uploads, compression, range downloads, limits, webhooks, and related error responses.
