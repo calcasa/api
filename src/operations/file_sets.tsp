@@ -29,8 +29,8 @@ namespace FileSets {
      * ### Callbacks
      * | Name | Url | Schema |
      * | --- | --- | --- |
-     * | inbound-file-set | {configuredWebhookUrl}inbound-file-set | [InboundFileSetWebhookPayload](/api/v1/reference/schemas/InboundFileSetWebhookPayload) |
-     * | outbound-file-set | {configuredWebhookUrl}outbound-file-set | [OutboundFileSetWebhookPayload](/api/v1/reference/schemas/OutboundFileSetWebhookPayload) |
+     * | inbound-file-set | {configuredWebhookUrl}inbound-file-set | [InboundFileSetWebhookPayload](#models/InboundFileSetWebhookPayload) |
+     * | outbound-file-set | {configuredWebhookUrl}outbound-file-set | [OutboundFileSetWebhookPayload](#models/OutboundFileSetWebhookPayload) |
      *
      */
     @useAuth(oauth<["api:file-set:inbound:write"]>)
@@ -97,8 +97,8 @@ namespace FileSets {
      * ### Callbacks
      * | Name | Url | Schema |
      * | --- | --- | --- |
-     * | inbound-file-set | {configuredWebhookUrl}inbound-file-set | [InboundFileSetWebhookPayload](/api/v1/reference/schemas/InboundFileSetWebhookPayload) |
-     * | outbound-file-set | {configuredWebhookUrl}outbound-file-set | [OutboundFileSetWebhookPayload](/api/v1/reference/schemas/OutboundFileSetWebhookPayload) |
+     * | inbound-file-set | {configuredWebhookUrl}inbound-file-set | [InboundFileSetWebhookPayload](#models/InboundFileSetWebhookPayload) |
+     * | outbound-file-set | {configuredWebhookUrl}outbound-file-set | [OutboundFileSetWebhookPayload](#models/OutboundFileSetWebhookPayload) |
      *
      */
     @route("/inbound/{inboundFileSetId}")

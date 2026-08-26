@@ -41,8 +41,8 @@ namespace Waarderingen {
    * ### Callbacks
    * | Name | Url | Schema |
    * | --- | --- | --- |
-   * | waardering | {configuredWebhookUrl}waardering | [WaarderingWebhookPayload](/api/v1/reference/schemas/WaarderingWebhookPayload) |
-   * | deel-waardering | {configuredWebhookUrl}deel-waardering | [DeelWaarderingWebhookPayload](/api/v1/reference/schemas/DeelWaarderingWebhookPayload) |
+   * | waardering | {configuredWebhookUrl}waardering | [WaarderingWebhookPayload](#models/WaarderingWebhookPayload) |
+   * | deel-waardering | {configuredWebhookUrl}deel-waardering | [DeelWaarderingWebhookPayload](#models/DeelWaarderingWebhookPayload) |
    *
    */
   @useAuth(oauth<["api:waarderingen:patch"]>)
@@ -111,8 +111,8 @@ namespace Waarderingen {
    * ### Callbacks
    * | Name | Url | Schema |
    * | --- | --- | --- |
-   * | waardering | {configuredWebhookUrl}waardering | [WaarderingWebhookPayload](/api/v1/reference/schemas/WaarderingWebhookPayload) |
-   * | deel-waardering | {configuredWebhookUrl}deel-waardering | [DeelWaarderingWebhookPayload](/api/v1/reference/schemas/DeelWaarderingWebhookPayload) |
+   * | waardering | {configuredWebhookUrl}waardering | [WaarderingWebhookPayload](#models/WaarderingWebhookPayload) |
+   * | deel-waardering | {configuredWebhookUrl}deel-waardering | [DeelWaarderingWebhookPayload](#models/DeelWaarderingWebhookPayload) |
    *
    */
   @useAuth(oauth<["api:waarderingen:create"]>)
