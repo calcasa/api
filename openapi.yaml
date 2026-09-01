@@ -11,7 +11,7 @@ info:
   description: |-
     The Calcasa API is used to connect to Calcasa provided services.
     For more information, please visit [Documentation](https://docs.calcasa.nl) or [GitHub](https://github.com/calcasa/api).
-  version: 1.6.1
+  version: 1.7.0-beta01
 tags:
   - name: Adressen
   - name: Bestemmingsplannen
@@ -26,6 +26,7 @@ tags:
   - name: Geldverstrekkers
   - name: Rapporten
   - name: Waarderingen
+  - name: Planning
 paths:
   /adressen/zoeken:
     post:
@@ -1387,6 +1388,157 @@ paths:
       security:
         - oauth:
             - api:geldverstrekkers:read
+  /planning/opnames:
+    get:
+      operationId: GetOpnames
+      summary: Get the list of opnames.
+      parameters:
+        - name: include_planned
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Opname'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Planning
+      security:
+        - oauth:
+            - api:planning:read
+  /planning/opnames/{opnameId}:
+    post:
+      operationId: AssignOpnemer
+      summary: Assign opnemer to opname.
+      parameters:
+        - name: opnameId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanningInfo'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Planning
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlanningInfo'
+      security:
+        - oauth:
+            - api:planning:write
+    delete:
+      operationId: DeletePlanningForOpname
+      summary: Delete the planning for an opname.
+      parameters:
+        - name: opnameId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: There is no content to send for this request, but the headers may be useful.
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Planning
+      security:
+        - oauth:
+            - api:planning:write
+  /planning/opnemers:
+    get:
+      operationId: GetOpnemers
+      summary: Get the list of opnemers.
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Opnemer'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblemDetails'
+        default:
+          description: An unexpected error response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      tags:
+        - Planning
+      security:
+        - oauth:
+            - api:planning:read
   /rapporten/{id}:
     get:
       operationId: GetRapport
@@ -3259,6 +3411,36 @@ components:
         - test
         - invalid
       x-zero-based-enum: true
+    Opname:
+      type: object
+      required:
+        - id
+        - adres
+        - coordinaten
+        - deadline
+        - batchCode
+        - product
+      properties:
+        id:
+          type: string
+          format: uuid
+        adres:
+          $ref: '#/components/schemas/Adres'
+        coordinaten:
+          $ref: '#/components/schemas/Point'
+        deadline:
+          type: string
+          format: date-time
+          example: '2021-04-28T12:34:45Z'
+        batchCode:
+          type: string
+        product:
+          $ref: '#/components/schemas/ProductType'
+        planning:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/PlanningInfo'
+          nullable: true
     Opnamedata:
       type: object
       properties:
@@ -3266,6 +3448,20 @@ components:
           allOf:
             - $ref: '#/components/schemas/OnderhoudStaat'
           description: De algemene staat van onderhoud buiten.
+    Opnemer:
+      type: object
+      required:
+        - id
+        - email
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+        name:
+          type: string
     OutboundFileSet:
       type: object
       required:
@@ -3435,6 +3631,31 @@ components:
           type: string
           nullable: true
           description: A URI reference that identifies the specific occurrence of the problem.
+    PlanningInfo:
+      type: object
+      required:
+        - opnemer_id
+        - datum
+      properties:
+        opnemer_id:
+          type: string
+          format: uuid
+        datum:
+          type: string
+          format: date
+          example: '2021-04-28'
+    Point:
+      type: object
+      required:
+        - latitude
+        - longitude
+      properties:
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
     ProblemDetails:
       type: object
       properties:
@@ -4241,6 +4462,8 @@ components:
             api:waarderingen:patch: ''
             api:waarderingen:ontwikkeling: ''
             api:waarderingen:create: ''
+            api:planning:read: ''
+            api:planning:write: ''
 servers:
   - url: https://api.calcasa.nl/api/{apiVersion}
     description: Production

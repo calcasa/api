@@ -2192,6 +2192,40 @@ ul.nav-tabs {
   "enum" : [ "add", "remove", "replace", "move", "copy", "test", "invalid" ],
   "x-zero-based-enum" : true
 };
+    defs["Opname"] = {
+  "required" : [ "adres", "batchCode", "coordinaten", "deadline", "id", "product" ],
+  "type" : "object",
+  "properties" : {
+    "id" : {
+      "type" : "string",
+      "format" : "uuid"
+    },
+    "adres" : {
+      "$ref" : "#/components/schemas/Adres"
+    },
+    "coordinaten" : {
+      "$ref" : "#/components/schemas/Point"
+    },
+    "deadline" : {
+      "type" : "string",
+      "format" : "date-time",
+      "example" : "2021-04-28T12:34:45Z"
+    },
+    "batchCode" : {
+      "type" : "string"
+    },
+    "product" : {
+      "$ref" : "#/components/schemas/ProductType"
+    },
+    "planning" : {
+      "type" : "object",
+      "nullable" : true,
+      "allOf" : [ {
+        "$ref" : "#/components/schemas/PlanningInfo"
+      } ]
+    }
+  }
+};
     defs["Opnamedata"] = {
   "type" : "object",
   "properties" : {
@@ -2200,6 +2234,22 @@ ul.nav-tabs {
       "allOf" : [ {
         "$ref" : "#/components/schemas/OnderhoudStaat"
       } ]
+    }
+  }
+};
+    defs["Opnemer"] = {
+  "required" : [ "email", "id", "name" ],
+  "type" : "object",
+  "properties" : {
+    "id" : {
+      "type" : "string",
+      "format" : "uuid"
+    },
+    "email" : {
+      "type" : "string"
+    },
+    "name" : {
+      "type" : "string"
     }
   }
 };
@@ -2374,6 +2424,35 @@ ul.nav-tabs {
       "type" : "string",
       "description" : "A URI reference that identifies the specific occurrence of the problem.",
       "nullable" : true
+    }
+  }
+};
+    defs["PlanningInfo"] = {
+  "required" : [ "datum", "opnemer_id" ],
+  "type" : "object",
+  "properties" : {
+    "opnemer_id" : {
+      "type" : "string",
+      "format" : "uuid"
+    },
+    "datum" : {
+      "type" : "string",
+      "format" : "date",
+      "example" : "2021-04-28"
+    }
+  }
+};
+    defs["Point"] = {
+  "required" : [ "latitude", "longitude" ],
+  "type" : "object",
+  "properties" : {
+    "latitude" : {
+      "type" : "number",
+      "format" : "double"
+    },
+    "longitude" : {
+      "type" : "number",
+      "format" : "double"
     }
   }
 };
@@ -3326,6 +3405,19 @@ ul.nav-tabs {
                     <li data-group="Geldverstrekkers" data-name="getGeldverstrekkers" class="">
                       <a href="#api-Geldverstrekkers-getGeldverstrekkers">getGeldverstrekkers</a>
                     </li>
+                  <li class="nav-header" data-group="Planning"><a href="#api-Planning">API Methods - Planning</a></li>
+                    <li data-group="Planning" data-name="assignOpnemer" class="">
+                      <a href="#api-Planning-assignOpnemer">assignOpnemer</a>
+                    </li>
+                    <li data-group="Planning" data-name="deletePlanningForOpname" class="">
+                      <a href="#api-Planning-deletePlanningForOpname">deletePlanningForOpname</a>
+                    </li>
+                    <li data-group="Planning" data-name="getOpnames" class="">
+                      <a href="#api-Planning-getOpnames">getOpnames</a>
+                    </li>
+                    <li data-group="Planning" data-name="getOpnemers" class="">
+                      <a href="#api-Planning-getOpnemers">getOpnemers</a>
+                    </li>
                   <li class="nav-header" data-group="Rapporten"><a href="#api-Rapporten">API Methods - Rapporten</a></li>
                     <li data-group="Rapporten" data-name="getRapport" class="">
                       <a href="#api-Rapporten-getRapport">getRapport</a>
@@ -3365,7 +3457,7 @@ ul.nav-tabs {
         <div id="header">
           <div id="api-_">
             <h2 id="welcome-to-apidoc">API and SDK Documentation</h2>
-              <div class="app-desc">Version: 1.6.1</div>
+              <div class="app-desc">Version: 1.7.0-beta01</div>
             <hr>
             <div id="app-description" class="app-desc">
                 The Calcasa API is used to connect to Calcasa provided services.
@@ -23140,6 +23232,2373 @@ Een parameter om de lijst te filteren op ondersteunde producttypen.
                                   </script>
                                 </div>
                                 <input id='responses-Geldverstrekkers-getGeldverstrekkers-default-schema-data' type='hidden' value=''></input>
+                              </div>
+                            </div>
+                        </article>
+                      </div>
+                      <hr>
+                  </section>
+                <section id="api-Planning">
+                  <h1>Planning</h1>
+                    <div id="api-Planning-assignOpnemer">
+                      <article id="api-Planning-assignOpnemer-0" data-group="User" data-name="assignOpnemer" data-version="0">
+                        <div class="pull-left">
+                          <h1>assignOpnemer</h1>
+                          <p>Assign opnemer to opname.</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked"></p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/planning/opnames/{opnameId}</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Planning-assignOpnemer-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Planning-assignOpnemer-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Planning-assignOpnemer-0-dart">Dart</a></li>
+                          <li class=""><a href="#examples-Planning-assignOpnemer-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Planning-assignOpnemer-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Planning-assignOpnemer-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Planning-assignOpnemer-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Planning-assignOpnemer-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Planning-assignOpnemer-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Planning-assignOpnemer-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Planning-assignOpnemer-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Planning-assignOpnemer-0-python">Python</a></li>
+                          <li class=""><a href="#examples-Planning-assignOpnemer-0-rust">Rust</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Planning-assignOpnemer-0-curl">
+                            <pre class="prettyprint"><code class="language-bsh">curl -X POST \
+ \
+ -H "Accept: application/json,application/problem+json" \
+ -H "Content-Type: application/json" \
+ "https://api.calcasa.nl/api/v1/planning/opnames/{opnameId}" \
+ -d '{
+  &quot;opnemer_id&quot; : &quot;046b6c7f-0b8a-43b9-b35d-6489e6daee91&quot;,
+  &quot;datum&quot; : &quot;2021-04-28&quot;
+}'
+</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Planning-assignOpnemer-0-java">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.*;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.model.*;
+import org.openapitools.client.api.PlanningApi;
+
+import java.io.File;
+import java.util.*;
+
+public class PlanningApiExample {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+        // Configure OAuth2 access token for authorization: oauth
+        OAuth oauth = (OAuth) defaultClient.getAuthentication("oauth");
+        oauth.setAccessToken("YOUR ACCESS TOKEN");
+
+        // Create an instance of the API class
+        PlanningApi apiInstance = new PlanningApi();
+        UUID opnameId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // UUID | 
+        PlanningInfo planningInfo = ; // PlanningInfo | 
+
+        try {
+            PlanningInfo result = apiInstance.assignOpnemer(opnameId, planningInfo);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PlanningApi#assignOpnemer");
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Planning-assignOpnemer-0-dart">
+                            <pre class="prettyprint"><code class="language-dart">import 'package:openapi/api.dart';
+
+final api_instance = DefaultApi();
+
+final UUID opnameId = new UUID(); // UUID | 
+final PlanningInfo planningInfo = new PlanningInfo(); // PlanningInfo | 
+
+try {
+    final result = await api_instance.assignOpnemer(opnameId, planningInfo);
+    print(result);
+} catch (e) {
+    print('Exception when calling DefaultApi->assignOpnemer: $e\n');
+}
+
+</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Planning-assignOpnemer-0-android">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.api.PlanningApi;
+
+public class PlanningApiExample {
+    public static void main(String[] args) {
+        PlanningApi apiInstance = new PlanningApi();
+        UUID opnameId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // UUID | 
+        PlanningInfo planningInfo = ; // PlanningInfo | 
+
+        try {
+            PlanningInfo result = apiInstance.assignOpnemer(opnameId, planningInfo);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PlanningApi#assignOpnemer");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Planning-assignOpnemer-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Planning-assignOpnemer-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+
+// Configure OAuth2 access token for authorization: (authentication scheme: oauth)
+[apiConfig setAccessToken:@"YOUR_ACCESS_TOKEN"];
+
+
+// Create an instance of the API class
+PlanningApi *apiInstance = [[PlanningApi alloc] init];
+UUID *opnameId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; //  (default to null)
+PlanningInfo *planningInfo = ; // 
+
+// Assign opnemer to opname.
+[apiInstance assignOpnemerWith:opnameId
+    planningInfo:planningInfo
+              completionHandler: ^(PlanningInfo output, NSError* error) {
+    if (output) {
+        NSLog(@"%@", output);
+    }
+    if (error) {
+        NSLog(@"Error: %@", error);
+    }
+}];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Planning-assignOpnemer-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var CalcasaPublicApi = require('calcasa_public_api');
+var defaultClient = CalcasaPublicApi.ApiClient.instance;
+
+// Configure OAuth2 access token for authorization: oauth
+var oauth = defaultClient.authentications['oauth'];
+oauth.accessToken = "YOUR ACCESS TOKEN";
+
+// Create an instance of the API class
+var api = new CalcasaPublicApi.PlanningApi()
+var opnameId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // {UUID} 
+var planningInfo = ; // {PlanningInfo} 
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.assignOpnemer(opnameId, planningInfo, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Planning-assignOpnemer-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Planning-assignOpnemer-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using Calcasa.Api.Api;
+using Calcasa.Api.Client;
+using Calcasa.Api.Model;
+
+namespace Example
+{
+    public class assignOpnemerExample
+    {
+        public void main()
+        {
+            // Configure OAuth2 access token for authorization: oauth
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            // Create an instance of the API class
+            var apiInstance = new PlanningApi();
+            var opnameId = 38400000-8cf0-11bd-b23e-10b96e4ef00d;  // UUID |  (default to null)
+            var planningInfo = new PlanningInfo(); // PlanningInfo | 
+
+            try {
+                // Assign opnemer to opname.
+                PlanningInfo result = apiInstance.assignOpnemer(opnameId, planningInfo);
+                Debug.WriteLine(result);
+            } catch (Exception e) {
+                Debug.Print("Exception when calling PlanningApi.assignOpnemer: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Planning-assignOpnemer-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+// Configure OAuth2 access token for authorization: oauth
+OpenAPITools\Client\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
+
+// Create an instance of the API class
+$api_instance = new OpenAPITools\Client\Api\PlanningApi();
+$opnameId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // UUID | 
+$planningInfo = ; // PlanningInfo | 
+
+try {
+    $result = $api_instance->assignOpnemer($opnameId, $planningInfo);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling PlanningApi->assignOpnemer: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Planning-assignOpnemer-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::OPenAPIClient::Configuration;
+use WWW::OPenAPIClient::PlanningApi;
+
+# Configure OAuth2 access token for authorization: oauth
+$WWW::OPenAPIClient::Configuration::access_token = 'YOUR_ACCESS_TOKEN';
+
+# Create an instance of the API class
+my $api_instance = WWW::OPenAPIClient::PlanningApi->new();
+my $opnameId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; # UUID | 
+my $planningInfo = WWW::OPenAPIClient::Object::PlanningInfo->new(); # PlanningInfo | 
+
+eval {
+    my $result = $api_instance->assignOpnemer(opnameId => $opnameId, planningInfo => $planningInfo);
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling PlanningApi->assignOpnemer: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Planning-assignOpnemer-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import openapi_client
+from openapi_client.rest import ApiException
+from pprint import pprint
+
+# Configure OAuth2 access token for authorization: oauth
+openapi_client.configuration.access_token = 'YOUR_ACCESS_TOKEN'
+
+# Create an instance of the API class
+api_instance = openapi_client.PlanningApi()
+opnameId = 38400000-8cf0-11bd-b23e-10b96e4ef00d # UUID |  (default to null)
+planningInfo =  # PlanningInfo | 
+
+try:
+    # Assign opnemer to opname.
+    api_response = api_instance.assign_opnemer(opnameId, planningInfo)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling PlanningApi->assignOpnemer: %s\n" % e)</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Planning-assignOpnemer-0-rust">
+                              <pre class="prettyprint"><code class="language-rust">extern crate PlanningApi;
+
+pub fn main() {
+    let opnameId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // UUID
+    let planningInfo = ; // PlanningInfo
+
+    let mut context = PlanningApi::Context::default();
+    let result = client.assignOpnemer(opnameId, planningInfo, &context).wait();
+
+    println!("{:?}", result);
+}
+</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Scopes</h2>
+                          <table>
+                            
+                              <tr>
+                                <td>api:planning:write</td>
+                                <td></td>
+                              </tr>
+                            
+                          </table>
+
+                          <h2>Parameters</h2>
+
+                            <div class="methodsubtabletitle">Path parameters</div>
+                            <table id="methodsubtable">
+                                <tr>
+                                  <th width="150px">Name</th>
+                                  <th>Description</th>
+                                </tr>
+                                  <tr><td style="width:150px;">opnameId*</td>
+<td>
+
+
+    <div id="d2e199_assignOpnemer_opnameId">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    UUID
+                </span>
+                    <span class="format">
+                        (uuid)
+                    </span>
+
+            </div>
+                <div class="inner required">
+                    Required
+                </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                            </table>
+
+
+                            <div class="methodsubtabletitle">Body parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                <tr><td style="width:150px;">planningInfo <span style="color:red;">*</span></td>
+<td>
+<p class="marked"></p>
+<script>
+$(document).ready(function() {
+  var schemaWrapper = {
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/PlanningInfo"
+      }
+    }
+  },
+  "required" : true
+};
+
+  var schema = findNode('schema',schemaWrapper).schema;
+  if (!schema) {
+    schema = schemaWrapper.schema;
+  }
+  if (schema.$ref != null) {
+    schema = defsParser.$refs.get(schema.$ref);
+  } else if (schema.items != null && schema.items.$ref != null) {
+    schema.items = defsParser.$refs.get(schema.items.$ref);
+  } else {
+    schemaWrapper.definitions = Object.assign({}, defs);
+    $RefParser.dereference(schemaWrapper).catch(function(err) {
+      console.log(err);
+    });
+  }
+
+  var view = new JSONSchemaView(schema,2,{isBodyParam: true});
+  var result = $('#d2e199_assignOpnemer_planningInfo');
+  result.empty();
+  result.append(view.render());
+});
+</script>
+<div id="d2e199_assignOpnemer_planningInfo"></div>
+</td>
+</tr>
+
+                            </table>
+
+
+
+                          <h2>Responses</h2>
+                            <h3 id="examples-Planning-assignOpnemer-title-200"></h3>
+                            <p id="examples-Planning-assignOpnemer-description-200" class="marked"></p>
+                            <script>
+                              var responsePlanning200_description = `The request has succeeded.`;
+                              var responsePlanning200_description_break = responsePlanning200_description.indexOf('\n');
+                              if (responsePlanning200_description_break == -1) {
+                                $("#examples-Planning-assignOpnemer-title-200").text("Status: 200 - " + responsePlanning200_description);
+                              } else {
+                                $("#examples-Planning-assignOpnemer-title-200").text("Status: 200 - " + responsePlanning200_description.substring(0, responsePlanning200_description_break));
+                                $("#examples-Planning-assignOpnemer-description-200").html(responsePlanning200_description.substring(responsePlanning200_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-Planning-assignOpnemer-200" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-Planning-assignOpnemer-200-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-Planning-assignOpnemer-200-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-Planning-assignOpnemer-200-schema">
+                                <div id="responses-Planning-assignOpnemer-schema-200" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "The request has succeeded.",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/PlanningInfo"
+      }
+    }
+  }
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-Planning-assignOpnemer-200-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-Planning-assignOpnemer-schema-200');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-Planning-assignOpnemer-200-schema-data' type='hidden' value=''></input>
+                              </div>
+                            </div>
+                            <h3 id="examples-Planning-assignOpnemer-title-401"></h3>
+                            <p id="examples-Planning-assignOpnemer-description-401" class="marked"></p>
+                            <script>
+                              var responsePlanning401_description = `Access is unauthorized.`;
+                              var responsePlanning401_description_break = responsePlanning401_description.indexOf('\n');
+                              if (responsePlanning401_description_break == -1) {
+                                $("#examples-Planning-assignOpnemer-title-401").text("Status: 401 - " + responsePlanning401_description);
+                              } else {
+                                $("#examples-Planning-assignOpnemer-title-401").text("Status: 401 - " + responsePlanning401_description.substring(0, responsePlanning401_description_break));
+                                $("#examples-Planning-assignOpnemer-description-401").html(responsePlanning401_description.substring(responsePlanning401_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-Planning-assignOpnemer-401" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-Planning-assignOpnemer-401-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-Planning-assignOpnemer-401-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-Planning-assignOpnemer-401-schema">
+                                <div id="responses-Planning-assignOpnemer-schema-401" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "Access is unauthorized.",
+  "content" : {
+    "application/problem+json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/UnauthorizedProblemDetails"
+      }
+    }
+  }
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-Planning-assignOpnemer-401-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-Planning-assignOpnemer-schema-401');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-Planning-assignOpnemer-401-schema-data' type='hidden' value=''></input>
+                              </div>
+                            </div>
+                            <h3 id="examples-Planning-assignOpnemer-title-404"></h3>
+                            <p id="examples-Planning-assignOpnemer-description-404" class="marked"></p>
+                            <script>
+                              var responsePlanning404_description = `The server cannot find the requested resource.`;
+                              var responsePlanning404_description_break = responsePlanning404_description.indexOf('\n');
+                              if (responsePlanning404_description_break == -1) {
+                                $("#examples-Planning-assignOpnemer-title-404").text("Status: 404 - " + responsePlanning404_description);
+                              } else {
+                                $("#examples-Planning-assignOpnemer-title-404").text("Status: 404 - " + responsePlanning404_description.substring(0, responsePlanning404_description_break));
+                                $("#examples-Planning-assignOpnemer-description-404").html(responsePlanning404_description.substring(responsePlanning404_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-Planning-assignOpnemer-404" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-Planning-assignOpnemer-404-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-Planning-assignOpnemer-404-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-Planning-assignOpnemer-404-schema">
+                                <div id="responses-Planning-assignOpnemer-schema-404" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "The server cannot find the requested resource.",
+  "content" : {
+    "application/problem+json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/NotFoundProblemDetails"
+      }
+    }
+  }
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-Planning-assignOpnemer-404-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-Planning-assignOpnemer-schema-404');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-Planning-assignOpnemer-404-schema-data' type='hidden' value=''></input>
+                              </div>
+                            </div>
+                            <h3 id="examples-Planning-assignOpnemer-title-default"></h3>
+                            <p id="examples-Planning-assignOpnemer-description-default" class="marked"></p>
+                            <script>
+                              var responsePlanningdefault_description = `An unexpected error response.`;
+                              var responsePlanningdefault_description_break = responsePlanningdefault_description.indexOf('\n');
+                              if (responsePlanningdefault_description_break == -1) {
+                                $("#examples-Planning-assignOpnemer-title-default").text("Status: default - " + responsePlanningdefault_description);
+                              } else {
+                                $("#examples-Planning-assignOpnemer-title-default").text("Status: default - " + responsePlanningdefault_description.substring(0, responsePlanningdefault_description_break));
+                                $("#examples-Planning-assignOpnemer-description-default").html(responsePlanningdefault_description.substring(responsePlanningdefault_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-Planning-assignOpnemer-default" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-Planning-assignOpnemer-default-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-Planning-assignOpnemer-default-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-Planning-assignOpnemer-default-schema">
+                                <div id="responses-Planning-assignOpnemer-schema-default" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "An unexpected error response.",
+  "content" : {
+    "application/problem+json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ProblemDetails"
+      }
+    }
+  }
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-Planning-assignOpnemer-default-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-Planning-assignOpnemer-schema-default');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-Planning-assignOpnemer-default-schema-data' type='hidden' value=''></input>
+                              </div>
+                            </div>
+                        </article>
+                      </div>
+                      <hr>
+                    <div id="api-Planning-deletePlanningForOpname">
+                      <article id="api-Planning-deletePlanningForOpname-0" data-group="User" data-name="deletePlanningForOpname" data-version="0">
+                        <div class="pull-left">
+                          <h1>deletePlanningForOpname</h1>
+                          <p>Delete the planning for an opname.</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked"></p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="delete"><code><span class="pln">/planning/opnames/{opnameId}</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Planning-deletePlanningForOpname-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Planning-deletePlanningForOpname-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Planning-deletePlanningForOpname-0-dart">Dart</a></li>
+                          <li class=""><a href="#examples-Planning-deletePlanningForOpname-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Planning-deletePlanningForOpname-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Planning-deletePlanningForOpname-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Planning-deletePlanningForOpname-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Planning-deletePlanningForOpname-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Planning-deletePlanningForOpname-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Planning-deletePlanningForOpname-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Planning-deletePlanningForOpname-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Planning-deletePlanningForOpname-0-python">Python</a></li>
+                          <li class=""><a href="#examples-Planning-deletePlanningForOpname-0-rust">Rust</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Planning-deletePlanningForOpname-0-curl">
+                            <pre class="prettyprint"><code class="language-bsh">curl -X DELETE \
+ \
+ -H "Accept: application/problem+json" \
+ "https://api.calcasa.nl/api/v1/planning/opnames/{opnameId}"
+</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Planning-deletePlanningForOpname-0-java">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.*;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.model.*;
+import org.openapitools.client.api.PlanningApi;
+
+import java.io.File;
+import java.util.*;
+
+public class PlanningApiExample {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+        // Configure OAuth2 access token for authorization: oauth
+        OAuth oauth = (OAuth) defaultClient.getAuthentication("oauth");
+        oauth.setAccessToken("YOUR ACCESS TOKEN");
+
+        // Create an instance of the API class
+        PlanningApi apiInstance = new PlanningApi();
+        UUID opnameId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // UUID | 
+
+        try {
+            apiInstance.deletePlanningForOpname(opnameId);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PlanningApi#deletePlanningForOpname");
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Planning-deletePlanningForOpname-0-dart">
+                            <pre class="prettyprint"><code class="language-dart">import 'package:openapi/api.dart';
+
+final api_instance = DefaultApi();
+
+final UUID opnameId = new UUID(); // UUID | 
+
+try {
+    final result = await api_instance.deletePlanningForOpname(opnameId);
+    print(result);
+} catch (e) {
+    print('Exception when calling DefaultApi->deletePlanningForOpname: $e\n');
+}
+
+</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Planning-deletePlanningForOpname-0-android">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.api.PlanningApi;
+
+public class PlanningApiExample {
+    public static void main(String[] args) {
+        PlanningApi apiInstance = new PlanningApi();
+        UUID opnameId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // UUID | 
+
+        try {
+            apiInstance.deletePlanningForOpname(opnameId);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PlanningApi#deletePlanningForOpname");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Planning-deletePlanningForOpname-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Planning-deletePlanningForOpname-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+
+// Configure OAuth2 access token for authorization: (authentication scheme: oauth)
+[apiConfig setAccessToken:@"YOUR_ACCESS_TOKEN"];
+
+
+// Create an instance of the API class
+PlanningApi *apiInstance = [[PlanningApi alloc] init];
+UUID *opnameId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; //  (default to null)
+
+// Delete the planning for an opname.
+[apiInstance deletePlanningForOpnameWith:opnameId
+              completionHandler: ^(NSError* error) {
+    if (error) {
+        NSLog(@"Error: %@", error);
+    }
+}];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Planning-deletePlanningForOpname-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var CalcasaPublicApi = require('calcasa_public_api');
+var defaultClient = CalcasaPublicApi.ApiClient.instance;
+
+// Configure OAuth2 access token for authorization: oauth
+var oauth = defaultClient.authentications['oauth'];
+oauth.accessToken = "YOUR ACCESS TOKEN";
+
+// Create an instance of the API class
+var api = new CalcasaPublicApi.PlanningApi()
+var opnameId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // {UUID} 
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully.');
+  }
+};
+api.deletePlanningForOpname(opnameId, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Planning-deletePlanningForOpname-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Planning-deletePlanningForOpname-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using Calcasa.Api.Api;
+using Calcasa.Api.Client;
+using Calcasa.Api.Model;
+
+namespace Example
+{
+    public class deletePlanningForOpnameExample
+    {
+        public void main()
+        {
+            // Configure OAuth2 access token for authorization: oauth
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            // Create an instance of the API class
+            var apiInstance = new PlanningApi();
+            var opnameId = 38400000-8cf0-11bd-b23e-10b96e4ef00d;  // UUID |  (default to null)
+
+            try {
+                // Delete the planning for an opname.
+                apiInstance.deletePlanningForOpname(opnameId);
+            } catch (Exception e) {
+                Debug.Print("Exception when calling PlanningApi.deletePlanningForOpname: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Planning-deletePlanningForOpname-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+// Configure OAuth2 access token for authorization: oauth
+OpenAPITools\Client\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
+
+// Create an instance of the API class
+$api_instance = new OpenAPITools\Client\Api\PlanningApi();
+$opnameId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // UUID | 
+
+try {
+    $api_instance->deletePlanningForOpname($opnameId);
+} catch (Exception $e) {
+    echo 'Exception when calling PlanningApi->deletePlanningForOpname: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Planning-deletePlanningForOpname-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::OPenAPIClient::Configuration;
+use WWW::OPenAPIClient::PlanningApi;
+
+# Configure OAuth2 access token for authorization: oauth
+$WWW::OPenAPIClient::Configuration::access_token = 'YOUR_ACCESS_TOKEN';
+
+# Create an instance of the API class
+my $api_instance = WWW::OPenAPIClient::PlanningApi->new();
+my $opnameId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; # UUID | 
+
+eval {
+    $api_instance->deletePlanningForOpname(opnameId => $opnameId);
+};
+if ($@) {
+    warn "Exception when calling PlanningApi->deletePlanningForOpname: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Planning-deletePlanningForOpname-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import openapi_client
+from openapi_client.rest import ApiException
+from pprint import pprint
+
+# Configure OAuth2 access token for authorization: oauth
+openapi_client.configuration.access_token = 'YOUR_ACCESS_TOKEN'
+
+# Create an instance of the API class
+api_instance = openapi_client.PlanningApi()
+opnameId = 38400000-8cf0-11bd-b23e-10b96e4ef00d # UUID |  (default to null)
+
+try:
+    # Delete the planning for an opname.
+    api_instance.delete_planning_for_opname(opnameId)
+except ApiException as e:
+    print("Exception when calling PlanningApi->deletePlanningForOpname: %s\n" % e)</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Planning-deletePlanningForOpname-0-rust">
+                              <pre class="prettyprint"><code class="language-rust">extern crate PlanningApi;
+
+pub fn main() {
+    let opnameId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // UUID
+
+    let mut context = PlanningApi::Context::default();
+    let result = client.deletePlanningForOpname(opnameId, &context).wait();
+
+    println!("{:?}", result);
+}
+</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Scopes</h2>
+                          <table>
+                            
+                              <tr>
+                                <td>api:planning:write</td>
+                                <td></td>
+                              </tr>
+                            
+                          </table>
+
+                          <h2>Parameters</h2>
+
+                            <div class="methodsubtabletitle">Path parameters</div>
+                            <table id="methodsubtable">
+                                <tr>
+                                  <th width="150px">Name</th>
+                                  <th>Description</th>
+                                </tr>
+                                  <tr><td style="width:150px;">opnameId*</td>
+<td>
+
+
+    <div id="d2e199_deletePlanningForOpname_opnameId">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    UUID
+                </span>
+                    <span class="format">
+                        (uuid)
+                    </span>
+
+            </div>
+                <div class="inner required">
+                    Required
+                </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                            </table>
+
+
+
+
+
+                          <h2>Responses</h2>
+                            <h3 id="examples-Planning-deletePlanningForOpname-title-204"></h3>
+                            <p id="examples-Planning-deletePlanningForOpname-description-204" class="marked"></p>
+                            <script>
+                              var responsePlanning204_description = `There is no content to send for this request, but the headers may be useful.`;
+                              var responsePlanning204_description_break = responsePlanning204_description.indexOf('\n');
+                              if (responsePlanning204_description_break == -1) {
+                                $("#examples-Planning-deletePlanningForOpname-title-204").text("Status: 204 - " + responsePlanning204_description);
+                              } else {
+                                $("#examples-Planning-deletePlanningForOpname-title-204").text("Status: 204 - " + responsePlanning204_description.substring(0, responsePlanning204_description_break));
+                                $("#examples-Planning-deletePlanningForOpname-description-204").html(responsePlanning204_description.substring(responsePlanning204_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-Planning-deletePlanningForOpname-204" class="nav nav-tabs nav-tabs-examples" >
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-Planning-deletePlanningForOpname-204-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-Planning-deletePlanningForOpname-204-schema">
+                                <div id="responses-Planning-deletePlanningForOpname-schema-204" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "There is no content to send for this request, but the headers may be useful."
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-Planning-deletePlanningForOpname-204-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-Planning-deletePlanningForOpname-schema-204');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-Planning-deletePlanningForOpname-204-schema-data' type='hidden' value=''></input>
+                              </div>
+                            </div>
+                            <h3 id="examples-Planning-deletePlanningForOpname-title-401"></h3>
+                            <p id="examples-Planning-deletePlanningForOpname-description-401" class="marked"></p>
+                            <script>
+                              var responsePlanning401_description = `Access is unauthorized.`;
+                              var responsePlanning401_description_break = responsePlanning401_description.indexOf('\n');
+                              if (responsePlanning401_description_break == -1) {
+                                $("#examples-Planning-deletePlanningForOpname-title-401").text("Status: 401 - " + responsePlanning401_description);
+                              } else {
+                                $("#examples-Planning-deletePlanningForOpname-title-401").text("Status: 401 - " + responsePlanning401_description.substring(0, responsePlanning401_description_break));
+                                $("#examples-Planning-deletePlanningForOpname-description-401").html(responsePlanning401_description.substring(responsePlanning401_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-Planning-deletePlanningForOpname-401" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-Planning-deletePlanningForOpname-401-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-Planning-deletePlanningForOpname-401-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-Planning-deletePlanningForOpname-401-schema">
+                                <div id="responses-Planning-deletePlanningForOpname-schema-401" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "Access is unauthorized.",
+  "content" : {
+    "application/problem+json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/UnauthorizedProblemDetails"
+      }
+    }
+  }
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-Planning-deletePlanningForOpname-401-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-Planning-deletePlanningForOpname-schema-401');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-Planning-deletePlanningForOpname-401-schema-data' type='hidden' value=''></input>
+                              </div>
+                            </div>
+                            <h3 id="examples-Planning-deletePlanningForOpname-title-404"></h3>
+                            <p id="examples-Planning-deletePlanningForOpname-description-404" class="marked"></p>
+                            <script>
+                              var responsePlanning404_description = `The server cannot find the requested resource.`;
+                              var responsePlanning404_description_break = responsePlanning404_description.indexOf('\n');
+                              if (responsePlanning404_description_break == -1) {
+                                $("#examples-Planning-deletePlanningForOpname-title-404").text("Status: 404 - " + responsePlanning404_description);
+                              } else {
+                                $("#examples-Planning-deletePlanningForOpname-title-404").text("Status: 404 - " + responsePlanning404_description.substring(0, responsePlanning404_description_break));
+                                $("#examples-Planning-deletePlanningForOpname-description-404").html(responsePlanning404_description.substring(responsePlanning404_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-Planning-deletePlanningForOpname-404" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-Planning-deletePlanningForOpname-404-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-Planning-deletePlanningForOpname-404-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-Planning-deletePlanningForOpname-404-schema">
+                                <div id="responses-Planning-deletePlanningForOpname-schema-404" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "The server cannot find the requested resource.",
+  "content" : {
+    "application/problem+json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/NotFoundProblemDetails"
+      }
+    }
+  }
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-Planning-deletePlanningForOpname-404-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-Planning-deletePlanningForOpname-schema-404');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-Planning-deletePlanningForOpname-404-schema-data' type='hidden' value=''></input>
+                              </div>
+                            </div>
+                            <h3 id="examples-Planning-deletePlanningForOpname-title-default"></h3>
+                            <p id="examples-Planning-deletePlanningForOpname-description-default" class="marked"></p>
+                            <script>
+                              var responsePlanningdefault_description = `An unexpected error response.`;
+                              var responsePlanningdefault_description_break = responsePlanningdefault_description.indexOf('\n');
+                              if (responsePlanningdefault_description_break == -1) {
+                                $("#examples-Planning-deletePlanningForOpname-title-default").text("Status: default - " + responsePlanningdefault_description);
+                              } else {
+                                $("#examples-Planning-deletePlanningForOpname-title-default").text("Status: default - " + responsePlanningdefault_description.substring(0, responsePlanningdefault_description_break));
+                                $("#examples-Planning-deletePlanningForOpname-description-default").html(responsePlanningdefault_description.substring(responsePlanningdefault_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-Planning-deletePlanningForOpname-default" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-Planning-deletePlanningForOpname-default-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-Planning-deletePlanningForOpname-default-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-Planning-deletePlanningForOpname-default-schema">
+                                <div id="responses-Planning-deletePlanningForOpname-schema-default" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "An unexpected error response.",
+  "content" : {
+    "application/problem+json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ProblemDetails"
+      }
+    }
+  }
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-Planning-deletePlanningForOpname-default-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-Planning-deletePlanningForOpname-schema-default');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-Planning-deletePlanningForOpname-default-schema-data' type='hidden' value=''></input>
+                              </div>
+                            </div>
+                        </article>
+                      </div>
+                      <hr>
+                    <div id="api-Planning-getOpnames">
+                      <article id="api-Planning-getOpnames-0" data-group="User" data-name="getOpnames" data-version="0">
+                        <div class="pull-left">
+                          <h1>getOpnames</h1>
+                          <p>Get the list of opnames.</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked"></p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/planning/opnames</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Planning-getOpnames-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Planning-getOpnames-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Planning-getOpnames-0-dart">Dart</a></li>
+                          <li class=""><a href="#examples-Planning-getOpnames-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Planning-getOpnames-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Planning-getOpnames-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Planning-getOpnames-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Planning-getOpnames-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Planning-getOpnames-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Planning-getOpnames-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Planning-getOpnames-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Planning-getOpnames-0-python">Python</a></li>
+                          <li class=""><a href="#examples-Planning-getOpnames-0-rust">Rust</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Planning-getOpnames-0-curl">
+                            <pre class="prettyprint"><code class="language-bsh">curl -X GET \
+ \
+ -H "Accept: application/json,application/problem+json" \
+ "https://api.calcasa.nl/api/v1/planning/opnames?include_planned=true"
+</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Planning-getOpnames-0-java">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.*;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.model.*;
+import org.openapitools.client.api.PlanningApi;
+
+import java.io.File;
+import java.util.*;
+
+public class PlanningApiExample {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+        // Configure OAuth2 access token for authorization: oauth
+        OAuth oauth = (OAuth) defaultClient.getAuthentication("oauth");
+        oauth.setAccessToken("YOUR ACCESS TOKEN");
+
+        // Create an instance of the API class
+        PlanningApi apiInstance = new PlanningApi();
+        Boolean includePlanned = true; // Boolean | 
+
+        try {
+            array[Opname] result = apiInstance.getOpnames(includePlanned);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PlanningApi#getOpnames");
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Planning-getOpnames-0-dart">
+                            <pre class="prettyprint"><code class="language-dart">import 'package:openapi/api.dart';
+
+final api_instance = DefaultApi();
+
+final Boolean includePlanned = new Boolean(); // Boolean | 
+
+try {
+    final result = await api_instance.getOpnames(includePlanned);
+    print(result);
+} catch (e) {
+    print('Exception when calling DefaultApi->getOpnames: $e\n');
+}
+
+</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Planning-getOpnames-0-android">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.api.PlanningApi;
+
+public class PlanningApiExample {
+    public static void main(String[] args) {
+        PlanningApi apiInstance = new PlanningApi();
+        Boolean includePlanned = true; // Boolean | 
+
+        try {
+            array[Opname] result = apiInstance.getOpnames(includePlanned);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PlanningApi#getOpnames");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Planning-getOpnames-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Planning-getOpnames-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+
+// Configure OAuth2 access token for authorization: (authentication scheme: oauth)
+[apiConfig setAccessToken:@"YOUR_ACCESS_TOKEN"];
+
+
+// Create an instance of the API class
+PlanningApi *apiInstance = [[PlanningApi alloc] init];
+Boolean *includePlanned = true; //  (optional) (default to false)
+
+// Get the list of opnames.
+[apiInstance getOpnamesWith:includePlanned
+              completionHandler: ^(array[Opname] output, NSError* error) {
+    if (output) {
+        NSLog(@"%@", output);
+    }
+    if (error) {
+        NSLog(@"Error: %@", error);
+    }
+}];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Planning-getOpnames-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var CalcasaPublicApi = require('calcasa_public_api');
+var defaultClient = CalcasaPublicApi.ApiClient.instance;
+
+// Configure OAuth2 access token for authorization: oauth
+var oauth = defaultClient.authentications['oauth'];
+oauth.accessToken = "YOUR ACCESS TOKEN";
+
+// Create an instance of the API class
+var api = new CalcasaPublicApi.PlanningApi()
+var opts = {
+  'includePlanned': true // {Boolean} 
+};
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.getOpnames(opts, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Planning-getOpnames-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Planning-getOpnames-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using Calcasa.Api.Api;
+using Calcasa.Api.Client;
+using Calcasa.Api.Model;
+
+namespace Example
+{
+    public class getOpnamesExample
+    {
+        public void main()
+        {
+            // Configure OAuth2 access token for authorization: oauth
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            // Create an instance of the API class
+            var apiInstance = new PlanningApi();
+            var includePlanned = true;  // Boolean |  (optional)  (default to false)
+
+            try {
+                // Get the list of opnames.
+                array[Opname] result = apiInstance.getOpnames(includePlanned);
+                Debug.WriteLine(result);
+            } catch (Exception e) {
+                Debug.Print("Exception when calling PlanningApi.getOpnames: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Planning-getOpnames-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+// Configure OAuth2 access token for authorization: oauth
+OpenAPITools\Client\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
+
+// Create an instance of the API class
+$api_instance = new OpenAPITools\Client\Api\PlanningApi();
+$includePlanned = true; // Boolean | 
+
+try {
+    $result = $api_instance->getOpnames($includePlanned);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling PlanningApi->getOpnames: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Planning-getOpnames-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::OPenAPIClient::Configuration;
+use WWW::OPenAPIClient::PlanningApi;
+
+# Configure OAuth2 access token for authorization: oauth
+$WWW::OPenAPIClient::Configuration::access_token = 'YOUR_ACCESS_TOKEN';
+
+# Create an instance of the API class
+my $api_instance = WWW::OPenAPIClient::PlanningApi->new();
+my $includePlanned = true; # Boolean | 
+
+eval {
+    my $result = $api_instance->getOpnames(includePlanned => $includePlanned);
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling PlanningApi->getOpnames: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Planning-getOpnames-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import openapi_client
+from openapi_client.rest import ApiException
+from pprint import pprint
+
+# Configure OAuth2 access token for authorization: oauth
+openapi_client.configuration.access_token = 'YOUR_ACCESS_TOKEN'
+
+# Create an instance of the API class
+api_instance = openapi_client.PlanningApi()
+includePlanned = true # Boolean |  (optional) (default to false)
+
+try:
+    # Get the list of opnames.
+    api_response = api_instance.get_opnames(includePlanned=includePlanned)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling PlanningApi->getOpnames: %s\n" % e)</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Planning-getOpnames-0-rust">
+                              <pre class="prettyprint"><code class="language-rust">extern crate PlanningApi;
+
+pub fn main() {
+    let includePlanned = true; // Boolean
+
+    let mut context = PlanningApi::Context::default();
+    let result = client.getOpnames(includePlanned, &context).wait();
+
+    println!("{:?}", result);
+}
+</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Scopes</h2>
+                          <table>
+                            
+                              <tr>
+                                <td>api:planning:read</td>
+                                <td></td>
+                              </tr>
+                            
+                          </table>
+
+                          <h2>Parameters</h2>
+
+
+
+
+
+                            <div class="methodsubtabletitle">Query parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                <tr><td style="width:150px;">include_planned</td>
+<td>
+
+
+    <div id="d2e199_getOpnames_includePlanned">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    Boolean
+                </span>
+
+            </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                            </table>
+
+                          <h2>Responses</h2>
+                            <h3 id="examples-Planning-getOpnames-title-200"></h3>
+                            <p id="examples-Planning-getOpnames-description-200" class="marked"></p>
+                            <script>
+                              var responsePlanning200_description = `The request has succeeded.`;
+                              var responsePlanning200_description_break = responsePlanning200_description.indexOf('\n');
+                              if (responsePlanning200_description_break == -1) {
+                                $("#examples-Planning-getOpnames-title-200").text("Status: 200 - " + responsePlanning200_description);
+                              } else {
+                                $("#examples-Planning-getOpnames-title-200").text("Status: 200 - " + responsePlanning200_description.substring(0, responsePlanning200_description_break));
+                                $("#examples-Planning-getOpnames-description-200").html(responsePlanning200_description.substring(responsePlanning200_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-Planning-getOpnames-200" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-Planning-getOpnames-200-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-Planning-getOpnames-200-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-Planning-getOpnames-200-schema">
+                                <div id="responses-Planning-getOpnames-schema-200" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "The request has succeeded.",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/Opname"
+        }
+      }
+    }
+  }
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-Planning-getOpnames-200-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-Planning-getOpnames-schema-200');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-Planning-getOpnames-200-schema-data' type='hidden' value=''></input>
+                              </div>
+                            </div>
+                            <h3 id="examples-Planning-getOpnames-title-401"></h3>
+                            <p id="examples-Planning-getOpnames-description-401" class="marked"></p>
+                            <script>
+                              var responsePlanning401_description = `Access is unauthorized.`;
+                              var responsePlanning401_description_break = responsePlanning401_description.indexOf('\n');
+                              if (responsePlanning401_description_break == -1) {
+                                $("#examples-Planning-getOpnames-title-401").text("Status: 401 - " + responsePlanning401_description);
+                              } else {
+                                $("#examples-Planning-getOpnames-title-401").text("Status: 401 - " + responsePlanning401_description.substring(0, responsePlanning401_description_break));
+                                $("#examples-Planning-getOpnames-description-401").html(responsePlanning401_description.substring(responsePlanning401_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-Planning-getOpnames-401" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-Planning-getOpnames-401-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-Planning-getOpnames-401-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-Planning-getOpnames-401-schema">
+                                <div id="responses-Planning-getOpnames-schema-401" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "Access is unauthorized.",
+  "content" : {
+    "application/problem+json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/UnauthorizedProblemDetails"
+      }
+    }
+  }
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-Planning-getOpnames-401-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-Planning-getOpnames-schema-401');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-Planning-getOpnames-401-schema-data' type='hidden' value=''></input>
+                              </div>
+                            </div>
+                            <h3 id="examples-Planning-getOpnames-title-default"></h3>
+                            <p id="examples-Planning-getOpnames-description-default" class="marked"></p>
+                            <script>
+                              var responsePlanningdefault_description = `An unexpected error response.`;
+                              var responsePlanningdefault_description_break = responsePlanningdefault_description.indexOf('\n');
+                              if (responsePlanningdefault_description_break == -1) {
+                                $("#examples-Planning-getOpnames-title-default").text("Status: default - " + responsePlanningdefault_description);
+                              } else {
+                                $("#examples-Planning-getOpnames-title-default").text("Status: default - " + responsePlanningdefault_description.substring(0, responsePlanningdefault_description_break));
+                                $("#examples-Planning-getOpnames-description-default").html(responsePlanningdefault_description.substring(responsePlanningdefault_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-Planning-getOpnames-default" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-Planning-getOpnames-default-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-Planning-getOpnames-default-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-Planning-getOpnames-default-schema">
+                                <div id="responses-Planning-getOpnames-schema-default" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "An unexpected error response.",
+  "content" : {
+    "application/problem+json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ProblemDetails"
+      }
+    }
+  }
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-Planning-getOpnames-default-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-Planning-getOpnames-schema-default');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-Planning-getOpnames-default-schema-data' type='hidden' value=''></input>
+                              </div>
+                            </div>
+                        </article>
+                      </div>
+                      <hr>
+                    <div id="api-Planning-getOpnemers">
+                      <article id="api-Planning-getOpnemers-0" data-group="User" data-name="getOpnemers" data-version="0">
+                        <div class="pull-left">
+                          <h1>getOpnemers</h1>
+                          <p>Get the list of opnemers.</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked"></p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/planning/opnemers</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Planning-getOpnemers-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Planning-getOpnemers-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Planning-getOpnemers-0-dart">Dart</a></li>
+                          <li class=""><a href="#examples-Planning-getOpnemers-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Planning-getOpnemers-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Planning-getOpnemers-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Planning-getOpnemers-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Planning-getOpnemers-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Planning-getOpnemers-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Planning-getOpnemers-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Planning-getOpnemers-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Planning-getOpnemers-0-python">Python</a></li>
+                          <li class=""><a href="#examples-Planning-getOpnemers-0-rust">Rust</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Planning-getOpnemers-0-curl">
+                            <pre class="prettyprint"><code class="language-bsh">curl -X GET \
+ \
+ -H "Accept: application/json,application/problem+json" \
+ "https://api.calcasa.nl/api/v1/planning/opnemers"
+</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Planning-getOpnemers-0-java">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.*;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.model.*;
+import org.openapitools.client.api.PlanningApi;
+
+import java.io.File;
+import java.util.*;
+
+public class PlanningApiExample {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+        // Configure OAuth2 access token for authorization: oauth
+        OAuth oauth = (OAuth) defaultClient.getAuthentication("oauth");
+        oauth.setAccessToken("YOUR ACCESS TOKEN");
+
+        // Create an instance of the API class
+        PlanningApi apiInstance = new PlanningApi();
+
+        try {
+            array[Opnemer] result = apiInstance.getOpnemers();
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PlanningApi#getOpnemers");
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Planning-getOpnemers-0-dart">
+                            <pre class="prettyprint"><code class="language-dart">import 'package:openapi/api.dart';
+
+final api_instance = DefaultApi();
+
+
+try {
+    final result = await api_instance.getOpnemers();
+    print(result);
+} catch (e) {
+    print('Exception when calling DefaultApi->getOpnemers: $e\n');
+}
+
+</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Planning-getOpnemers-0-android">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.api.PlanningApi;
+
+public class PlanningApiExample {
+    public static void main(String[] args) {
+        PlanningApi apiInstance = new PlanningApi();
+
+        try {
+            array[Opnemer] result = apiInstance.getOpnemers();
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PlanningApi#getOpnemers");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Planning-getOpnemers-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Planning-getOpnemers-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+
+// Configure OAuth2 access token for authorization: (authentication scheme: oauth)
+[apiConfig setAccessToken:@"YOUR_ACCESS_TOKEN"];
+
+
+// Create an instance of the API class
+PlanningApi *apiInstance = [[PlanningApi alloc] init];
+
+// Get the list of opnemers.
+[apiInstance getOpnemersWithCompletionHandler: 
+              ^(array[Opnemer] output, NSError* error) {
+    if (output) {
+        NSLog(@"%@", output);
+    }
+    if (error) {
+        NSLog(@"Error: %@", error);
+    }
+}];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Planning-getOpnemers-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var CalcasaPublicApi = require('calcasa_public_api');
+var defaultClient = CalcasaPublicApi.ApiClient.instance;
+
+// Configure OAuth2 access token for authorization: oauth
+var oauth = defaultClient.authentications['oauth'];
+oauth.accessToken = "YOUR ACCESS TOKEN";
+
+// Create an instance of the API class
+var api = new CalcasaPublicApi.PlanningApi()
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.getOpnemers(callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Planning-getOpnemers-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Planning-getOpnemers-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using Calcasa.Api.Api;
+using Calcasa.Api.Client;
+using Calcasa.Api.Model;
+
+namespace Example
+{
+    public class getOpnemersExample
+    {
+        public void main()
+        {
+            // Configure OAuth2 access token for authorization: oauth
+            Configuration.Default.AccessToken = "YOUR_ACCESS_TOKEN";
+
+            // Create an instance of the API class
+            var apiInstance = new PlanningApi();
+
+            try {
+                // Get the list of opnemers.
+                array[Opnemer] result = apiInstance.getOpnemers();
+                Debug.WriteLine(result);
+            } catch (Exception e) {
+                Debug.Print("Exception when calling PlanningApi.getOpnemers: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Planning-getOpnemers-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+// Configure OAuth2 access token for authorization: oauth
+OpenAPITools\Client\Configuration::getDefaultConfiguration()->setAccessToken('YOUR_ACCESS_TOKEN');
+
+// Create an instance of the API class
+$api_instance = new OpenAPITools\Client\Api\PlanningApi();
+
+try {
+    $result = $api_instance->getOpnemers();
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling PlanningApi->getOpnemers: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Planning-getOpnemers-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::OPenAPIClient::Configuration;
+use WWW::OPenAPIClient::PlanningApi;
+
+# Configure OAuth2 access token for authorization: oauth
+$WWW::OPenAPIClient::Configuration::access_token = 'YOUR_ACCESS_TOKEN';
+
+# Create an instance of the API class
+my $api_instance = WWW::OPenAPIClient::PlanningApi->new();
+
+eval {
+    my $result = $api_instance->getOpnemers();
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling PlanningApi->getOpnemers: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Planning-getOpnemers-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import openapi_client
+from openapi_client.rest import ApiException
+from pprint import pprint
+
+# Configure OAuth2 access token for authorization: oauth
+openapi_client.configuration.access_token = 'YOUR_ACCESS_TOKEN'
+
+# Create an instance of the API class
+api_instance = openapi_client.PlanningApi()
+
+try:
+    # Get the list of opnemers.
+    api_response = api_instance.get_opnemers()
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling PlanningApi->getOpnemers: %s\n" % e)</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Planning-getOpnemers-0-rust">
+                              <pre class="prettyprint"><code class="language-rust">extern crate PlanningApi;
+
+pub fn main() {
+
+    let mut context = PlanningApi::Context::default();
+    let result = client.getOpnemers(&context).wait();
+
+    println!("{:?}", result);
+}
+</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Scopes</h2>
+                          <table>
+                            
+                              <tr>
+                                <td>api:planning:read</td>
+                                <td></td>
+                              </tr>
+                            
+                          </table>
+
+                          <h2>Parameters</h2>
+
+
+
+
+
+
+                          <h2>Responses</h2>
+                            <h3 id="examples-Planning-getOpnemers-title-200"></h3>
+                            <p id="examples-Planning-getOpnemers-description-200" class="marked"></p>
+                            <script>
+                              var responsePlanning200_description = `The request has succeeded.`;
+                              var responsePlanning200_description_break = responsePlanning200_description.indexOf('\n');
+                              if (responsePlanning200_description_break == -1) {
+                                $("#examples-Planning-getOpnemers-title-200").text("Status: 200 - " + responsePlanning200_description);
+                              } else {
+                                $("#examples-Planning-getOpnemers-title-200").text("Status: 200 - " + responsePlanning200_description.substring(0, responsePlanning200_description_break));
+                                $("#examples-Planning-getOpnemers-description-200").html(responsePlanning200_description.substring(responsePlanning200_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-Planning-getOpnemers-200" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-Planning-getOpnemers-200-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-Planning-getOpnemers-200-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-Planning-getOpnemers-200-schema">
+                                <div id="responses-Planning-getOpnemers-schema-200" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "The request has succeeded.",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/Opnemer"
+        }
+      }
+    }
+  }
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-Planning-getOpnemers-200-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-Planning-getOpnemers-schema-200');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-Planning-getOpnemers-200-schema-data' type='hidden' value=''></input>
+                              </div>
+                            </div>
+                            <h3 id="examples-Planning-getOpnemers-title-401"></h3>
+                            <p id="examples-Planning-getOpnemers-description-401" class="marked"></p>
+                            <script>
+                              var responsePlanning401_description = `Access is unauthorized.`;
+                              var responsePlanning401_description_break = responsePlanning401_description.indexOf('\n');
+                              if (responsePlanning401_description_break == -1) {
+                                $("#examples-Planning-getOpnemers-title-401").text("Status: 401 - " + responsePlanning401_description);
+                              } else {
+                                $("#examples-Planning-getOpnemers-title-401").text("Status: 401 - " + responsePlanning401_description.substring(0, responsePlanning401_description_break));
+                                $("#examples-Planning-getOpnemers-description-401").html(responsePlanning401_description.substring(responsePlanning401_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-Planning-getOpnemers-401" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-Planning-getOpnemers-401-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-Planning-getOpnemers-401-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-Planning-getOpnemers-401-schema">
+                                <div id="responses-Planning-getOpnemers-schema-401" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "Access is unauthorized.",
+  "content" : {
+    "application/problem+json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/UnauthorizedProblemDetails"
+      }
+    }
+  }
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-Planning-getOpnemers-401-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-Planning-getOpnemers-schema-401');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-Planning-getOpnemers-401-schema-data' type='hidden' value=''></input>
+                              </div>
+                            </div>
+                            <h3 id="examples-Planning-getOpnemers-title-default"></h3>
+                            <p id="examples-Planning-getOpnemers-description-default" class="marked"></p>
+                            <script>
+                              var responsePlanningdefault_description = `An unexpected error response.`;
+                              var responsePlanningdefault_description_break = responsePlanningdefault_description.indexOf('\n');
+                              if (responsePlanningdefault_description_break == -1) {
+                                $("#examples-Planning-getOpnemers-title-default").text("Status: default - " + responsePlanningdefault_description);
+                              } else {
+                                $("#examples-Planning-getOpnemers-title-default").text("Status: default - " + responsePlanningdefault_description.substring(0, responsePlanningdefault_description_break));
+                                $("#examples-Planning-getOpnemers-description-default").html(responsePlanningdefault_description.substring(responsePlanningdefault_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-Planning-getOpnemers-default" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-Planning-getOpnemers-default-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-Planning-getOpnemers-default-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-Planning-getOpnemers-default-schema">
+                                <div id="responses-Planning-getOpnemers-schema-default" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "An unexpected error response.",
+  "content" : {
+    "application/problem+json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ProblemDetails"
+      }
+    }
+  }
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-Planning-getOpnemers-default-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-Planning-getOpnemers-schema-default');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-Planning-getOpnemers-default-schema-data' type='hidden' value=''></input>
                               </div>
                             </div>
                         </article>

@@ -16,3 +16,4 @@ import "./operations/funderingen.tsp";
 import "./operations/geldverstrekkers.tsp";
 import "./operations/rapporten.tsp";
 import "./operations/waarderingen.tsp";
+import "./operations/planning.tsp";

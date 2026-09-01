@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-08-27 (v1.7.0-beta01)
+- Added planning API
+
 ## 2026-08-18 (v1.6.1)
 - Fix release to Packagist
 
