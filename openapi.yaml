@@ -11,7 +11,7 @@ info:
   description: |-
     The Calcasa API is used to connect to Calcasa provided services.
     For more information, please visit [Documentation](https://docs.calcasa.nl) or [GitHub](https://github.com/calcasa/api).
-  version: 1.7.0-beta01
+  version: 1.7.0-beta02
 tags:
   - name: Adressen
   - name: Bestemmingsplannen
@@ -3420,6 +3420,7 @@ components:
         - deadline
         - batchCode
         - product
+        - woningType
       properties:
         id:
           type: string
@@ -3436,6 +3437,8 @@ components:
           type: string
         product:
           $ref: '#/components/schemas/ProductType'
+        woningType:
+          $ref: '#/components/schemas/WoningType'
         planning:
           type: object
           allOf:
@@ -3830,6 +3833,7 @@ components:
         - desktopTaxatie
         - desktopTaxatieHerwaardering
         - desktopTaxatiePlus
+        - driveBy
       description: |-
         Het producttype voor een waardering. Deze moeten handmatig aangezet worden voor de gebruikte credentials.
         | Waarde | Omschrijving |
@@ -3842,6 +3846,7 @@ components:
         | `desktopTaxatie` | Desktop taxatie aanvraag met Desktop Taxatie rapport. |
         | `desktopTaxatieHerwaardering` | Desktop taxatie aanvraag met Desktop Taxatie rapport voor herwaarderingen. |
         | `desktopTaxatiePlus` | Desktop taxatie plus aanvraag met Desktop Taxatie Plus rapport. |
+        | `driveBy` | Calcasa Drive-by taxatie aanvraag met Drive-by rapport. |
       x-zero-based-enum: true
     Rapport:
       type: object

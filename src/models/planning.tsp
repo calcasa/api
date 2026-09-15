@@ -46,5 +46,7 @@ model Opname {
 
     product: ProductType;
 
+    woningType: WoningType;
+
     planning?: PlanningInfo | null;
 }

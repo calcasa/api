@@ -293,6 +293,7 @@ enum OperationType {
  * | `desktopTaxatie` | Desktop taxatie aanvraag met Desktop Taxatie rapport. |
  * | `desktopTaxatieHerwaardering` | Desktop taxatie aanvraag met Desktop Taxatie rapport voor herwaarderingen. |
  * | `desktopTaxatiePlus` | Desktop taxatie plus aanvraag met Desktop Taxatie Plus rapport. |
+ * | `driveBy` | Calcasa Drive-by taxatie aanvraag met Drive-by rapport. |
  *
  */
 @extension("x-zero-based-enum", true)
@@ -305,6 +306,7 @@ enum ProductType {
   desktopTaxatie,
   desktopTaxatieHerwaardering,
   desktopTaxatiePlus,
+  driveBy
 }
 
 /**

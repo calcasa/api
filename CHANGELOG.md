@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-09-15 (v1.7.0-beta02)
+- Added `driveBy` to `productType` enum for use with the planning API.
+- Added `woningType` field to `Opname`.
+
 ## 2026-08-27 (v1.7.0-beta01)
 - Added planning API
 

@@ -2193,7 +2193,7 @@ ul.nav-tabs {
   "x-zero-based-enum" : true
 };
     defs["Opname"] = {
-  "required" : [ "adres", "batchCode", "coordinaten", "deadline", "id", "product" ],
+  "required" : [ "adres", "batchCode", "coordinaten", "deadline", "id", "product", "woningType" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -2216,6 +2216,9 @@ ul.nav-tabs {
     },
     "product" : {
       "$ref" : "#/components/schemas/ProductType"
+    },
+    "woningType" : {
+      "$ref" : "#/components/schemas/WoningType"
     },
     "planning" : {
       "type" : "object",
@@ -2641,8 +2644,8 @@ ul.nav-tabs {
 };
     defs["ProductType"] = {
   "type" : "string",
-  "description" : "Het producttype voor een waardering. Deze moeten handmatig aangezet worden voor de gebruikte credentials.\n| Waarde | Omschrijving |\n| --- | --- |\n| `onbekend` | Geen geldige invoer. Onbekend product type. |\n| `modelwaardeCalcasa` | Niet beschikbaar op dit moment.<br>            Modelwaarde aanvraag met Calcasa Waardebepalingrapport. |\n| `modelwaardeOnePage` | Modelwaarde aanvraag met Calcasa One Page rapport. |\n| `modelwaardeRisico` | Modelwaarde aanvraag met risicorapport. |\n| `modelwaardeDesktopTaxatie` | Modelwaarde aanvraag met Desktop Taxatie Beknoptwaarderapport. |\n| `desktopTaxatie` | Desktop taxatie aanvraag met Desktop Taxatie rapport. |\n| `desktopTaxatieHerwaardering` | Desktop taxatie aanvraag met Desktop Taxatie rapport voor herwaarderingen. |\n| `desktopTaxatiePlus` | Desktop taxatie plus aanvraag met Desktop Taxatie Plus rapport. |",
-  "enum" : [ "onbekend", "modelwaardeCalcasa", "modelwaardeOnePage", "modelwaardeRisico", "modelwaardeDesktopTaxatie", "desktopTaxatie", "desktopTaxatieHerwaardering", "desktopTaxatiePlus" ],
+  "description" : "Het producttype voor een waardering. Deze moeten handmatig aangezet worden voor de gebruikte credentials.\n| Waarde | Omschrijving |\n| --- | --- |\n| `onbekend` | Geen geldige invoer. Onbekend product type. |\n| `modelwaardeCalcasa` | Niet beschikbaar op dit moment.<br>            Modelwaarde aanvraag met Calcasa Waardebepalingrapport. |\n| `modelwaardeOnePage` | Modelwaarde aanvraag met Calcasa One Page rapport. |\n| `modelwaardeRisico` | Modelwaarde aanvraag met risicorapport. |\n| `modelwaardeDesktopTaxatie` | Modelwaarde aanvraag met Desktop Taxatie Beknoptwaarderapport. |\n| `desktopTaxatie` | Desktop taxatie aanvraag met Desktop Taxatie rapport. |\n| `desktopTaxatieHerwaardering` | Desktop taxatie aanvraag met Desktop Taxatie rapport voor herwaarderingen. |\n| `desktopTaxatiePlus` | Desktop taxatie plus aanvraag met Desktop Taxatie Plus rapport. |\n| `driveBy` | Calcasa Drive-by taxatie aanvraag met Drive-by rapport. |",
+  "enum" : [ "onbekend", "modelwaardeCalcasa", "modelwaardeOnePage", "modelwaardeRisico", "modelwaardeDesktopTaxatie", "desktopTaxatie", "desktopTaxatieHerwaardering", "desktopTaxatiePlus", "driveBy" ],
   "x-zero-based-enum" : true
 };
     defs["Rapport"] = {
@@ -3457,7 +3460,7 @@ ul.nav-tabs {
         <div id="header">
           <div id="api-_">
             <h2 id="welcome-to-apidoc">API and SDK Documentation</h2>
-              <div class="app-desc">Version: 1.7.0-beta01</div>
+              <div class="app-desc">Version: 1.7.0-beta02</div>
             <hr>
             <div id="app-description" class="app-desc">
                 The Calcasa API is used to connect to Calcasa provided services.
