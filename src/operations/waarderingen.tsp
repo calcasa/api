@@ -12,11 +12,11 @@ namespace CalcasaPublicApi;
 @tag("Waarderingen")
 @route("/waarderingen")
 namespace Waarderingen {
-  @doc("Het waarderingsobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.")
+  @doc("Geeft een waardering terug op basis van de ID. Het waarderingsobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.")
   @useAuth(oauth<["api:waarderingen:read"]>)
   @route("/{id}")
   @get
-  @summary("Waardering op basis van Id.")
+  @summary("Haal een waardering op.")
   @operationId("GetWaardering")
   op GetWaardering(
     /**
@@ -48,7 +48,7 @@ namespace Waarderingen {
   @useAuth(oauth<["api:waarderingen:patch"]>)
   @route("/{id}")
   @patch(#{ implicitOptionality: false })
-  @summary("Patcht een waardering.")
+  @summary("Werk een waardering bij.")
   @operationId("PatchWaarderingen")
   op PatchWaarderingen(
     /**
@@ -68,11 +68,11 @@ namespace Waarderingen {
     | ValidationProblemDetails
     | ProblemDetails;
 
-  @doc("Het waarderingsobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.")
+  @doc("Geeft de ontwikkeling van een waardering terug. Het waarderingsobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.")
   @useAuth(oauth<["api:waarderingen:ontwikkeling"]>)
   @route("/{id}/ontwikkeling")
   @get
-  @summary("Waardering ontwikkeling op basis van waardering Id.")
+  @summary("Haal waarderingsontwikkeling op.")
   @operationId("GetWaarderingOntwikkeling")
   op GetWaarderingOntwikkeling(
     /**
@@ -94,7 +94,7 @@ namespace Waarderingen {
   @useAuth(oauth<["api:waarderingen:read"]>)
   @route("/zoeken")
   @post
-  @summary("Zoek waardering op basis van input parameters.")
+  @summary("Zoek waarderingen.")
   @operationId("SearchWaarderingen")
   op SearchWaarderingen(@bodyRoot body: WaarderingZoekParameters):
     | SearchWaarderingen200Response
@@ -118,7 +118,7 @@ namespace Waarderingen {
   @useAuth(oauth<["api:waarderingen:create"]>)
   @route("")
   @post
-  @summary("Maak een waardering aan.")
+  @summary("Maak een waardering.")
   @operationId("CreateWaardering")
   op CreateWaardering(@bodyRoot body: WaarderingInputParameters):
     | CreateWaardering200Response
@@ -135,7 +135,7 @@ namespace Waarderingen {
   @useAuth(oauth<["api:waarderingen:create"]>)
   @route("check")
   @post
-  @summary("Controleert mogelijke producten.")
+  @summary("Controleer mogelijke producten.")
   @operationId("CheckProducten")
   op CheckProducten(@bodyRoot body: ProductCheckParameters):
     | CheckProducten200Response
@@ -145,10 +145,14 @@ namespace Waarderingen {
     | ValidationProblemDetails
     | ProblemDetails;
 
+  /**
+   * Zoekt een waardering op basis van de upper-case hexadecimal SHA-256-hash van een PDF-rapport.
+   * Bij een hashcollision wordt de nieuwste waardering teruggegeven.
+   */
   @useAuth(oauth<["api:rapporten:read"]>)
   @route("/by-hash/{hash}")
   @get
-  @summary("Waardering op basis van upper-case hex SHA-256 hash van een PDF rapport. Als er een collision is wordt de nieuwste waardering teruggegeven.")
+  @summary("Zoek op rapport-hash.")
   @operationId("GetWaarderingByReportHash")
   op GetWaarderingByReportHash(
     /**

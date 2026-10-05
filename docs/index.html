@@ -3460,7 +3460,7 @@ ul.nav-tabs {
         <div id="header">
           <div id="api-_">
             <h2 id="welcome-to-apidoc">API and SDK Documentation</h2>
-              <div class="app-desc">Version: 1.7.0-beta02</div>
+              <div class="app-desc">Version: 1.7.0-beta03</div>
             <hr>
             <div id="app-description" class="app-desc">
                 The Calcasa API is used to connect to Calcasa provided services.
@@ -3475,7 +3475,7 @@ For more information, please visit <a href="https://docs.calcasa.nl">Documentati
                       <article id="api-Adressen-getAdres-0" data-group="User" data-name="getAdres" data-version="0">
                         <div class="pull-left">
                           <h1>getAdres</h1>
-                          <p>Adres info op basis van BAG Nummeraanduiding Id.</p>
+                          <p>Haal adresinformatie op.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -3595,7 +3595,7 @@ public class AdressenApiExample {
 AdressenApi *apiInstance = [[AdressenApi alloc] init];
 Long *bagNummeraanduidingId = 789; // Een BAG Nummeraanduiding ID om een adres te specificeren. (default to null)
 
-// Adres info op basis van BAG Nummeraanduiding Id.
+// Haal adresinformatie op.
 [apiInstance getAdresWith:bagNummeraanduidingId
               completionHandler: ^(AdresInfo output, NSError* error) {
     if (output) {
@@ -3655,7 +3655,7 @@ namespace Example
             var bagNummeraanduidingId = 789;  // Long | Een BAG Nummeraanduiding ID om een adres te specificeren. (default to null)
 
             try {
-                // Adres info op basis van BAG Nummeraanduiding Id.
+                // Haal adresinformatie op.
                 AdresInfo result = apiInstance.getAdres(bagNummeraanduidingId);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -3723,7 +3723,7 @@ api_instance = openapi_client.AdressenApi()
 bagNummeraanduidingId = 789 # Long | Een BAG Nummeraanduiding ID om een adres te specificeren. (default to null)
 
 try:
-    # Adres info op basis van BAG Nummeraanduiding Id.
+    # Haal adresinformatie op.
     api_response = api_instance.get_adres(bagNummeraanduidingId)
     pprint(api_response)
 except ApiException as e:
@@ -4183,7 +4183,7 @@ Een BAG Nummeraanduiding ID om een adres te specificeren.
                       <article id="api-Adressen-searchAdres-0" data-group="User" data-name="searchAdres" data-version="0">
                         <div class="pull-left">
                           <h1>searchAdres</h1>
-                          <p>Zoek adresinformatie op basis van het opgegeven adres.</p>
+                          <p>Zoek adresinformatie.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -4311,7 +4311,7 @@ public class AdressenApiExample {
 AdressenApi *apiInstance = [[AdressenApi alloc] init];
 Adres *adres = ; // 
 
-// Zoek adresinformatie op basis van het opgegeven adres.
+// Zoek adresinformatie.
 [apiInstance searchAdresWith:adres
               completionHandler: ^(AdresInfo output, NSError* error) {
     if (output) {
@@ -4371,7 +4371,7 @@ namespace Example
             var adres = new Adres(); // Adres | 
 
             try {
-                // Zoek adresinformatie op basis van het opgegeven adres.
+                // Zoek adresinformatie.
                 AdresInfo result = apiInstance.searchAdres(adres);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -4439,7 +4439,7 @@ api_instance = openapi_client.AdressenApi()
 adres =  # Adres | 
 
 try:
-    # Zoek adresinformatie op basis van het opgegeven adres.
+    # Zoek adresinformatie.
     api_response = api_instance.search_adres(adres)
     pprint(api_response)
 except ApiException as e:
@@ -4918,12 +4918,13 @@ $(document).ready(function() {
                       <article id="api-Bestemmingsplannen-getBestemmingById-0" data-group="User" data-name="getBestemmingById" data-version="0">
                         <div class="pull-left">
                           <h1>getBestemmingById</h1>
-                          <p>Gegevens over de bestemmingsplannen op de locatie van een adres (BAG Nummeraanduiding ID).</p>
+                          <p>Haal bestemmingsplannen op.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked">Het bestemmingsplanobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.</p>
+                        <p class="marked">Geeft de bestemmingsplannen terug voor de locatie van een adres (BAG Nummeraanduiding ID).
+Het bestemmingsplanobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/bestemmingsplannen/{bagNummeraanduidingId}</span></code></pre>
@@ -5037,7 +5038,7 @@ public class BestemmingsplannenApiExample {
 BestemmingsplannenApi *apiInstance = [[BestemmingsplannenApi alloc] init];
 Long *bagNummeraanduidingId = 789; // Een BAG Nummeraanduiding ID om een adres te specificeren. (default to null)
 
-// Gegevens over de bestemmingsplannen op de locatie van een adres (BAG Nummeraanduiding ID).
+// Haal bestemmingsplannen op.
 [apiInstance getBestemmingByIdWith:bagNummeraanduidingId
               completionHandler: ^(Bestemmingsdata output, NSError* error) {
     if (output) {
@@ -5097,7 +5098,7 @@ namespace Example
             var bagNummeraanduidingId = 789;  // Long | Een BAG Nummeraanduiding ID om een adres te specificeren. (default to null)
 
             try {
-                // Gegevens over de bestemmingsplannen op de locatie van een adres (BAG Nummeraanduiding ID).
+                // Haal bestemmingsplannen op.
                 Bestemmingsdata result = apiInstance.getBestemmingById(bagNummeraanduidingId);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -5165,7 +5166,7 @@ api_instance = openapi_client.BestemmingsplannenApi()
 bagNummeraanduidingId = 789 # Long | Een BAG Nummeraanduiding ID om een adres te specificeren. (default to null)
 
 try:
-    # Gegevens over de bestemmingsplannen op de locatie van een adres (BAG Nummeraanduiding ID).
+    # Haal bestemmingsplannen op.
     api_response = api_instance.get_bestemming_by_id(bagNummeraanduidingId)
     pprint(api_response)
 except ApiException as e:
@@ -5628,12 +5629,13 @@ Een BAG Nummeraanduiding ID om een adres te specificeren.
                       <article id="api-Bodem-getBodemById-0" data-group="User" data-name="getBodemById" data-version="0">
                         <div class="pull-left">
                           <h1>getBodemById</h1>
-                          <p>Gegevens over de bodemkwaliteit op de locatie van een adres (BAG Nummeraanduiding ID).</p>
+                          <p>Haal bodemkwaliteitsgegevens op.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked">Het bodemdataobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.</p>
+                        <p class="marked">Geeft bodemkwaliteitsgegevens terug voor de locatie van een adres (BAG Nummeraanduiding ID).
+Het bodemdataobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/bodem/{bagNummeraanduidingId}</span></code></pre>
@@ -5747,7 +5749,7 @@ public class BodemApiExample {
 BodemApi *apiInstance = [[BodemApi alloc] init];
 Long *bagNummeraanduidingId = 789; // Een BAG Nummeraanduiding ID om een adres te specificeren. (default to null)
 
-// Gegevens over de bodemkwaliteit op de locatie van een adres (BAG Nummeraanduiding ID).
+// Haal bodemkwaliteitsgegevens op.
 [apiInstance getBodemByIdWith:bagNummeraanduidingId
               completionHandler: ^(Bodemdata output, NSError* error) {
     if (output) {
@@ -5807,7 +5809,7 @@ namespace Example
             var bagNummeraanduidingId = 789;  // Long | Een BAG Nummeraanduiding ID om een adres te specificeren. (default to null)
 
             try {
-                // Gegevens over de bodemkwaliteit op de locatie van een adres (BAG Nummeraanduiding ID).
+                // Haal bodemkwaliteitsgegevens op.
                 Bodemdata result = apiInstance.getBodemById(bagNummeraanduidingId);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -5875,7 +5877,7 @@ api_instance = openapi_client.BodemApi()
 bagNummeraanduidingId = 789 # Long | Een BAG Nummeraanduiding ID om een adres te specificeren. (default to null)
 
 try:
-    # Gegevens over de bodemkwaliteit op de locatie van een adres (BAG Nummeraanduiding ID).
+    # Haal bodemkwaliteitsgegevens op.
     api_response = api_instance.get_bodem_by_id(bagNummeraanduidingId)
     pprint(api_response)
 except ApiException as e:
@@ -6338,12 +6340,13 @@ Een BAG Nummeraanduiding ID om een adres te specificeren.
                       <article id="api-Buurt-getBuurt-0" data-group="User" data-name="getBuurt" data-version="0">
                         <div class="pull-left">
                           <h1>getBuurt</h1>
-                          <p>Gegevens over een buurt en de wijk, gemeente en land waarin deze buurt gesitueerd is.</p>
+                          <p>Haal buurtgegevens op.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked">Het omgevingsdataobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.</p>
+                        <p class="marked">Geeft gegevens terug over een buurt en de bijbehorende wijk, gemeente en land.
+Het omgevingsdataobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/buurt/{buurtCode}</span></code></pre>
@@ -6457,7 +6460,7 @@ public class BuurtApiExample {
 BuurtApi *apiInstance = [[BuurtApi alloc] init];
 String *buurtCode = buurtCode_example; // Een CBS buurt code. (default to null)
 
-// Gegevens over een buurt en de wijk, gemeente en land waarin deze buurt gesitueerd is.
+// Haal buurtgegevens op.
 [apiInstance getBuurtWith:buurtCode
               completionHandler: ^(Omgevingsdata output, NSError* error) {
     if (output) {
@@ -6517,7 +6520,7 @@ namespace Example
             var buurtCode = buurtCode_example;  // String | Een CBS buurt code. (default to null)
 
             try {
-                // Gegevens over een buurt en de wijk, gemeente en land waarin deze buurt gesitueerd is.
+                // Haal buurtgegevens op.
                 Omgevingsdata result = apiInstance.getBuurt(buurtCode);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -6585,7 +6588,7 @@ api_instance = openapi_client.BuurtApi()
 buurtCode = buurtCode_example # String | Een CBS buurt code. (default to null)
 
 try:
-    # Gegevens over een buurt en de wijk, gemeente en land waarin deze buurt gesitueerd is.
+    # Haal buurtgegevens op.
     api_response = api_instance.get_buurt(buurtCode)
     pprint(api_response)
 except ApiException as e:
@@ -7045,7 +7048,7 @@ Een CBS buurt code.
                       <article id="api-Callbacks-addOrUpdateCallbackSubscription-0" data-group="User" data-name="addOrUpdateCallbackSubscription" data-version="0">
                         <div class="pull-left">
                           <h1>addOrUpdateCallbackSubscription</h1>
-                          <p>Voeg een callback inschrijving toe (of werk bij) voor de huidige client voor een adres.</p>
+                          <p>Maak of werk een callbackinschrijving bij.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -7173,7 +7176,7 @@ public class CallbacksApiExample {
 CallbacksApi *apiInstance = [[CallbacksApi alloc] init];
 CallbackInschrijving *callbackInschrijving = ; // 
 
-// Voeg een callback inschrijving toe (of werk bij) voor de huidige client voor een adres.
+// Maak of werk een callbackinschrijving bij.
 [apiInstance addOrUpdateCallbackSubscriptionWith:callbackInschrijving
               completionHandler: ^(CallbackInschrijving output, NSError* error) {
     if (output) {
@@ -7233,7 +7236,7 @@ namespace Example
             var callbackInschrijving = new CallbackInschrijving(); // CallbackInschrijving | 
 
             try {
-                // Voeg een callback inschrijving toe (of werk bij) voor de huidige client voor een adres.
+                // Maak of werk een callbackinschrijving bij.
                 CallbackInschrijving result = apiInstance.addOrUpdateCallbackSubscription(callbackInschrijving);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -7301,7 +7304,7 @@ api_instance = openapi_client.CallbacksApi()
 callbackInschrijving =  # CallbackInschrijving | 
 
 try:
-    # Voeg een callback inschrijving toe (of werk bij) voor de huidige client voor een adres.
+    # Maak of werk een callbackinschrijving bij.
     api_response = api_instance.add_or_update_callback_subscription(callbackInschrijving)
     pprint(api_response)
 except ApiException as e:
@@ -7777,12 +7780,12 @@ $(document).ready(function() {
                       <article id="api-Callbacks-deleteNotificationSubscription-0" data-group="User" data-name="deleteNotificationSubscription" data-version="0">
                         <div class="pull-left">
                           <h1>deleteNotificationSubscription</h1>
-                          <p>Verwijder de callback inschrijving voor deze client, dit adres en optioneel een geldverstrekker.</p>
+                          <p>Verwijder een callbackinschrijving.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked"></p>
+                        <p class="marked">Verwijdert de callbackinschrijving voor de huidige client, het opgegeven adres en optioneel een geldverstrekker.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="delete"><code><span class="pln">/callbacks/inschrijvingen/{bagNummeraanduidingId}</span></code></pre>
@@ -7898,7 +7901,7 @@ CallbacksApi *apiInstance = [[CallbacksApi alloc] init];
 Long *bagNummeraanduidingId = 789; // Het BAG Nummeraanduiding ID waar de callback inschrijving voor geldt. (default to null)
 String *geldverstrekker = geldverstrekker_example; // De naam van de geldverstrekker waar de callback inschrijving voor geldt. (optional) (default to null)
 
-// Verwijder de callback inschrijving voor deze client, dit adres en optioneel een geldverstrekker.
+// Verwijder een callbackinschrijving.
 [apiInstance deleteNotificationSubscriptionWith:bagNummeraanduidingId
     geldverstrekker:geldverstrekker
               completionHandler: ^(NSError* error) {
@@ -7960,7 +7963,7 @@ namespace Example
             var geldverstrekker = geldverstrekker_example;  // String | De naam van de geldverstrekker waar de callback inschrijving voor geldt. (optional)  (default to null)
 
             try {
-                // Verwijder de callback inschrijving voor deze client, dit adres en optioneel een geldverstrekker.
+                // Verwijder een callbackinschrijving.
                 apiInstance.deleteNotificationSubscription(bagNummeraanduidingId, geldverstrekker);
             } catch (Exception e) {
                 Debug.Print("Exception when calling CallbacksApi.deleteNotificationSubscription: " + e.Message );
@@ -8028,7 +8031,7 @@ bagNummeraanduidingId = 789 # Long | Het BAG Nummeraanduiding ID waar de callbac
 geldverstrekker = geldverstrekker_example # String | De naam van de geldverstrekker waar de callback inschrijving voor geldt. (optional) (default to null)
 
 try:
-    # Verwijder de callback inschrijving voor deze client, dit adres en optioneel een geldverstrekker.
+    # Verwijder een callbackinschrijving.
     api_instance.delete_notification_subscription(bagNummeraanduidingId, geldverstrekker=geldverstrekker)
 except ApiException as e:
     print("Exception when calling CallbacksApi->deleteNotificationSubscription: %s\n" % e)</code></pre>
@@ -8503,12 +8506,13 @@ De naam van de geldverstrekker waar de callback inschrijving voor geldt.
                       <article id="api-Callbacks-getNotificationSubscription-0" data-group="User" data-name="getNotificationSubscription" data-version="0">
                         <div class="pull-left">
                           <h1>getNotificationSubscription</h1>
-                          <p>Haal de callback inschrijving op voor deze client, dit adres en eventueel opgegeven geldverstrekker.</p>
+                          <p>Haal een callbackinschrijving op.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked">Het callbackobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.</p>
+                        <p class="marked">Geeft de callbackinschrijving terug voor de huidige client, het opgegeven adres en optioneel een geldverstrekker.
+Het callbackobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/callbacks/inschrijvingen/{bagNummeraanduidingId}</span></code></pre>
@@ -8626,7 +8630,7 @@ CallbacksApi *apiInstance = [[CallbacksApi alloc] init];
 Long *bagNummeraanduidingId = 789; // Het BAG Nummeraanduiding ID waar de callback inschrijving voor geldt. (default to null)
 String *geldverstrekker = geldverstrekker_example; // De naam van de geldverstrekker waar de callback inschrijving voor geldt. (optional) (default to null)
 
-// Haal de callback inschrijving op voor deze client, dit adres en eventueel opgegeven geldverstrekker.
+// Haal een callbackinschrijving op.
 [apiInstance getNotificationSubscriptionWith:bagNummeraanduidingId
     geldverstrekker:geldverstrekker
               completionHandler: ^(CallbackInschrijving output, NSError* error) {
@@ -8691,7 +8695,7 @@ namespace Example
             var geldverstrekker = geldverstrekker_example;  // String | De naam van de geldverstrekker waar de callback inschrijving voor geldt. (optional)  (default to null)
 
             try {
-                // Haal de callback inschrijving op voor deze client, dit adres en eventueel opgegeven geldverstrekker.
+                // Haal een callbackinschrijving op.
                 CallbackInschrijving result = apiInstance.getNotificationSubscription(bagNummeraanduidingId, geldverstrekker);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -8762,7 +8766,7 @@ bagNummeraanduidingId = 789 # Long | Het BAG Nummeraanduiding ID waar de callbac
 geldverstrekker = geldverstrekker_example # String | De naam van de geldverstrekker waar de callback inschrijving voor geldt. (optional) (default to null)
 
 try:
-    # Haal de callback inschrijving op voor deze client, dit adres en eventueel opgegeven geldverstrekker.
+    # Haal een callbackinschrijving op.
     api_response = api_instance.get_notification_subscription(bagNummeraanduidingId, geldverstrekker=geldverstrekker)
     pprint(api_response)
 except ApiException as e:
@@ -9250,7 +9254,7 @@ De naam van de geldverstrekker waar de callback inschrijving voor geldt.
                       <article id="api-Callbacks-getNotificationSubscriptions-0" data-group="User" data-name="getNotificationSubscriptions" data-version="0">
                         <div class="pull-left">
                           <h1>getNotificationSubscriptions</h1>
-                          <p>Haal de callback inschrijvingen binnen voor deze client.</p>
+                          <p>Haal callbackinschrijvingen op.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -9365,7 +9369,7 @@ public class CallbacksApiExample {
 // Create an instance of the API class
 CallbacksApi *apiInstance = [[CallbacksApi alloc] init];
 
-// Haal de callback inschrijvingen binnen voor deze client.
+// Haal callbackinschrijvingen op.
 [apiInstance getNotificationSubscriptionsWithCompletionHandler: 
               ^(array[CallbackInschrijving] output, NSError* error) {
     if (output) {
@@ -9422,7 +9426,7 @@ namespace Example
             var apiInstance = new CallbacksApi();
 
             try {
-                // Haal de callback inschrijvingen binnen voor deze client.
+                // Haal callbackinschrijvingen op.
                 array[CallbackInschrijving] result = apiInstance.getNotificationSubscriptions();
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -9487,7 +9491,7 @@ openapi_client.configuration.access_token = 'YOUR_ACCESS_TOKEN'
 api_instance = openapi_client.CallbacksApi()
 
 try:
-    # Haal de callback inschrijvingen binnen voor deze client.
+    # Haal callbackinschrijvingen op.
     api_response = api_instance.get_notification_subscriptions()
     pprint(api_response)
 except ApiException as e:
@@ -9843,7 +9847,7 @@ pub fn main() {
                       <article id="api-Configuratie-getCallbackAuthentication-0" data-group="User" data-name="getCallbackAuthentication" data-version="0">
                         <div class="pull-left">
                           <h1>getCallbackAuthentication</h1>
-                          <p>Haal de geconfigureerde callback authenticatie op voor de huidige client.</p>
+                          <p>Haal callbackauthenticatie op.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -9958,7 +9962,7 @@ public class ConfiguratieApiExample {
 // Create an instance of the API class
 ConfiguratieApi *apiInstance = [[ConfiguratieApi alloc] init];
 
-// Haal de geconfigureerde callback authenticatie op voor de huidige client.
+// Haal callbackauthenticatie op.
 [apiInstance getCallbackAuthenticationWithCompletionHandler: 
               ^(CallbackAuthentication output, NSError* error) {
     if (output) {
@@ -10015,7 +10019,7 @@ namespace Example
             var apiInstance = new ConfiguratieApi();
 
             try {
-                // Haal de geconfigureerde callback authenticatie op voor de huidige client.
+                // Haal callbackauthenticatie op.
                 CallbackAuthentication result = apiInstance.getCallbackAuthentication();
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -10080,7 +10084,7 @@ openapi_client.configuration.access_token = 'YOUR_ACCESS_TOKEN'
 api_instance = openapi_client.ConfiguratieApi()
 
 try:
-    # Haal de geconfigureerde callback authenticatie op voor de huidige client.
+    # Haal callbackauthenticatie op.
     api_response = api_instance.get_callback_authentication()
     pprint(api_response)
 except ApiException as e:
@@ -10430,7 +10434,7 @@ pub fn main() {
                       <article id="api-Configuratie-getCallbacks-0" data-group="User" data-name="getCallbacks" data-version="0">
                         <div class="pull-left">
                           <h1>getCallbacks</h1>
-                          <p>Haal de geconfigureerde callback URL&#39;s op voor de huidige client.</p>
+                          <p>Haal callback-URL&#39;s op.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -10545,7 +10549,7 @@ public class ConfiguratieApiExample {
 // Create an instance of the API class
 ConfiguratieApi *apiInstance = [[ConfiguratieApi alloc] init];
 
-// Haal de geconfigureerde callback URL's op voor de huidige client.
+// Haal callback-URL's op.
 [apiInstance getCallbacksWithCompletionHandler: 
               ^(array[Callback] output, NSError* error) {
     if (output) {
@@ -10602,7 +10606,7 @@ namespace Example
             var apiInstance = new ConfiguratieApi();
 
             try {
-                // Haal de geconfigureerde callback URL's op voor de huidige client.
+                // Haal callback-URL's op.
                 array[Callback] result = apiInstance.getCallbacks();
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -10667,7 +10671,7 @@ openapi_client.configuration.access_token = 'YOUR_ACCESS_TOKEN'
 api_instance = openapi_client.ConfiguratieApi()
 
 try:
-    # Haal de geconfigureerde callback URL's op voor de huidige client.
+    # Haal callback-URL's op.
     api_response = api_instance.get_callbacks()
     pprint(api_response)
 except ApiException as e:
@@ -11020,7 +11024,7 @@ pub fn main() {
                       <article id="api-Configuratie-getMtlsCertificate-0" data-group="User" data-name="getMtlsCertificate" data-version="0">
                         <div class="pull-left">
                           <h1>getMtlsCertificate</h1>
-                          <p>Get the self-signed mTLS certificate.</p>
+                          <p>Haal het mTLS-certificaat op.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -11135,7 +11139,7 @@ public class ConfiguratieApiExample {
 // Create an instance of the API class
 ConfiguratieApi *apiInstance = [[ConfiguratieApi alloc] init];
 
-// Get the self-signed mTLS certificate.
+// Haal het mTLS-certificaat op.
 [apiInstance getMtlsCertificateWithCompletionHandler: 
               ^(File output, NSError* error) {
     if (output) {
@@ -11192,7 +11196,7 @@ namespace Example
             var apiInstance = new ConfiguratieApi();
 
             try {
-                // Get the self-signed mTLS certificate.
+                // Haal het mTLS-certificaat op.
                 File result = apiInstance.getMtlsCertificate();
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -11257,7 +11261,7 @@ openapi_client.configuration.access_token = 'YOUR_ACCESS_TOKEN'
 api_instance = openapi_client.ConfiguratieApi()
 
 try:
-    # Get the self-signed mTLS certificate.
+    # Haal het mTLS-certificaat op.
     api_response = api_instance.get_mtls_certificate()
     pprint(api_response)
 except ApiException as e:
@@ -11608,7 +11612,7 @@ pub fn main() {
                       <article id="api-Configuratie-getSignatureKeys-0" data-group="User" data-name="getSignatureKeys" data-version="0">
                         <div class="pull-left">
                           <h1>getSignatureKeys</h1>
-                          <p>Get the JWKS keys, deze kunnen worden gebruikt om de echtheid van webhooks te verifiëren.</p>
+                          <p>Haal JWKS-sleutels op.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -11723,7 +11727,7 @@ public class ConfiguratieApiExample {
 // Create an instance of the API class
 ConfiguratieApi *apiInstance = [[ConfiguratieApi alloc] init];
 
-// Get the JWKS keys, deze kunnen worden gebruikt om de echtheid van webhooks te verifiëren.
+// Haal JWKS-sleutels op.
 [apiInstance getSignatureKeysWithCompletionHandler: 
               ^(File output, NSError* error) {
     if (output) {
@@ -11780,7 +11784,7 @@ namespace Example
             var apiInstance = new ConfiguratieApi();
 
             try {
-                // Get the JWKS keys, deze kunnen worden gebruikt om de echtheid van webhooks te verifiëren.
+                // Haal JWKS-sleutels op.
                 File result = apiInstance.getSignatureKeys();
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -11845,7 +11849,7 @@ openapi_client.configuration.access_token = 'YOUR_ACCESS_TOKEN'
 api_instance = openapi_client.ConfiguratieApi()
 
 try:
-    # Get the JWKS keys, deze kunnen worden gebruikt om de echtheid van webhooks te verifiëren.
+    # Haal JWKS-sleutels op.
     api_response = api_instance.get_signature_keys()
     pprint(api_response)
 except ApiException as e:
@@ -12196,7 +12200,7 @@ pub fn main() {
                       <article id="api-Configuratie-postCallbackAuthentication-0" data-group="User" data-name="postCallbackAuthentication" data-version="0">
                         <div class="pull-left">
                           <h1>postCallbackAuthentication</h1>
-                          <p>Update de geconfigureerde callback authenticatie voor de huidige client.</p>
+                          <p>Werk callbackauthenticatie bij.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -12321,7 +12325,7 @@ public class ConfiguratieApiExample {
 ConfiguratieApi *apiInstance = [[ConfiguratieApi alloc] init];
 CallbackAuthentication *callbackAuthentication = ; // 
 
-// Update de geconfigureerde callback authenticatie voor de huidige client.
+// Werk callbackauthenticatie bij.
 [apiInstance postCallbackAuthenticationWith:callbackAuthentication
               completionHandler: ^(CallbackAuthentication output, NSError* error) {
     if (output) {
@@ -12381,7 +12385,7 @@ namespace Example
             var callbackAuthentication = new CallbackAuthentication(); // CallbackAuthentication | 
 
             try {
-                // Update de geconfigureerde callback authenticatie voor de huidige client.
+                // Werk callbackauthenticatie bij.
                 CallbackAuthentication result = apiInstance.postCallbackAuthentication(callbackAuthentication);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -12449,7 +12453,7 @@ api_instance = openapi_client.ConfiguratieApi()
 callbackAuthentication =  # CallbackAuthentication | 
 
 try:
-    # Update de geconfigureerde callback authenticatie voor de huidige client.
+    # Werk callbackauthenticatie bij.
     api_response = api_instance.post_callback_authentication(callbackAuthentication)
     pprint(api_response)
 except ApiException as e:
@@ -12924,7 +12928,7 @@ $(document).ready(function() {
                       <article id="api-Configuratie-updateCallbacks-0" data-group="User" data-name="updateCallbacks" data-version="0">
                         <div class="pull-left">
                           <h1>updateCallbacks</h1>
-                          <p>Configureer callback URL voor een specifieke API versie voor de huidige client.</p>
+                          <p>Configureer een callback-URL.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -13048,7 +13052,7 @@ public class ConfiguratieApiExample {
 ConfiguratieApi *apiInstance = [[ConfiguratieApi alloc] init];
 Callback *callback = ; // 
 
-// Configureer callback URL voor een specifieke API versie voor de huidige client.
+// Configureer een callback-URL.
 [apiInstance updateCallbacksWith:callback
               completionHandler: ^(array[Callback] output, NSError* error) {
     if (output) {
@@ -13108,7 +13112,7 @@ namespace Example
             var callback = new Callback(); // Callback | 
 
             try {
-                // Configureer callback URL voor een specifieke API versie voor de huidige client.
+                // Configureer een callback-URL.
                 array[Callback] result = apiInstance.updateCallbacks(callback);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -13176,7 +13180,7 @@ api_instance = openapi_client.ConfiguratieApi()
 callback =  # Callback | 
 
 try:
-    # Configureer callback URL voor een specifieke API versie voor de huidige client.
+    # Configureer een callback-URL.
     api_response = api_instance.update_callbacks(callback)
     pprint(api_response)
 except ApiException as e:
@@ -13657,12 +13661,12 @@ $(document).ready(function() {
                       <article id="api-Facturen-getFactuur-0" data-group="User" data-name="getFactuur" data-version="0">
                         <div class="pull-left">
                           <h1>getFactuur</h1>
-                          <p>Factuur op basis van een waardering Id.</p>
+                          <p>Haal een factuur op.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked"></p>
+                        <p class="marked">Geeft de PDF-factuur terug voor een waardering.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/facturen/{id}</span></code></pre>
@@ -13776,7 +13780,7 @@ public class FacturenApiExample {
 FacturenApi *apiInstance = [[FacturenApi alloc] init];
 UUID *id = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // De Id van een waardering. (default to null)
 
-// Factuur op basis van een waardering Id.
+// Haal een factuur op.
 [apiInstance getFactuurWith:id
               completionHandler: ^(File output, NSError* error) {
     if (output) {
@@ -13836,7 +13840,7 @@ namespace Example
             var id = 38400000-8cf0-11bd-b23e-10b96e4ef00d;  // UUID | De Id van een waardering. (default to null)
 
             try {
-                // Factuur op basis van een waardering Id.
+                // Haal een factuur op.
                 File result = apiInstance.getFactuur(id);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -13904,7 +13908,7 @@ api_instance = openapi_client.FacturenApi()
 id = 38400000-8cf0-11bd-b23e-10b96e4ef00d # UUID | De Id van een waardering. (default to null)
 
 try:
-    # Factuur op basis van een waardering Id.
+    # Haal een factuur op.
     api_response = api_instance.get_factuur(id)
     pprint(api_response)
 except ApiException as e:
@@ -14368,7 +14372,7 @@ De Id van een waardering.
                       <article id="api-FileSets-confirmInboundFileSetById-0" data-group="User" data-name="confirmInboundFileSetById" data-version="0">
                         <div class="pull-left">
                           <h1>confirmInboundFileSetById</h1>
-                          <p>Confirm an inbound file set after it has been fully uploaded.</p>
+                          <p>Confirm an inbound file set.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -14493,7 +14497,7 @@ public class FileSetsApiExample {
 FileSetsApi *apiInstance = [[FileSetsApi alloc] init];
 UUID *inboundFileSetId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; //  (default to null)
 
-// Confirm an inbound file set after it has been fully uploaded.
+// Confirm an inbound file set.
 [apiInstance confirmInboundFileSetByIdWith:inboundFileSetId
               completionHandler: ^(InboundFileSet output, NSError* error) {
     if (output) {
@@ -14553,7 +14557,7 @@ namespace Example
             var inboundFileSetId = 38400000-8cf0-11bd-b23e-10b96e4ef00d;  // UUID |  (default to null)
 
             try {
-                // Confirm an inbound file set after it has been fully uploaded.
+                // Confirm an inbound file set.
                 InboundFileSet result = apiInstance.confirmInboundFileSetById(inboundFileSetId);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -14621,7 +14625,7 @@ api_instance = openapi_client.FileSetsApi()
 inboundFileSetId = 38400000-8cf0-11bd-b23e-10b96e4ef00d # UUID |  (default to null)
 
 try:
-    # Confirm an inbound file set after it has been fully uploaded.
+    # Confirm an inbound file set.
     api_response = api_instance.confirm_inbound_file_set_by_id(inboundFileSetId)
     pprint(api_response)
 except ApiException as e:
@@ -15078,7 +15082,7 @@ pub fn main() {
                       <article id="api-FileSets-createInboundFileSet-0" data-group="User" data-name="createInboundFileSet" data-version="0">
                         <div class="pull-left">
                           <h1>createInboundFileSet</h1>
-                          <p>Create a new inbound file set.</p>
+                          <p>Create an inbound file set.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -15224,7 +15228,7 @@ public class FileSetsApiExample {
 FileSetsApi *apiInstance = [[FileSetsApi alloc] init];
 CreateInboundFileSetRequest *createInboundFileSetRequest = ; // 
 
-// Create a new inbound file set.
+// Create an inbound file set.
 [apiInstance createInboundFileSetWith:createInboundFileSetRequest
               completionHandler: ^(InboundFileSet output, NSError* error) {
     if (output) {
@@ -15284,7 +15288,7 @@ namespace Example
             var createInboundFileSetRequest = new CreateInboundFileSetRequest(); // CreateInboundFileSetRequest | 
 
             try {
-                // Create a new inbound file set.
+                // Create an inbound file set.
                 InboundFileSet result = apiInstance.createInboundFileSet(createInboundFileSetRequest);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -15352,7 +15356,7 @@ api_instance = openapi_client.FileSetsApi()
 createInboundFileSetRequest =  # CreateInboundFileSetRequest | 
 
 try:
-    # Create a new inbound file set.
+    # Create an inbound file set.
     api_response = api_instance.create_inbound_file_set(createInboundFileSetRequest)
     pprint(api_response)
 except ApiException as e:
@@ -15827,7 +15831,7 @@ $(document).ready(function() {
                       <article id="api-FileSets-deleteOutboundFileSetById-0" data-group="User" data-name="deleteOutboundFileSetById" data-version="0">
                         <div class="pull-left">
                           <h1>deleteOutboundFileSetById</h1>
-                          <p>Delete an outbound file set after it has been correctly received. If an outbound file set is not downloaded and deleted within 48 hours, it will expire and all its contents will be deleted automatically.</p>
+                          <p>Delete an outbound file set.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -15944,7 +15948,7 @@ public class FileSetsApiExample {
 FileSetsApi *apiInstance = [[FileSetsApi alloc] init];
 UUID *outboundFileSetId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; //  (default to null)
 
-// Delete an outbound file set after it has been correctly received. If an outbound file set is not downloaded and deleted within 48 hours, it will expire and all its contents will be deleted automatically.
+// Delete an outbound file set.
 [apiInstance deleteOutboundFileSetByIdWith:outboundFileSetId
               completionHandler: ^(NSError* error) {
     if (error) {
@@ -16001,7 +16005,7 @@ namespace Example
             var outboundFileSetId = 38400000-8cf0-11bd-b23e-10b96e4ef00d;  // UUID |  (default to null)
 
             try {
-                // Delete an outbound file set after it has been correctly received. If an outbound file set is not downloaded and deleted within 48 hours, it will expire and all its contents will be deleted automatically.
+                // Delete an outbound file set.
                 apiInstance.deleteOutboundFileSetById(outboundFileSetId);
             } catch (Exception e) {
                 Debug.Print("Exception when calling FileSetsApi.deleteOutboundFileSetById: " + e.Message );
@@ -16066,7 +16070,7 @@ api_instance = openapi_client.FileSetsApi()
 outboundFileSetId = 38400000-8cf0-11bd-b23e-10b96e4ef00d # UUID |  (default to null)
 
 try:
-    # Delete an outbound file set after it has been correctly received. If an outbound file set is not downloaded and deleted within 48 hours, it will expire and all its contents will be deleted automatically.
+    # Delete an outbound file set.
     api_instance.delete_outbound_file_set_by_id(outboundFileSetId)
 except ApiException as e:
     print("Exception when calling FileSetsApi->deleteOutboundFileSetById: %s\n" % e)</code></pre>
@@ -16945,12 +16949,12 @@ pub fn main() {
                       <article id="api-FileSets-getInboundFileSetById-0" data-group="User" data-name="getInboundFileSetById" data-version="0">
                         <div class="pull-left">
                           <h1>getInboundFileSetById</h1>
-                          <p>Get a specific inbound file set by its ID.</p>
+                          <p>Get an inbound file set.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked"></p>
+                        <p class="marked">Gets a specific inbound file set by its ID.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/file-sets/inbound/{inboundFileSetId}</span></code></pre>
@@ -17064,7 +17068,7 @@ public class FileSetsApiExample {
 FileSetsApi *apiInstance = [[FileSetsApi alloc] init];
 UUID *inboundFileSetId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; //  (default to null)
 
-// Get a specific inbound file set by its ID.
+// Get an inbound file set.
 [apiInstance getInboundFileSetByIdWith:inboundFileSetId
               completionHandler: ^(InboundFileSet output, NSError* error) {
     if (output) {
@@ -17124,7 +17128,7 @@ namespace Example
             var inboundFileSetId = 38400000-8cf0-11bd-b23e-10b96e4ef00d;  // UUID |  (default to null)
 
             try {
-                // Get a specific inbound file set by its ID.
+                // Get an inbound file set.
                 InboundFileSet result = apiInstance.getInboundFileSetById(inboundFileSetId);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -17192,7 +17196,7 @@ api_instance = openapi_client.FileSetsApi()
 inboundFileSetId = 38400000-8cf0-11bd-b23e-10b96e4ef00d # UUID |  (default to null)
 
 try:
-    # Get a specific inbound file set by its ID.
+    # Get an inbound file set.
     api_response = api_instance.get_inbound_file_set_by_id(inboundFileSetId)
     pprint(api_response)
 except ApiException as e:
@@ -17573,7 +17577,7 @@ pub fn main() {
                       <article id="api-FileSets-getInboundFileSets-0" data-group="User" data-name="getInboundFileSets" data-version="0">
                         <div class="pull-left">
                           <h1>getInboundFileSets</h1>
-                          <p>Get all inbound file sets.</p>
+                          <p>List inbound file sets.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -17688,7 +17692,7 @@ public class FileSetsApiExample {
 // Create an instance of the API class
 FileSetsApi *apiInstance = [[FileSetsApi alloc] init];
 
-// Get all inbound file sets.
+// List inbound file sets.
 [apiInstance getInboundFileSetsWithCompletionHandler: 
               ^(array[InboundFileSet] output, NSError* error) {
     if (output) {
@@ -17745,7 +17749,7 @@ namespace Example
             var apiInstance = new FileSetsApi();
 
             try {
-                // Get all inbound file sets.
+                // List inbound file sets.
                 array[InboundFileSet] result = apiInstance.getInboundFileSets();
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -17810,7 +17814,7 @@ openapi_client.configuration.access_token = 'YOUR_ACCESS_TOKEN'
 api_instance = openapi_client.FileSetsApi()
 
 try:
-    # Get all inbound file sets.
+    # List inbound file sets.
     api_response = api_instance.get_inbound_file_sets()
     pprint(api_response)
 except ApiException as e:
@@ -18087,7 +18091,7 @@ pub fn main() {
                       <article id="api-FileSets-getOutboundFileByIndex-0" data-group="User" data-name="getOutboundFileByIndex" data-version="0">
                         <div class="pull-left">
                           <h1>getOutboundFileByIndex</h1>
-                          <p>Get a specific outbound file content by its index within a file set.</p>
+                          <p>Download outbound file content.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -18218,7 +18222,7 @@ Integer *fileIndex = 56; //  (default to null)
 String *range = range_example; //  (optional) (default to null)
 String *acceptEncoding = acceptEncoding_example; //  (optional) (default to null)
 
-// Get a specific outbound file content by its index within a file set.
+// Download outbound file content.
 [apiInstance getOutboundFileByIndexWith:outboundFileSetId
     fileIndex:fileIndex
     range:range
@@ -18289,7 +18293,7 @@ namespace Example
             var acceptEncoding = acceptEncoding_example;  // String |  (optional)  (default to null)
 
             try {
-                // Get a specific outbound file content by its index within a file set.
+                // Download outbound file content.
                 File result = apiInstance.getOutboundFileByIndex(outboundFileSetId, fileIndex, range, acceptEncoding);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -18366,7 +18370,7 @@ range = range_example # String |  (optional) (default to null)
 acceptEncoding = acceptEncoding_example # String |  (optional) (default to null)
 
 try:
-    # Get a specific outbound file content by its index within a file set.
+    # Download outbound file content.
     api_response = api_instance.get_outbound_file_by_index(outboundFileSetId, fileIndex, range=range, acceptEncoding=acceptEncoding)
     pprint(api_response)
 except ApiException as e:
@@ -19076,12 +19080,12 @@ pub fn main() {
                       <article id="api-FileSets-getOutboundFileSetById-0" data-group="User" data-name="getOutboundFileSetById" data-version="0">
                         <div class="pull-left">
                           <h1>getOutboundFileSetById</h1>
-                          <p>Get a specific outbound file set by its ID.</p>
+                          <p>Get an outbound file set.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked"></p>
+                        <p class="marked">Gets a specific outbound file set by its ID.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/file-sets/outbound/{outboundFileSetId}</span></code></pre>
@@ -19195,7 +19199,7 @@ public class FileSetsApiExample {
 FileSetsApi *apiInstance = [[FileSetsApi alloc] init];
 UUID *outboundFileSetId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; //  (default to null)
 
-// Get a specific outbound file set by its ID.
+// Get an outbound file set.
 [apiInstance getOutboundFileSetByIdWith:outboundFileSetId
               completionHandler: ^(OutboundFileSet output, NSError* error) {
     if (output) {
@@ -19255,7 +19259,7 @@ namespace Example
             var outboundFileSetId = 38400000-8cf0-11bd-b23e-10b96e4ef00d;  // UUID |  (default to null)
 
             try {
-                // Get a specific outbound file set by its ID.
+                // Get an outbound file set.
                 OutboundFileSet result = apiInstance.getOutboundFileSetById(outboundFileSetId);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -19323,7 +19327,7 @@ api_instance = openapi_client.FileSetsApi()
 outboundFileSetId = 38400000-8cf0-11bd-b23e-10b96e4ef00d # UUID |  (default to null)
 
 try:
-    # Get a specific outbound file set by its ID.
+    # Get an outbound file set.
     api_response = api_instance.get_outbound_file_set_by_id(outboundFileSetId)
     pprint(api_response)
 except ApiException as e:
@@ -19704,7 +19708,7 @@ pub fn main() {
                       <article id="api-FileSets-getOutboundFileSets-0" data-group="User" data-name="getOutboundFileSets" data-version="0">
                         <div class="pull-left">
                           <h1>getOutboundFileSets</h1>
-                          <p>Get all outbound file sets.</p>
+                          <p>List outbound file sets.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -19819,7 +19823,7 @@ public class FileSetsApiExample {
 // Create an instance of the API class
 FileSetsApi *apiInstance = [[FileSetsApi alloc] init];
 
-// Get all outbound file sets.
+// List outbound file sets.
 [apiInstance getOutboundFileSetsWithCompletionHandler: 
               ^(array[OutboundFileSet] output, NSError* error) {
     if (output) {
@@ -19876,7 +19880,7 @@ namespace Example
             var apiInstance = new FileSetsApi();
 
             try {
-                // Get all outbound file sets.
+                // List outbound file sets.
                 array[OutboundFileSet] result = apiInstance.getOutboundFileSets();
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -19941,7 +19945,7 @@ openapi_client.configuration.access_token = 'YOUR_ACCESS_TOKEN'
 api_instance = openapi_client.FileSetsApi()
 
 try:
-    # Get all outbound file sets.
+    # List outbound file sets.
     api_response = api_instance.get_outbound_file_sets()
     pprint(api_response)
 except ApiException as e:
@@ -20218,7 +20222,7 @@ pub fn main() {
                       <article id="api-FileSets-putFileChunk-0" data-group="User" data-name="putFileChunk" data-version="0">
                         <div class="pull-left">
                           <h1>putFileChunk</h1>
-                          <p>Upload a specific file chunk for an inbound file set.</p>
+                          <p>Upload an inbound file chunk.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -20349,7 +20353,7 @@ Integer *fileIndex = 56; //  (default to null)
 Integer *chunkIndex = 56; //  (default to null)
 File *body = BINARY_DATA_HERE; // 
 
-// Upload a specific file chunk for an inbound file set.
+// Upload an inbound file chunk.
 [apiInstance putFileChunkWith:inboundFileSetId
     fileIndex:fileIndex
     chunkIndex:chunkIndex
@@ -20415,7 +20419,7 @@ namespace Example
             var body = BINARY_DATA_HERE;  // File | 
 
             try {
-                // Upload a specific file chunk for an inbound file set.
+                // Upload an inbound file chunk.
                 apiInstance.putFileChunk(inboundFileSetId, fileIndex, chunkIndex, body);
             } catch (Exception e) {
                 Debug.Print("Exception when calling FileSetsApi.putFileChunk: " + e.Message );
@@ -20489,7 +20493,7 @@ chunkIndex = 56 # Integer |  (default to null)
 body = BINARY_DATA_HERE # File | 
 
 try:
-    # Upload a specific file chunk for an inbound file set.
+    # Upload an inbound file chunk.
     api_instance.put_file_chunk(inboundFileSetId, fileIndex, chunkIndex, body)
 except ApiException as e:
     print("Exception when calling FileSetsApi->putFileChunk: %s\n" % e)</code></pre>
@@ -21186,12 +21190,12 @@ $(document).ready(function() {
                       <article id="api-Fotos-getFoto-0" data-group="User" data-name="getFoto" data-version="0">
                         <div class="pull-left">
                           <h1>getFoto</h1>
-                          <p>Foto op basis van een foto Id.</p>
+                          <p>Haal een foto op.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked"></p>
+                        <p class="marked">Geeft een foto terug die onder andere bij waarderingen en referenties wordt gebruikt.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/fotos/{id}</span></code></pre>
@@ -21305,7 +21309,7 @@ public class FotosApiExample {
 FotosApi *apiInstance = [[FotosApi alloc] init];
 UUID *id = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // De Id van een foto, welke onder andere bij waarderingen en referenties teruggestuurd worden. (default to null)
 
-// Foto op basis van een foto Id.
+// Haal een foto op.
 [apiInstance getFotoWith:id
               completionHandler: ^(File output, NSError* error) {
     if (output) {
@@ -21365,7 +21369,7 @@ namespace Example
             var id = 38400000-8cf0-11bd-b23e-10b96e4ef00d;  // UUID | De Id van een foto, welke onder andere bij waarderingen en referenties teruggestuurd worden. (default to null)
 
             try {
-                // Foto op basis van een foto Id.
+                // Haal een foto op.
                 File result = apiInstance.getFoto(id);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -21433,7 +21437,7 @@ api_instance = openapi_client.FotosApi()
 id = 38400000-8cf0-11bd-b23e-10b96e4ef00d # UUID | De Id van een foto, welke onder andere bij waarderingen en referenties teruggestuurd worden. (default to null)
 
 try:
-    # Foto op basis van een foto Id.
+    # Haal een foto op.
     api_response = api_instance.get_foto(id)
     pprint(api_response)
 except ApiException as e:
@@ -21903,12 +21907,13 @@ De Id van een foto, welke onder andere bij waarderingen en referenties teruggest
                       <article id="api-Funderingen-getFunderingById-0" data-group="User" data-name="getFunderingById" data-version="0">
                         <div class="pull-left">
                           <h1>getFunderingById</h1>
-                          <p>Gegevens over de fundering op de locatie van een adres (BAG Nummeraanduiding ID).</p>
+                          <p>Haal funderingsgegevens op.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked">Het funderingsdataobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.</p>
+                        <p class="marked">Geeft funderingsgegevens terug voor de locatie van een adres (BAG Nummeraanduiding ID).
+Het funderingsdataobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/funderingen/{bagNummeraanduidingId}</span></code></pre>
@@ -22022,7 +22027,7 @@ public class FunderingenApiExample {
 FunderingenApi *apiInstance = [[FunderingenApi alloc] init];
 Long *bagNummeraanduidingId = 789; // Een BAG Nummeraanduiding ID om een adres te specificeren. (default to null)
 
-// Gegevens over de fundering op de locatie van een adres (BAG Nummeraanduiding ID).
+// Haal funderingsgegevens op.
 [apiInstance getFunderingByIdWith:bagNummeraanduidingId
               completionHandler: ^(Funderingdata output, NSError* error) {
     if (output) {
@@ -22082,7 +22087,7 @@ namespace Example
             var bagNummeraanduidingId = 789;  // Long | Een BAG Nummeraanduiding ID om een adres te specificeren. (default to null)
 
             try {
-                // Gegevens over de fundering op de locatie van een adres (BAG Nummeraanduiding ID).
+                // Haal funderingsgegevens op.
                 Funderingdata result = apiInstance.getFunderingById(bagNummeraanduidingId);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -22150,7 +22155,7 @@ api_instance = openapi_client.FunderingenApi()
 bagNummeraanduidingId = 789 # Long | Een BAG Nummeraanduiding ID om een adres te specificeren. (default to null)
 
 try:
-    # Gegevens over de fundering op de locatie van een adres (BAG Nummeraanduiding ID).
+    # Haal funderingsgegevens op.
     api_response = api_instance.get_fundering_by_id(bagNummeraanduidingId)
     pprint(api_response)
 except ApiException as e:
@@ -22613,12 +22618,12 @@ Een BAG Nummeraanduiding ID om een adres te specificeren.
                       <article id="api-Geldverstrekkers-getGeldverstrekkers-0" data-group="User" data-name="getGeldverstrekkers" data-version="0">
                         <div class="pull-left">
                           <h1>getGeldverstrekkers</h1>
-                          <p>Alle geldverstrekkers die te gebruiken zijn voor aanvragen.</p>
+                          <p>Haal geldverstrekkers op.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked"></p>
+                        <p class="marked">Geeft alle geldverstrekkers terug die voor aanvragen kunnen worden gebruikt.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/geldverstrekkers/{productType}</span></code></pre>
@@ -22732,7 +22737,7 @@ public class GeldverstrekkersApiExample {
 GeldverstrekkersApi *apiInstance = [[GeldverstrekkersApi alloc] init];
 ProductType *productType = ; // Een parameter om de lijst te filteren op ondersteunde producttypen. (default to null)
 
-// Alle geldverstrekkers die te gebruiken zijn voor aanvragen.
+// Haal geldverstrekkers op.
 [apiInstance getGeldverstrekkersWith:productType
               completionHandler: ^(array[Geldverstrekker] output, NSError* error) {
     if (output) {
@@ -22792,7 +22797,7 @@ namespace Example
             var productType = new ProductType(); // ProductType | Een parameter om de lijst te filteren op ondersteunde producttypen. (default to null)
 
             try {
-                // Alle geldverstrekkers die te gebruiken zijn voor aanvragen.
+                // Haal geldverstrekkers op.
                 array[Geldverstrekker] result = apiInstance.getGeldverstrekkers(productType);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -22860,7 +22865,7 @@ api_instance = openapi_client.GeldverstrekkersApi()
 productType =  # ProductType | Een parameter om de lijst te filteren op ondersteunde producttypen. (default to null)
 
 try:
-    # Alle geldverstrekkers die te gebruiken zijn voor aanvragen.
+    # Haal geldverstrekkers op.
     api_response = api_instance.get_geldverstrekkers(productType)
     pprint(api_response)
 except ApiException as e:
@@ -23247,12 +23252,12 @@ Een parameter om de lijst te filteren op ondersteunde producttypen.
                       <article id="api-Planning-assignOpnemer-0" data-group="User" data-name="assignOpnemer" data-version="0">
                         <div class="pull-left">
                           <h1>assignOpnemer</h1>
-                          <p>Assign opnemer to opname.</p>
+                          <p>Assign an opnemer.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked"></p>
+                        <p class="marked">Wijst een opnemer toe aan een opname.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/planning/opnames/{opnameId}</span></code></pre>
@@ -23375,7 +23380,7 @@ PlanningApi *apiInstance = [[PlanningApi alloc] init];
 UUID *opnameId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; //  (default to null)
 PlanningInfo *planningInfo = ; // 
 
-// Assign opnemer to opname.
+// Assign an opnemer.
 [apiInstance assignOpnemerWith:opnameId
     planningInfo:planningInfo
               completionHandler: ^(PlanningInfo output, NSError* error) {
@@ -23438,7 +23443,7 @@ namespace Example
             var planningInfo = new PlanningInfo(); // PlanningInfo | 
 
             try {
-                // Assign opnemer to opname.
+                // Assign an opnemer.
                 PlanningInfo result = apiInstance.assignOpnemer(opnameId, planningInfo);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -23509,7 +23514,7 @@ opnameId = 38400000-8cf0-11bd-b23e-10b96e4ef00d # UUID |  (default to null)
 planningInfo =  # PlanningInfo | 
 
 try:
-    # Assign opnemer to opname.
+    # Assign an opnemer.
     api_response = api_instance.assign_opnemer(opnameId, planningInfo)
     pprint(api_response)
 except ApiException as e:
@@ -23939,12 +23944,12 @@ $(document).ready(function() {
                       <article id="api-Planning-deletePlanningForOpname-0" data-group="User" data-name="deletePlanningForOpname" data-version="0">
                         <div class="pull-left">
                           <h1>deletePlanningForOpname</h1>
-                          <p>Delete the planning for an opname.</p>
+                          <p>Delete an opname planning.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked"></p>
+                        <p class="marked">Verwijdert de planning voor een opname.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="delete"><code><span class="pln">/planning/opnames/{opnameId}</span></code></pre>
@@ -24056,7 +24061,7 @@ public class PlanningApiExample {
 PlanningApi *apiInstance = [[PlanningApi alloc] init];
 UUID *opnameId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; //  (default to null)
 
-// Delete the planning for an opname.
+// Delete an opname planning.
 [apiInstance deletePlanningForOpnameWith:opnameId
               completionHandler: ^(NSError* error) {
     if (error) {
@@ -24113,7 +24118,7 @@ namespace Example
             var opnameId = 38400000-8cf0-11bd-b23e-10b96e4ef00d;  // UUID |  (default to null)
 
             try {
-                // Delete the planning for an opname.
+                // Delete an opname planning.
                 apiInstance.deletePlanningForOpname(opnameId);
             } catch (Exception e) {
                 Debug.Print("Exception when calling PlanningApi.deletePlanningForOpname: " + e.Message );
@@ -24178,7 +24183,7 @@ api_instance = openapi_client.PlanningApi()
 opnameId = 38400000-8cf0-11bd-b23e-10b96e4ef00d # UUID |  (default to null)
 
 try:
-    # Delete the planning for an opname.
+    # Delete an opname planning.
     api_instance.delete_planning_for_opname(opnameId)
 except ApiException as e:
     print("Exception when calling PlanningApi->deletePlanningForOpname: %s\n" % e)</code></pre>
@@ -24546,12 +24551,12 @@ pub fn main() {
                       <article id="api-Planning-getOpnames-0" data-group="User" data-name="getOpnames" data-version="0">
                         <div class="pull-left">
                           <h1>getOpnames</h1>
-                          <p>Get the list of opnames.</p>
+                          <p>List opnames.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked"></p>
+                        <p class="marked">Geeft de lijst met opnames terug. Gebruik include_planned om ook geplande opnames op te nemen.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/planning/opnames</span></code></pre>
@@ -24665,7 +24670,7 @@ public class PlanningApiExample {
 PlanningApi *apiInstance = [[PlanningApi alloc] init];
 Boolean *includePlanned = true; //  (optional) (default to false)
 
-// Get the list of opnames.
+// List opnames.
 [apiInstance getOpnamesWith:includePlanned
               completionHandler: ^(array[Opname] output, NSError* error) {
     if (output) {
@@ -24727,7 +24732,7 @@ namespace Example
             var includePlanned = true;  // Boolean |  (optional)  (default to false)
 
             try {
-                // Get the list of opnames.
+                // List opnames.
                 array[Opname] result = apiInstance.getOpnames(includePlanned);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -24795,7 +24800,7 @@ api_instance = openapi_client.PlanningApi()
 includePlanned = true # Boolean |  (optional) (default to false)
 
 try:
-    # Get the list of opnames.
+    # List opnames.
     api_response = api_instance.get_opnames(includePlanned=includePlanned)
     pprint(api_response)
 except ApiException as e:
@@ -25097,12 +25102,12 @@ pub fn main() {
                       <article id="api-Planning-getOpnemers-0" data-group="User" data-name="getOpnemers" data-version="0">
                         <div class="pull-left">
                           <h1>getOpnemers</h1>
-                          <p>Get the list of opnemers.</p>
+                          <p>List opnemers.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked"></p>
+                        <p class="marked">Geeft de lijst met opnemers terug.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/planning/opnemers</span></code></pre>
@@ -25212,7 +25217,7 @@ public class PlanningApiExample {
 // Create an instance of the API class
 PlanningApi *apiInstance = [[PlanningApi alloc] init];
 
-// Get the list of opnemers.
+// List opnemers.
 [apiInstance getOpnemersWithCompletionHandler: 
               ^(array[Opnemer] output, NSError* error) {
     if (output) {
@@ -25269,7 +25274,7 @@ namespace Example
             var apiInstance = new PlanningApi();
 
             try {
-                // Get the list of opnemers.
+                // List opnemers.
                 array[Opnemer] result = apiInstance.getOpnemers();
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -25334,7 +25339,7 @@ openapi_client.configuration.access_token = 'YOUR_ACCESS_TOKEN'
 api_instance = openapi_client.PlanningApi()
 
 try:
-    # Get the list of opnemers.
+    # List opnemers.
     api_response = api_instance.get_opnemers()
     pprint(api_response)
 except ApiException as e:
@@ -25614,12 +25619,12 @@ pub fn main() {
                       <article id="api-Rapporten-getRapport-0" data-group="User" data-name="getRapport" data-version="0">
                         <div class="pull-left">
                           <h1>getRapport</h1>
-                          <p>Rapport op basis van waardering Id.</p>
+                          <p>Haal een rapport op.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked"></p>
+                        <p class="marked">Geeft het PDF-rapport terug voor een waardering.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/rapporten/{id}</span></code></pre>
@@ -25733,7 +25738,7 @@ public class RapportenApiExample {
 RapportenApi *apiInstance = [[RapportenApi alloc] init];
 UUID *id = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // De Id van een waardering. (default to null)
 
-// Rapport op basis van waardering Id.
+// Haal een rapport op.
 [apiInstance getRapportWith:id
               completionHandler: ^(File output, NSError* error) {
     if (output) {
@@ -25793,7 +25798,7 @@ namespace Example
             var id = 38400000-8cf0-11bd-b23e-10b96e4ef00d;  // UUID | De Id van een waardering. (default to null)
 
             try {
-                // Rapport op basis van waardering Id.
+                // Haal een rapport op.
                 File result = apiInstance.getRapport(id);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -25861,7 +25866,7 @@ api_instance = openapi_client.RapportenApi()
 id = 38400000-8cf0-11bd-b23e-10b96e4ef00d # UUID | De Id van een waardering. (default to null)
 
 try:
-    # Rapport op basis van waardering Id.
+    # Haal een rapport op.
     api_response = api_instance.get_rapport(id)
     pprint(api_response)
 except ApiException as e:
@@ -26325,7 +26330,7 @@ De Id van een waardering.
                       <article id="api-Waarderingen-checkProducten-0" data-group="User" data-name="checkProducten" data-version="0">
                         <div class="pull-left">
                           <h1>checkProducten</h1>
-                          <p>Controleert mogelijke producten.</p>
+                          <p>Controleer mogelijke producten.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -26466,7 +26471,7 @@ public class WaarderingenApiExample {
 WaarderingenApi *apiInstance = [[WaarderingenApi alloc] init];
 ProductCheckParameters *productCheckParameters = ; // 
 
-// Controleert mogelijke producten.
+// Controleer mogelijke producten.
 [apiInstance checkProductenWith:productCheckParameters
               completionHandler: ^(ProductCheck output, NSError* error) {
     if (output) {
@@ -26526,7 +26531,7 @@ namespace Example
             var productCheckParameters = new ProductCheckParameters(); // ProductCheckParameters | 
 
             try {
-                // Controleert mogelijke producten.
+                // Controleer mogelijke producten.
                 ProductCheck result = apiInstance.checkProducten(productCheckParameters);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -26594,7 +26599,7 @@ api_instance = openapi_client.WaarderingenApi()
 productCheckParameters =  # ProductCheckParameters | 
 
 try:
-    # Controleert mogelijke producten.
+    # Controleer mogelijke producten.
     api_response = api_instance.check_producten(productCheckParameters)
     pprint(api_response)
 except ApiException as e:
@@ -27145,7 +27150,7 @@ $(document).ready(function() {
                       <article id="api-Waarderingen-createWaardering-0" data-group="User" data-name="createWaardering" data-version="0">
                         <div class="pull-left">
                           <h1>createWaardering</h1>
-                          <p>Maak een waardering aan.</p>
+                          <p>Maak een waardering.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -27294,7 +27299,7 @@ public class WaarderingenApiExample {
 WaarderingenApi *apiInstance = [[WaarderingenApi alloc] init];
 WaarderingInputParameters *waarderingInputParameters = ; // 
 
-// Maak een waardering aan.
+// Maak een waardering.
 [apiInstance createWaarderingWith:waarderingInputParameters
               completionHandler: ^(Waardering output, NSError* error) {
     if (output) {
@@ -27354,7 +27359,7 @@ namespace Example
             var waarderingInputParameters = new WaarderingInputParameters(); // WaarderingInputParameters | 
 
             try {
-                // Maak een waardering aan.
+                // Maak een waardering.
                 Waardering result = apiInstance.createWaardering(waarderingInputParameters);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -27422,7 +27427,7 @@ api_instance = openapi_client.WaarderingenApi()
 waarderingInputParameters =  # WaarderingInputParameters | 
 
 try:
-    # Maak een waardering aan.
+    # Maak een waardering.
     api_response = api_instance.create_waardering(waarderingInputParameters)
     pprint(api_response)
 except ApiException as e:
@@ -28049,12 +28054,12 @@ $(document).ready(function() {
                       <article id="api-Waarderingen-getWaardering-0" data-group="User" data-name="getWaardering" data-version="0">
                         <div class="pull-left">
                           <h1>getWaardering</h1>
-                          <p>Waardering op basis van Id.</p>
+                          <p>Haal een waardering op.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked">Het waarderingsobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.</p>
+                        <p class="marked">Geeft een waardering terug op basis van de ID. Het waarderingsobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/waarderingen/{id}</span></code></pre>
@@ -28168,7 +28173,7 @@ public class WaarderingenApiExample {
 WaarderingenApi *apiInstance = [[WaarderingenApi alloc] init];
 UUID *id = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // De waardering Id in de vorm van een UUID. (default to null)
 
-// Waardering op basis van Id.
+// Haal een waardering op.
 [apiInstance getWaarderingWith:id
               completionHandler: ^(Waardering output, NSError* error) {
     if (output) {
@@ -28228,7 +28233,7 @@ namespace Example
             var id = 38400000-8cf0-11bd-b23e-10b96e4ef00d;  // UUID | De waardering Id in de vorm van een UUID. (default to null)
 
             try {
-                // Waardering op basis van Id.
+                // Haal een waardering op.
                 Waardering result = apiInstance.getWaardering(id);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -28296,7 +28301,7 @@ api_instance = openapi_client.WaarderingenApi()
 id = 38400000-8cf0-11bd-b23e-10b96e4ef00d # UUID | De waardering Id in de vorm van een UUID. (default to null)
 
 try:
-    # Waardering op basis van Id.
+    # Haal een waardering op.
     api_response = api_instance.get_waardering(id)
     pprint(api_response)
 except ApiException as e:
@@ -28908,12 +28913,13 @@ De waardering Id in de vorm van een UUID.
                       <article id="api-Waarderingen-getWaarderingByReportHash-0" data-group="User" data-name="getWaarderingByReportHash" data-version="0">
                         <div class="pull-left">
                           <h1>getWaarderingByReportHash</h1>
-                          <p>Waardering op basis van upper-case hex SHA-256 hash van een PDF rapport. Als er een collision is wordt de nieuwste waardering teruggegeven.</p>
+                          <p>Zoek op rapport-hash.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked"></p>
+                        <p class="marked">Zoekt een waardering op basis van de upper-case hexadecimal SHA-256-hash van een PDF-rapport.
+Bij een hashcollision wordt de nieuwste waardering teruggegeven.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/waarderingen/by-hash/{hash}</span></code></pre>
@@ -29027,7 +29033,7 @@ public class WaarderingenApiExample {
 WaarderingenApi *apiInstance = [[WaarderingenApi alloc] init];
 String *hash = hash_example; // De SHA-256 hash van het bestand, in upper-case hex. (default to null)
 
-// Waardering op basis van upper-case hex SHA-256 hash van een PDF rapport. Als er een collision is wordt de nieuwste waardering teruggegeven.
+// Zoek op rapport-hash.
 [apiInstance getWaarderingByReportHashWith:hash
               completionHandler: ^(Waardering output, NSError* error) {
     if (output) {
@@ -29087,7 +29093,7 @@ namespace Example
             var hash = hash_example;  // String | De SHA-256 hash van het bestand, in upper-case hex. (default to null)
 
             try {
-                // Waardering op basis van upper-case hex SHA-256 hash van een PDF rapport. Als er een collision is wordt de nieuwste waardering teruggegeven.
+                // Zoek op rapport-hash.
                 Waardering result = apiInstance.getWaarderingByReportHash(hash);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -29155,7 +29161,7 @@ api_instance = openapi_client.WaarderingenApi()
 hash = hash_example # String | De SHA-256 hash van het bestand, in upper-case hex. (default to null)
 
 try:
-    # Waardering op basis van upper-case hex SHA-256 hash van een PDF rapport. Als er een collision is wordt de nieuwste waardering teruggegeven.
+    # Zoek op rapport-hash.
     api_response = api_instance.get_waardering_by_report_hash(hash)
     pprint(api_response)
 except ApiException as e:
@@ -29767,12 +29773,12 @@ De SHA-256 hash van het bestand, in upper-case hex.
                       <article id="api-Waarderingen-getWaarderingOntwikkeling-0" data-group="User" data-name="getWaarderingOntwikkeling" data-version="0">
                         <div class="pull-left">
                           <h1>getWaarderingOntwikkeling</h1>
-                          <p>Waardering ontwikkeling op basis van waardering Id.</p>
+                          <p>Haal waarderingsontwikkeling op.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked">Het waarderingsobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.</p>
+                        <p class="marked">Geeft de ontwikkeling van een waardering terug. Het waarderingsobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/waarderingen/{id}/ontwikkeling</span></code></pre>
@@ -29886,7 +29892,7 @@ public class WaarderingenApiExample {
 WaarderingenApi *apiInstance = [[WaarderingenApi alloc] init];
 UUID *id = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // De waardering Id in de vorm van een UUID. (default to null)
 
-// Waardering ontwikkeling op basis van waardering Id.
+// Haal waarderingsontwikkeling op.
 [apiInstance getWaarderingOntwikkelingWith:id
               completionHandler: ^(WaarderingOntwikkeling output, NSError* error) {
     if (output) {
@@ -29946,7 +29952,7 @@ namespace Example
             var id = 38400000-8cf0-11bd-b23e-10b96e4ef00d;  // UUID | De waardering Id in de vorm van een UUID. (default to null)
 
             try {
-                // Waardering ontwikkeling op basis van waardering Id.
+                // Haal waarderingsontwikkeling op.
                 WaarderingOntwikkeling result = apiInstance.getWaarderingOntwikkeling(id);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -30014,7 +30020,7 @@ api_instance = openapi_client.WaarderingenApi()
 id = 38400000-8cf0-11bd-b23e-10b96e4ef00d # UUID | De waardering Id in de vorm van een UUID. (default to null)
 
 try:
-    # Waardering ontwikkeling op basis van waardering Id.
+    # Haal waarderingsontwikkeling op.
     api_response = api_instance.get_waardering_ontwikkeling(id)
     pprint(api_response)
 except ApiException as e:
@@ -30550,7 +30556,7 @@ De waardering Id in de vorm van een UUID.
                       <article id="api-Waarderingen-patchWaarderingen-0" data-group="User" data-name="patchWaarderingen" data-version="0">
                         <div class="pull-left">
                           <h1>patchWaarderingen</h1>
-                          <p>Patcht een waardering.</p>
+                          <p>Werk een waardering bij.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -30698,7 +30704,7 @@ WaarderingenApi *apiInstance = [[WaarderingenApi alloc] init];
 UUID *id = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // De waardering Id in de vorm van een UUID. (default to null)
 JsonPatchDocument *jsonPatchDocument = ; // 
 
-// Patcht een waardering.
+// Werk een waardering bij.
 [apiInstance patchWaarderingenWith:id
     jsonPatchDocument:jsonPatchDocument
               completionHandler: ^(Waardering output, NSError* error) {
@@ -30761,7 +30767,7 @@ namespace Example
             var jsonPatchDocument = new JsonPatchDocument(); // JsonPatchDocument | 
 
             try {
-                // Patcht een waardering.
+                // Werk een waardering bij.
                 Waardering result = apiInstance.patchWaarderingen(id, jsonPatchDocument);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -30832,7 +30838,7 @@ id = 38400000-8cf0-11bd-b23e-10b96e4ef00d # UUID | De waardering Id in de vorm v
 jsonPatchDocument =  # JsonPatchDocument | 
 
 try:
-    # Patcht een waardering.
+    # Werk een waardering bij.
     api_response = api_instance.patch_waarderingen(id, jsonPatchDocument)
     pprint(api_response)
 except ApiException as e:
@@ -31569,7 +31575,7 @@ $(document).ready(function() {
                       <article id="api-Waarderingen-searchWaarderingen-0" data-group="User" data-name="searchWaarderingen" data-version="0">
                         <div class="pull-left">
                           <h1>searchWaarderingen</h1>
-                          <p>Zoek waardering op basis van input parameters.</p>
+                          <p>Zoek waarderingen.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -31698,7 +31704,7 @@ public class WaarderingenApiExample {
 WaarderingenApi *apiInstance = [[WaarderingenApi alloc] init];
 WaarderingZoekParameters *waarderingZoekParameters = ; // 
 
-// Zoek waardering op basis van input parameters.
+// Zoek waarderingen.
 [apiInstance searchWaarderingenWith:waarderingZoekParameters
               completionHandler: ^(array[Waardering] output, NSError* error) {
     if (output) {
@@ -31758,7 +31764,7 @@ namespace Example
             var waarderingZoekParameters = new WaarderingZoekParameters(); // WaarderingZoekParameters | 
 
             try {
-                // Zoek waardering op basis van input parameters.
+                // Zoek waarderingen.
                 array[Waardering] result = apiInstance.searchWaarderingen(waarderingZoekParameters);
                 Debug.WriteLine(result);
             } catch (Exception e) {
@@ -31826,7 +31832,7 @@ api_instance = openapi_client.WaarderingenApi()
 waarderingZoekParameters =  # WaarderingZoekParameters | 
 
 try:
-    # Zoek waardering op basis van input parameters.
+    # Zoek waarderingen.
     api_response = api_instance.search_waarderingen(waarderingZoekParameters)
     pprint(api_response)
 except ApiException as e:

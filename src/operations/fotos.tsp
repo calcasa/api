@@ -12,10 +12,13 @@ namespace CalcasaPublicApi;
 @tag("Fotos")
 @route("/fotos")
 namespace Fotos {
+  /**
+   * Geeft een foto terug die onder andere bij waarderingen en referenties wordt gebruikt.
+   */
   @useAuth(oauth<["api:fotos:read"]>)
   @route("/{id}")
   @get
-  @summary("Foto op basis van een foto Id.")
+  @summary("Haal een foto op.")
   @operationId("GetFoto")
   op GetFoto(
     /**

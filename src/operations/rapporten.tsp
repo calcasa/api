@@ -12,10 +12,13 @@ namespace CalcasaPublicApi;
 @tag("Rapporten")
 @route("/rapporten")
 namespace Rapporten {
+  /**
+   * Geeft het PDF-rapport terug voor een waardering.
+   */
   @useAuth(oauth<["api:rapporten:read"]>)
   @route("/{id}")
   @get
-  @summary("Rapport op basis van waardering Id.")
+  @summary("Haal een rapport op.")
   @operationId("GetRapport")
   op GetRapport(
     /**

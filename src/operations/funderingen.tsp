@@ -14,12 +14,13 @@ namespace CalcasaPublicApi;
 @route("/funderingen")
 namespace Funderingen {
   /**
-  * Het funderingsdataobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
+    * Geeft funderingsgegevens terug voor de locatie van een adres (BAG Nummeraanduiding ID).
+    * Het funderingsdataobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
    */
   @useAuth(oauth<["api:funderingen:read"]>)
   @route("/{bagNummeraanduidingId}")
   @get
-  @summary("Gegevens over de fundering op de locatie van een adres (BAG Nummeraanduiding ID).")
+  @summary("Haal funderingsgegevens op.")
   @operationId("GetFunderingById")
   op GetFunderingById(
     /**

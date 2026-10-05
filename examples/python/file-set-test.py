@@ -15,8 +15,12 @@ from calcasa.api.models.file_set_limits import FileSetLimits
 from common import BrotliCompressReadStream, GzipCompressReadStream, create_api_client, get_required_env, load_example_environment
 from brotli import MODE_GENERIC, MODE_TEXT
 
+# Prepend the following values to use the auto processor (it runs every 5 minutes on non production environments)
+# “auto-a-” for auto accept
+# “auto-aw-” for auto accept with a warning
+# “auto-r-” for auto reject with a warning and an error
 
-FILE_SET_TYPE = "test-file-set"
+FILE_SET_TYPE = "auto-a-driveby"
 # In production use consecutive revisions, 0, 1, 2, 3, ... for each new file set. Here we use a time stamp for easy testing.
 FILE_SET_REVISION = int(
     os.environ.get("CALCASA_TEST_FILE_SET_REVISION", str(int(datetime.now(timezone.utc).timestamp())))

@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-09-15 (v1.7.0-beta03)
+- Updated documentation
+
 ## 2026-09-15 (v1.7.0-beta02)
 - Added `driveBy` to `productType` enum for use with the planning API.
 - Added `woningType` field to `Opname`.
@@ -32,7 +35,6 @@
 - Added `risicolabel` to `Funderingdata` model and the supporting `Funderingsrisico` enum.
 
 ## 2026-04-29 (v1.5.2)
-
 - Added support for including an Authorization header in the callbacks.
 - Added support for [RFC 9421 HTTP Message Signatures](https://datatracker.ietf.org/doc/rfc9421/).
 - Start deprecation of the Public CA based mTLS, Let's Encrypt no longer includes the TLS Client Authentication EKU starting the 11th of February 2026 in the default ACME profile. See also: https://letsencrypt.org/2025/05/14/ending-tls-client-authentication. Please transistion to the self-signed mTLS option, to a signature based approach or to using a Authorization header.

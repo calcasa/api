@@ -14,11 +14,12 @@ namespace CalcasaPublicApi;
 @route("/buurt")
 namespace Buurt {
   /**
-  * Het omgevingsdataobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
+    * Geeft gegevens terug over een buurt en de bijbehorende wijk, gemeente en land.
+    * Het omgevingsdataobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
    */
   @route("/{buurtCode}")
   @get
-  @summary("Gegevens over een buurt en de wijk, gemeente en land waarin deze buurt gesitueerd is.")
+    @summary("Haal buurtgegevens op.")
   @operationId("GetBuurt")
   op GetBuurt(
     @doc("Een CBS buurt code.")

@@ -18,7 +18,7 @@ namespace Callbacks {
   @useAuth(oauth<["api:callback:read"]>)
   @route("/inschrijvingen")
   @get
-  @summary("Haal de callback inschrijvingen binnen voor deze client.")
+  @summary("Haal callbackinschrijvingen op.")
   @operationId("GetNotificationSubscriptions")
   op GetNotificationSubscriptions():
     | GetNotificationSubscriptions200Response
@@ -34,7 +34,7 @@ namespace Callbacks {
   @useAuth(oauth<["api:callback:write"]>)
   @route("/inschrijvingen")
   @post
-  @summary("Voeg een callback inschrijving toe (of werk bij) voor de huidige client voor een adres.")
+  @summary("Maak of werk een callbackinschrijving bij.")
   @operationId("AddOrUpdateCallbackSubscription")
   op AddOrUpdateCallbackSubscription(
     @doc("De te configureren callback inschrijving.")
@@ -47,10 +47,13 @@ namespace Callbacks {
     | PermissionsDeniedProblemDetails
     | ProblemDetails;
 
+  /**
+   * Verwijdert de callbackinschrijving voor de huidige client, het opgegeven adres en optioneel een geldverstrekker.
+   */
   @useAuth(oauth<["api:callback:write"]>)
   @route("/inschrijvingen/{bagNummeraanduidingId}")
   @delete
-  @summary("Verwijder de callback inschrijving voor deze client, dit adres en optioneel een geldverstrekker.")
+  @summary("Verwijder een callbackinschrijving.")
   @operationId("DeleteNotificationSubscription")
   op DeleteNotificationSubscription(
     @doc("Het BAG Nummeraanduiding ID waar de callback inschrijving voor geldt.")
@@ -68,12 +71,13 @@ namespace Callbacks {
     | ProblemDetails;
 
   /**
-  * Het callbackobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
+    * Geeft de callbackinschrijving terug voor de huidige client, het opgegeven adres en optioneel een geldverstrekker.
+    * Het callbackobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
    */
   @useAuth(oauth<["api:callback:read"]>)
   @route("/inschrijvingen/{bagNummeraanduidingId}")
   @get
-  @summary("Haal de callback inschrijving op voor deze client, dit adres en eventueel opgegeven geldverstrekker.")
+    @summary("Haal een callbackinschrijving op.")
   @operationId("GetNotificationSubscription")
   op GetNotificationSubscription(
     @doc("Het BAG Nummeraanduiding ID waar de callback inschrijving voor geldt.")

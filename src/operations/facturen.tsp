@@ -12,10 +12,13 @@ namespace CalcasaPublicApi;
 @tag("Facturen")
 @route("/facturen")
 namespace Facturen {
+  /**
+   * Geeft de PDF-factuur terug voor een waardering.
+   */
   @useAuth(oauth<["api:facturen:read"]>)
   @route("/{id}")
   @get
-  @summary("Factuur op basis van een waardering Id.")
+  @summary("Haal een factuur op.")
   @operationId("GetFactuur")
   op GetFactuur(
     /**

@@ -14,11 +14,12 @@ namespace CalcasaPublicApi;
 @route("/bestemmingsplannen")
 namespace Bestemmingsplannen {
   /**
-  * Het bestemmingsplanobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
+    * Geeft de bestemmingsplannen terug voor de locatie van een adres (BAG Nummeraanduiding ID).
+    * Het bestemmingsplanobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
    */
   @route("/{bagNummeraanduidingId}")
   @get
-  @summary("Gegevens over de bestemmingsplannen op de locatie van een adres (BAG Nummeraanduiding ID).")
+    @summary("Haal bestemmingsplannen op.")
   @operationId("GetBestemmingById")
   op GetBestemmingById(
     @doc("Een BAG Nummeraanduiding ID om een adres te specificeren.")

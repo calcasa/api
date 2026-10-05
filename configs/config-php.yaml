@@ -12,7 +12,7 @@ disallowAdditionalPropertiesIfNotPresent: false
 legacyDiscriminatorBehavior: false
 licenseName: Apache-2.0
 artifactUrl: https://github.com/calcasa/api-php
-artifactVersion: 1.7.0-beta02
+artifactVersion: 1.7.0-beta03
 packageCopyright: Copyright 2026 Calcasa B.V.
 developerOrganization: Calcasa
 developerOrganizationUrl: https://calcasa.nl
@@ -20,4 +20,4 @@ packageAuthors: Calcasa
 packageTitle: Calcasa API Client
 packageUrl: https://github.com/calcasa/api-php
 excludeTests: true
-httpUserAgent: Calcasa PHP Api Client/1.7.0-beta02
+httpUserAgent: Calcasa PHP Api Client/1.7.0-beta03

@@ -19,7 +19,7 @@ namespace Adressen {
    */
   @route("/{bagNummeraanduidingId}")
   @get
-  @summary("Adres info op basis van BAG Nummeraanduiding Id.")
+  @summary("Haal adresinformatie op.")
   @operationId("GetAdres")
   op GetAdres(
     @doc("Een BAG Nummeraanduiding ID om een adres te specificeren.")
@@ -38,7 +38,7 @@ namespace Adressen {
    */
   @route("/zoeken")
   @post
-  @summary("Zoek adresinformatie op basis van het opgegeven adres.")
+  @summary("Zoek adresinformatie.")
   @operationId("SearchAdres")
   op SearchAdres(
     @doc("Het adresobject dat gebruikt wordt om naar adresinformatie te zoeken.")

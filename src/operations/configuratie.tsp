@@ -18,7 +18,7 @@ namespace Configuratie {
   @useAuth(oauth<["api:configuratie:read"]>)
   @route("/callbacks")
   @get
-  @summary("Haal de geconfigureerde callback URL's op voor de huidige client.")
+  @summary("Haal callback-URL's op.")
   @operationId("GetCallbacks")
   op GetCallbacks():
     | GetCallbacks200Response
@@ -32,7 +32,7 @@ namespace Configuratie {
   @useAuth(oauth<["api:configuratie:write"]>)
   @route("/callbacks")
   @post
-  @summary("Configureer callback URL voor een specifieke API versie voor de huidige client.")
+  @summary("Configureer een callback-URL.")
   @operationId("UpdateCallbacks")
   op UpdateCallbacks(@bodyRoot body: Callback):
     | UpdateCallbacks200Response
@@ -47,7 +47,7 @@ namespace Configuratie {
   @useAuth(oauth<["api:configuratie:read"]>)
   @route("/callbacks/authentication")
   @get
-  @summary("Haal de geconfigureerde callback authenticatie op voor de huidige client.")
+  @summary("Haal callbackauthenticatie op.")
   @operationId("GetCallbackAuthentication")
   op GetCallbackAuthentication():
     | GetCallbackAuthentication200Response
@@ -61,7 +61,7 @@ namespace Configuratie {
   @useAuth(oauth<["api:configuratie:write"]>)
   @route("/callbacks/authentication")
   @post
-  @summary("Update de geconfigureerde callback authenticatie voor de huidige client.")
+  @summary("Werk callbackauthenticatie bij.")
   @operationId("PostCallbackAuthentication")
   op PostCallbackAuthentication(@bodyRoot body: CallbackAuthentication):
     | PostCallbackAuthentication200Response
@@ -76,7 +76,7 @@ namespace Configuratie {
   @useAuth(oauth<["api:configuratie:read"]>)
   @route("/callbacks/signature-keys")
   @get
-  @summary("Get the JWKS keys, deze kunnen worden gebruikt om de echtheid van webhooks te verifiëren.")
+  @summary("Haal JWKS-sleutels op.")
   @operationId("GetSignatureKeys")
   op GetSignatureKeys():
     | File<"application/jwk-set+json", Contents = bytes>
@@ -90,7 +90,7 @@ namespace Configuratie {
   @useAuth(oauth<["api:configuratie:read"]>)
   @route("/callbacks/mtls-certificate")
   @get
-  @summary("Get the self-signed mTLS certificate.")
+  @summary("Haal het mTLS-certificaat op.")
   @operationId("GetMtlsCertificate")
   op GetMtlsCertificate():
     | File<"application/x-x509-user-cert", Contents = bytes>

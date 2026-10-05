@@ -11,7 +11,7 @@ info:
   description: |-
     The Calcasa API is used to connect to Calcasa provided services.
     For more information, please visit [Documentation](https://docs.calcasa.nl) or [GitHub](https://github.com/calcasa/api).
-  version: 1.7.0-beta02
+  version: 1.7.0-beta03
 tags:
   - name: Adressen
   - name: Bestemmingsplannen
@@ -31,7 +31,7 @@ paths:
   /adressen/zoeken:
     post:
       operationId: SearchAdres
-      summary: Zoek adresinformatie op basis van het opgegeven adres.
+      summary: Zoek adresinformatie.
       description: |-
         De notities geven aan of de input al dan niet gewijzigd of onbekend is.
         De enige velden die echt nodig zijn voor een compleet resultaat zijn de postcode, het huisnummer en de huisnummertoevoeging.
@@ -82,7 +82,7 @@ paths:
   /adressen/{bagNummeraanduidingId}:
     get:
       operationId: GetAdres
-      summary: Adres info op basis van BAG Nummeraanduiding Id.
+      summary: Haal adresinformatie op.
       description: |-
         De Notities zullen leeg blijven voor dit endpoint.
         Het adresobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
@@ -133,8 +133,10 @@ paths:
   /bestemmingsplannen/{bagNummeraanduidingId}:
     get:
       operationId: GetBestemmingById
-      summary: Gegevens over de bestemmingsplannen op de locatie van een adres (BAG Nummeraanduiding ID).
-      description: Het bestemmingsplanobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
+      summary: Haal bestemmingsplannen op.
+      description: |-
+        Geeft de bestemmingsplannen terug voor de locatie van een adres (BAG Nummeraanduiding ID).
+        Het bestemmingsplanobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
       parameters:
         - name: bagNummeraanduidingId
           in: path
@@ -182,8 +184,10 @@ paths:
   /bodem/{bagNummeraanduidingId}:
     get:
       operationId: GetBodemById
-      summary: Gegevens over de bodemkwaliteit op de locatie van een adres (BAG Nummeraanduiding ID).
-      description: Het bodemdataobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
+      summary: Haal bodemkwaliteitsgegevens op.
+      description: |-
+        Geeft bodemkwaliteitsgegevens terug voor de locatie van een adres (BAG Nummeraanduiding ID).
+        Het bodemdataobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
       parameters:
         - name: bagNummeraanduidingId
           in: path
@@ -231,8 +235,10 @@ paths:
   /buurt/{buurtCode}:
     get:
       operationId: GetBuurt
-      summary: Gegevens over een buurt en de wijk, gemeente en land waarin deze buurt gesitueerd is.
-      description: Het omgevingsdataobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
+      summary: Haal buurtgegevens op.
+      description: |-
+        Geeft gegevens terug over een buurt en de bijbehorende wijk, gemeente en land.
+        Het omgevingsdataobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
       parameters:
         - name: buurtCode
           in: path
@@ -279,7 +285,7 @@ paths:
   /callbacks/inschrijvingen:
     get:
       operationId: GetNotificationSubscriptions
-      summary: Haal de callback inschrijvingen binnen voor deze client.
+      summary: Haal callbackinschrijvingen op.
       description: De callbackobjecten zullen gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
       parameters: []
       responses:
@@ -316,7 +322,7 @@ paths:
             - api:callback:read
     post:
       operationId: AddOrUpdateCallbackSubscription
-      summary: Voeg een callback inschrijving toe (of werk bij) voor de huidige client voor een adres.
+      summary: Maak of werk een callbackinschrijving bij.
       description: |-
         De callbackobjecten zullen gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
         Als er al een inschrijving bestaat voor dit adres dan wordt deze overschreven.
@@ -368,7 +374,8 @@ paths:
   /callbacks/inschrijvingen/{bagNummeraanduidingId}:
     delete:
       operationId: DeleteNotificationSubscription
-      summary: Verwijder de callback inschrijving voor deze client, dit adres en optioneel een geldverstrekker.
+      summary: Verwijder een callbackinschrijving.
+      description: Verwijdert de callbackinschrijving voor de huidige client, het opgegeven adres en optioneel een geldverstrekker.
       parameters:
         - name: bagNummeraanduidingId
           in: path
@@ -417,8 +424,10 @@ paths:
             - api:callback:write
     get:
       operationId: GetNotificationSubscription
-      summary: Haal de callback inschrijving op voor deze client, dit adres en eventueel opgegeven geldverstrekker.
-      description: Het callbackobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
+      summary: Haal een callbackinschrijving op.
+      description: |-
+        Geeft de callbackinschrijving terug voor de huidige client, het opgegeven adres en optioneel een geldverstrekker.
+        Het callbackobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
       parameters:
         - name: bagNummeraanduidingId
           in: path
@@ -472,7 +481,7 @@ paths:
   /configuratie/callbacks:
     get:
       operationId: GetCallbacks
-      summary: Haal de geconfigureerde callback URL's op voor de huidige client.
+      summary: Haal callback-URL's op.
       description: Het callbackobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
       parameters: []
       responses:
@@ -509,7 +518,7 @@ paths:
             - api:configuratie:read
     post:
       operationId: UpdateCallbacks
-      summary: Configureer callback URL voor een specifieke API versie voor de huidige client.
+      summary: Configureer een callback-URL.
       description: Indien er al een callback geconfigureerd is voor de opgegeven versie zal deze overschreven worden. Bij het aanroepen van de callback URL zal de CallbackName achter de URL toegevoegd worden. Een lege string of null verwijdert de geconfigureerde URL.
       parameters: []
       responses:
@@ -559,7 +568,7 @@ paths:
   /configuratie/callbacks/authentication:
     get:
       operationId: GetCallbackAuthentication
-      summary: Haal de geconfigureerde callback authenticatie op voor de huidige client.
+      summary: Haal callbackauthenticatie op.
       description: Het callback-authenticatieobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
       parameters: []
       responses:
@@ -594,7 +603,7 @@ paths:
             - api:configuratie:read
     post:
       operationId: PostCallbackAuthentication
-      summary: Update de geconfigureerde callback authenticatie voor de huidige client.
+      summary: Werk callbackauthenticatie bij.
       description: Het callback-authenticatieobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
       parameters: []
       responses:
@@ -642,7 +651,7 @@ paths:
   /configuratie/callbacks/mtls-certificate:
     get:
       operationId: GetMtlsCertificate
-      summary: Get the self-signed mTLS certificate.
+      summary: Haal het mTLS-certificaat op.
       description: Get the self-signed mTLS certificate.
       parameters: []
       responses:
@@ -679,7 +688,7 @@ paths:
   /configuratie/callbacks/signature-keys:
     get:
       operationId: GetSignatureKeys
-      summary: Get the JWKS keys, deze kunnen worden gebruikt om de echtheid van webhooks te verifiëren.
+      summary: Haal JWKS-sleutels op.
       description: Get the JWKS keys, deze kunnen worden gebruikt om de echtheid van webhooks te verifiëren
       parameters: []
       responses:
@@ -716,7 +725,8 @@ paths:
   /facturen/{id}:
     get:
       operationId: GetFactuur
-      summary: Factuur op basis van een waardering Id.
+      summary: Haal een factuur op.
+      description: Geeft de PDF-factuur terug voor een waardering.
       parameters:
         - name: id
           in: path
@@ -765,7 +775,7 @@ paths:
   /file-sets/inbound:
     post:
       operationId: CreateInboundFileSet
-      summary: Create a new inbound file set.
+      summary: Create an inbound file set.
       description: |-
         Create a new inbound file set and all its included files. If the type, period, and revision combination already exists, an InboundFileSetAlreadyExistsProblemDetails will be returned. If the file set is not confirmed within 24 hours, it will expire and all its uploaded contents will be deleted.
 
@@ -819,7 +829,7 @@ paths:
             - api:file-set:inbound:write
     get:
       operationId: GetInboundFileSets
-      summary: Get all inbound file sets.
+      summary: List inbound file sets.
       description: This will not include the file details, only the metadata of the file set. Use the GetInboundFileSetById operation to get the details of a specific file set.
       parameters: []
       responses:
@@ -851,7 +861,8 @@ paths:
   /file-sets/inbound/{inboundFileSetId}:
     get:
       operationId: GetInboundFileSetById
-      summary: Get a specific inbound file set by its ID.
+      summary: Get an inbound file set.
+      description: Gets a specific inbound file set by its ID.
       parameters:
         - name: inboundFileSetId
           in: path
@@ -891,7 +902,7 @@ paths:
             - api:file-set:inbound:read
     post:
       operationId: ConfirmInboundFileSetById
-      summary: Confirm an inbound file set after it has been fully uploaded.
+      summary: Confirm an inbound file set.
       description: |-
         Confirm an inbound file set after it has been fully uploaded. This will start verification of the file set. When the state is updated, the callback will be triggered with the new state. When validation fails, a new file set must be created. If the file set is not confirmed within 24 hours, it will expire and all its uploaded contents will be deleted.
 
@@ -946,7 +957,7 @@ paths:
   /file-sets/inbound/{inboundFileSetId}/{fileIndex}/{chunkIndex}:
     put:
       operationId: PutFileChunk
-      summary: Upload a specific file chunk for an inbound file set.
+      summary: Upload an inbound file chunk.
       description: Upload a specific file chunk for an inbound file set. All chunks must be uploaded with consecutive chunk indices, if the file is small enough, it can be uploaded in a single request. Total size must not exceed reported file size in the file set.
       parameters:
         - name: inboundFileSetId
@@ -1050,7 +1061,7 @@ paths:
   /file-sets/outbound:
     get:
       operationId: GetOutboundFileSets
-      summary: Get all outbound file sets.
+      summary: List outbound file sets.
       description: This will not include the file details, only the metadata of the file set. Use the GetOutboundFileSetById operation to get the details of a specific file set.
       parameters: []
       responses:
@@ -1082,7 +1093,8 @@ paths:
   /file-sets/outbound/{outboundFileSetId}:
     get:
       operationId: GetOutboundFileSetById
-      summary: Get a specific outbound file set by its ID.
+      summary: Get an outbound file set.
+      description: Gets a specific outbound file set by its ID.
       parameters:
         - name: outboundFileSetId
           in: path
@@ -1122,7 +1134,7 @@ paths:
             - api:file-set:outbound:read
     delete:
       operationId: DeleteOutboundFileSetById
-      summary: Delete an outbound file set after it has been correctly received. If an outbound file set is not downloaded and deleted within 48 hours, it will expire and all its contents will be deleted automatically.
+      summary: Delete an outbound file set.
       description: Delete an outbound file set after it has been correctly received. If an outbound file set is not downloaded and deleted within 48 hours, it will expire and all its contents will be deleted automatically.
       parameters:
         - name: outboundFileSetId
@@ -1160,7 +1172,7 @@ paths:
   /file-sets/outbound/{outboundFileSetId}/{fileIndex}:
     get:
       operationId: GetOutboundFileByIndex
-      summary: Get a specific outbound file content by its index within a file set.
+      summary: Download outbound file content.
       description: Get a specific outbound file content by its index within a file set. Use the Http Range header to request a specific byte range of the file and Accept-Encoding to specify the compression. If the Range header is not provided, the entire file will be returned.
       parameters:
         - name: range
@@ -1245,7 +1257,8 @@ paths:
   /fotos/{id}:
     get:
       operationId: GetFoto
-      summary: Foto op basis van een foto Id.
+      summary: Haal een foto op.
+      description: Geeft een foto terug die onder andere bij waarderingen en referenties wordt gebruikt.
       parameters:
         - name: id
           in: path
@@ -1298,8 +1311,10 @@ paths:
   /funderingen/{bagNummeraanduidingId}:
     get:
       operationId: GetFunderingById
-      summary: Gegevens over de fundering op de locatie van een adres (BAG Nummeraanduiding ID).
-      description: Het funderingsdataobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
+      summary: Haal funderingsgegevens op.
+      description: |-
+        Geeft funderingsgegevens terug voor de locatie van een adres (BAG Nummeraanduiding ID).
+        Het funderingsdataobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
       parameters:
         - name: bagNummeraanduidingId
           in: path
@@ -1348,7 +1363,8 @@ paths:
   /geldverstrekkers/{productType}:
     get:
       operationId: GetGeldverstrekkers
-      summary: Alle geldverstrekkers die te gebruiken zijn voor aanvragen.
+      summary: Haal geldverstrekkers op.
+      description: Geeft alle geldverstrekkers terug die voor aanvragen kunnen worden gebruikt.
       parameters:
         - name: productType
           in: path
@@ -1391,7 +1407,8 @@ paths:
   /planning/opnames:
     get:
       operationId: GetOpnames
-      summary: Get the list of opnames.
+      summary: List opnames.
+      description: Geeft de lijst met opnames terug. Gebruik include_planned om ook geplande opnames op te nemen.
       parameters:
         - name: include_planned
           in: query
@@ -1428,7 +1445,8 @@ paths:
   /planning/opnames/{opnameId}:
     post:
       operationId: AssignOpnemer
-      summary: Assign opnemer to opname.
+      summary: Assign an opnemer.
+      description: Wijst een opnemer toe aan een opname.
       parameters:
         - name: opnameId
           in: path
@@ -1474,7 +1492,8 @@ paths:
             - api:planning:write
     delete:
       operationId: DeletePlanningForOpname
-      summary: Delete the planning for an opname.
+      summary: Delete an opname planning.
+      description: Verwijdert de planning voor een opname.
       parameters:
         - name: opnameId
           in: path
@@ -1511,7 +1530,8 @@ paths:
   /planning/opnemers:
     get:
       operationId: GetOpnemers
-      summary: Get the list of opnemers.
+      summary: List opnemers.
+      description: Geeft de lijst met opnemers terug.
       parameters: []
       responses:
         '200':
@@ -1542,7 +1562,8 @@ paths:
   /rapporten/{id}:
     get:
       operationId: GetRapport
-      summary: Rapport op basis van waardering Id.
+      summary: Haal een rapport op.
+      description: Geeft het PDF-rapport terug voor een waardering.
       parameters:
         - name: id
           in: path
@@ -1591,7 +1612,7 @@ paths:
   /waarderingen:
     post:
       operationId: CreateWaardering
-      summary: Maak een waardering aan.
+      summary: Maak een waardering.
       description: |-
         Het waarderingsobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
         Nadat de waardering aangemaakt is zal deze bevestigd moeten worden. De BagNummeraanduidingId en ProductType velden zijn (ten minste) verplicht.
@@ -1659,7 +1680,10 @@ paths:
   /waarderingen/by-hash/{hash}:
     get:
       operationId: GetWaarderingByReportHash
-      summary: Waardering op basis van upper-case hex SHA-256 hash van een PDF rapport. Als er een collision is wordt de nieuwste waardering teruggegeven.
+      summary: Zoek op rapport-hash.
+      description: |-
+        Zoekt een waardering op basis van de upper-case hexadecimal SHA-256-hash van een PDF-rapport.
+        Bij een hashcollision wordt de nieuwste waardering teruggegeven.
       parameters:
         - name: hash
           in: path
@@ -1720,7 +1744,7 @@ paths:
   /waarderingen/check:
     post:
       operationId: CheckProducten
-      summary: Controleert mogelijke producten.
+      summary: Controleer mogelijke producten.
       description: Geeft de mogelijke en afgekeurde producten terug voor een waardering op basis van de input parameters. Het BagNummeraanduidingId veld is (ten minste) verplicht. Als er geen enkel product geconfigureerd komt er een exception terug.
       parameters: []
       responses:
@@ -1774,7 +1798,7 @@ paths:
   /waarderingen/zoeken:
     post:
       operationId: SearchWaarderingen
-      summary: Zoek waardering op basis van input parameters.
+      summary: Zoek waarderingen.
       description: |-
         Het waarderingsobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
         Alle items kunnen gebruikt worden voor het zoeken, ProductType en BagNummeraanduidingId zijn verplicht.  
@@ -1832,8 +1856,8 @@ paths:
   /waarderingen/{id}:
     get:
       operationId: GetWaardering
-      summary: Waardering op basis van Id.
-      description: Het waarderingsobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
+      summary: Haal een waardering op.
+      description: Geeft een waardering terug op basis van de ID. Het waarderingsobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
       parameters:
         - name: id
           in: path
@@ -1892,7 +1916,7 @@ paths:
             - api:waarderingen:read
     patch:
       operationId: PatchWaarderingen
-      summary: Patcht een waardering.
+      summary: Werk een waardering bij.
       description: |-
         Het waarderingsobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
 
@@ -1975,8 +1999,8 @@ paths:
   /waarderingen/{id}/ontwikkeling:
     get:
       operationId: GetWaarderingOntwikkeling
-      summary: Waardering ontwikkeling op basis van waardering Id.
-      description: Het waarderingsobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
+      summary: Haal waarderingsontwikkeling op.
+      description: Geeft de ontwikkeling van een waardering terug. Het waarderingsobject zal gefilterd terugkomen, afhankelijk van het client_id dat gebruikt is voor de authenticatie.
       parameters:
         - name: id
           in: path

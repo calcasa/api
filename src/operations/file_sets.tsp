@@ -36,7 +36,7 @@ namespace FileSets {
     @useAuth(oauth<["api:file-set:inbound:write"]>)
     @route("/inbound")
     @post
-    @summary("Create a new inbound file set.")
+    @summary("Create an inbound file set.")
     @operationId("CreateInboundFileSet")
     op CreateInboundFileSet(@bodyRoot body: CreateInboundFileSetRequest):
         | InboundFileSet
@@ -51,17 +51,20 @@ namespace FileSets {
     @useAuth(oauth<["api:file-set:inbound:read"]>)
     @route("/inbound")
     @get
-    @summary("Get all inbound file sets.")
+    @summary("List inbound file sets.")
     @operationId("GetInboundFileSets")
     op GetInboundFileSets():
         | InboundFileSet[]
         | UnauthorizedProblemDetails
         | ProblemDetails;
 
+    /**
+     * Gets a specific inbound file set by its ID.
+     */
     @useAuth(oauth<["api:file-set:inbound:read"]>)
     @route("/inbound/{inboundFileSetId}")
     @get
-    @summary("Get a specific inbound file set by its ID.")
+    @summary("Get an inbound file set.")
     @operationId("GetInboundFileSetById")
     op GetInboundFileSetById(@format("uuid") inboundFileSetId: string):
         | InboundFileSet
@@ -75,7 +78,7 @@ namespace FileSets {
     @useAuth(oauth<["api:file-set:inbound:write"]>)
     @route("/inbound/{inboundFileSetId}/{fileIndex}/{chunkIndex}")
     @put
-    @summary("Upload a specific file chunk for an inbound file set.")
+    @summary("Upload an inbound file chunk.")
     @operationId("PutFileChunk")
     op PutFileChunk(
         @format("uuid") inboundFileSetId: string,
@@ -104,7 +107,7 @@ namespace FileSets {
     @route("/inbound/{inboundFileSetId}")
     @post
     @useAuth(oauth<["api:file-set:inbound:write"]>)
-    @summary("Confirm an inbound file set after it has been fully uploaded.")
+    @summary("Confirm an inbound file set.")
     @operationId("ConfirmInboundFileSetById")
     op ConfirmInboundFileSetById(@format("uuid") inboundFileSetId: string):
         | InboundFileSet
@@ -118,7 +121,7 @@ namespace FileSets {
      */
     @route("/outbound")
     @get
-    @summary("Get all outbound file sets.")
+    @summary("List outbound file sets.")
     @useAuth(oauth<["api:file-set:outbound:read"]>)
     @operationId("GetOutboundFileSets")
     op GetOutboundFileSets():
@@ -126,9 +129,12 @@ namespace FileSets {
         | UnauthorizedProblemDetails
         | ProblemDetails;
 
+    /**
+     * Gets a specific outbound file set by its ID.
+     */
     @route("/outbound/{outboundFileSetId}")
     @get
-    @summary("Get a specific outbound file set by its ID.")
+    @summary("Get an outbound file set.")
     @useAuth(oauth<["api:file-set:outbound:read"]>)
     @operationId("GetOutboundFileSetById")
     op GetOutboundFileSetById(@format("uuid") outboundFileSetId: string):
@@ -142,7 +148,7 @@ namespace FileSets {
      */
     @route("/outbound/{outboundFileSetId}/{fileIndex}")
     @get
-    @summary("Get a specific outbound file content by its index within a file set.")
+    @summary("Download outbound file content.")
     @useAuth(oauth<["api:file-set:outbound:read"]>)
     @operationId("GetOutboundFileByIndex")
     op GetOutboundFile(
@@ -164,7 +170,7 @@ namespace FileSets {
      */
     @route("/outbound/{outboundFileSetId}")
     @delete
-    @summary("Delete an outbound file set after it has been correctly received. If an outbound file set is not downloaded and deleted within 48 hours, it will expire and all its contents will be deleted automatically.")
+    @summary("Delete an outbound file set.")
     @useAuth(oauth<["api:file-set:outbound:write"]>)
     @operationId("DeleteOutboundFileSetById")
     op DeleteOutboundFileSetById(@format("uuid") outboundFileSetId: string):

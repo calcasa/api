@@ -12,10 +12,13 @@ namespace CalcasaPublicApi;
 @tag("Geldverstrekkers")
 @route("/geldverstrekkers")
 namespace Geldverstrekkers {
+  /**
+   * Geeft alle geldverstrekkers terug die voor aanvragen kunnen worden gebruikt.
+   */
   @useAuth(oauth<["api:geldverstrekkers:read"]>)
   @route("/{productType}")
   @get
-  @summary("Alle geldverstrekkers die te gebruiken zijn voor aanvragen.")
+  @summary("Haal geldverstrekkers op.")
   @operationId("GetGeldverstrekkers")
   op GetGeldverstrekkers(
     /**
