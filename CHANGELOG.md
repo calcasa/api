@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-10-22 (v1.7.1)
+- Add better install instructions and fix some problems in the documentation
+
 ## 2026-10-22 (v1.7.0)
 - Final version of the planning API endpoint
 
